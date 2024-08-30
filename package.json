@@ -1,12 +1,13 @@
 {
-  "name": "@app/source",
-  "version": "0.0.0",
-  "license": "MIT",
-  "scripts": {
-    "build": "nx build web",
-    "dev": "nx serve web"
-  },
+  "name": "my-blink-app",
+  "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
   "dependencies": {
     "@solana/actions": "^1.6.2",
     "@solana-developers/preset-next": "3.0.1",
