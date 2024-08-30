@@ -1,0 +1,93 @@
+.main {
+  height: 100%;
+  display: flex;
+  gap: 20px;
+  color: black;
+  padding: 0px 20px;
+  padding-bottom: 21px;
+}
+
+.Title{
+  margin-left: 20px;
+  text-decortation: none;
+  font-family: 'Fredoka One', sans-serif;
+  color: white;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.gradient-text {
+  color: #333;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.customize-form {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 0px 20px;
+  height: 100%;
+  width: 70%;
+  box-shadow: none;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-input,
+.form-textarea {
+  width: 98%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #999;
+}
+
+.form-textarea {
+  resize: vertical;
+}
+
+.submit-button {
+  border: 1px solid #ccc;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  background-color: #121212;
+}
+
+.submit-button:hover {
+  background-color: #eee;
+  color: #333;
+}
+
+.wallet-adapter-button{
+  background-color: #333;
+  color: white;
+  margin-right: 20px;
+}

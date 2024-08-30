@@ -16,7 +16,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       >
         <div>
           <Link href="/">
-            <img src="/assets/logo.png" height={24} alt="Logo" />
+            Blink Generator
           </Link>
         </div>
         <div>

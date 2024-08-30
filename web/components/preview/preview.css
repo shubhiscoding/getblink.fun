@@ -1,0 +1,86 @@
+.Preview {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 0px 20px;
+  height: 100%;
+  box-shadow: none;
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.Preview img {
+  width: 100%;
+  max-width: 606px;
+  max-height: 420px;
+  border-radius: 5px;
+}
+
+.preview-card {
+  background-color: #f7f7f7;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(170, 187, 204, 1);
+}
+
+.preview-card h3 {
+  margin-bottom: 4px;
+  color: #121212;
+}
+
+.preview-card p {
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+  color: #666;
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  border: 1px solid #ccc;
+  color: white;
+  background-color: #121212;
+}
+
+.btn-secondary {
+  width: 30%;
+}
+
+.btn:hover {
+  background-color: #121520;
+  color: white;
+}
+
+.input-box {
+  width: 70%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f2f2f2;
+  color: #121212;
+}
+
+.payInputs {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.input-with-button{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  gap: 5px;
+}
