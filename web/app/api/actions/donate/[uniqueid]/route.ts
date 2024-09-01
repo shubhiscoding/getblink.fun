@@ -115,7 +115,7 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
       }
     }
 
-    const SOLANA_RPC_URL = clusterApiUrl("devnet", false);
+    const SOLANA_RPC_URL = clusterApiUrl("mainnet-beta", false);
     if (!SOLANA_RPC_URL) throw "Unable to find RPC url...awkward...";
     const connection = new Connection(SOLANA_RPC_URL);
 

@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       createdAt: new Date()
     });
 
-    const blinkLink = `https://blink-generator.vercel.app/api/actions/donate/${result.insertedId}`;
+    const blinkLink = `https://www.getblink.fun/api/actions/donate/${result.insertedId}`;
     return NextResponse.json({ blinkLink });
   } catch (error) {
     console.error('Error generating blink:', error);

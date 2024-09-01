@@ -94,7 +94,7 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
         </button>):(<h4>Please Connect A Wallet</h4>)}
       </div>
       {blinkLink && <div className="blink">
-        Your Blink Link: <a href={`https://dial.to/devnet?action=solana-action:${blinkLink}`}>https://dial.to/devnet?action=solana-action:{blinkLink}</a>
+        Your Blink Link: <a href={`https://dial.to/?action=solana-action:${blinkLink}`}>https://dial.to/devnet?action=solana-action:{blinkLink}</a>
       </div>}
     </div>
   );
