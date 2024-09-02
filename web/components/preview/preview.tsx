@@ -5,7 +5,7 @@ interface FormProps {
     description: string;
     title: string;
   }
-  
+
 const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
     return (
         <div className="Preview">

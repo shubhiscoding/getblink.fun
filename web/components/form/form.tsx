@@ -60,6 +60,7 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="form-input"
+            placeholder='Enter the title of your blink'
           />
         </div>
         <div className="form-group">
@@ -69,6 +70,7 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
             value={label}
             onChange={(e) => setLabel(e.target.value)}
             className="form-input"
+            placeholder='Enter the label of your blink'
           />
         </div>
         <div className="form-group">
@@ -78,6 +80,7 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
             value={icon}
             onChange={(e) => setIcon(e.target.value)}
             className="form-input"
+            placeholder='Enter the icon URL of your blink'
           />
         </div>
         <div className="form-group">
@@ -87,6 +90,7 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
             onChange={(e) => setDescription(e.target.value)}
             className="form-textarea"
             rows={3}
+            placeholder='Enter the description of your blink'
           />
         </div>
         {publicKey? (<button className="submit-button" onClick={handlePreview} disabled={!connected}>
@@ -94,7 +98,7 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
         </button>):(<h4>Please Connect A Wallet</h4>)}
       </div>
       {blinkLink && <div className="blink">
-        Your Blink Link: <a href={`https://dial.to/?action=solana-action:${blinkLink}`}>https://dial.to/devnet?action=solana-action:{blinkLink}</a>
+        Your Blink Link: <a href={`https://dial.to/?action=solana-action:${blinkLink}`}>https://dial.to/?action=solana-action:{blinkLink}</a>
       </div>}
     </div>
   );

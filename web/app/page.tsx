@@ -4,10 +4,10 @@ import Preview from "@/components/preview/preview";
 import { useState } from "react";
 
 export default function Index() {
-  const [icon, setIcon] = useState<string>('https://www.vegrecipesofindia.com/wp-content/uploads/2018/02/cafe-style-hot-coffee-recipe-1.jpg');
-  const [label, setLabel] = useState<string>('your label');
-  const [description, setDescription] = useState<string>('your description');
-  const [title, setTitle] = useState<string>('your title');
+  const [icon, setIcon] = useState<string>('');
+  const [label, setLabel] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
 
   return (
     <div className="main">
