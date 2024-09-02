@@ -91,3 +91,59 @@ a {
   color: white;
   margin-right: 20px;
 }
+
+.blink-box {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  width: fit-content;
+}
+
+.link-container {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.link {
+  padding: 5px;
+  border-radius: 4px;
+  background-color: #eef;
+  color: #333;
+  text-decoration: none;
+  margin-right: 10px;
+  word-break: break-all;
+}
+
+.copy-button {
+  padding: 5px 10px;
+  background-color: #121212;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tweet-button{
+  padding: 5px 10px;
+  background-color: #121212;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.copy-button:hover {
+  background-color: #eee;
+  color: #333;
+}
+
+.copy-message {
+  color: green;
+  margin-top: 5px;
+}

@@ -19,6 +19,7 @@ interface FormProps {
 const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description, setDescription, title, setTitle }) => {
   const { publicKey, connected } = useWallet();
   const [blinkLink, setBlinkLink] = useState('');
+  const [copied, setCopied] = useState(false);
 
   const handlePreview = async () => {
     if (!connected || !publicKey) {
@@ -54,6 +55,18 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
 
     const data = await response.json();
     setBlinkLink(data.blinkLink);
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(`https://dial.to/?action=solana-action:${blinkLink}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1000);
+  };
+
+  const handleTweet = () => {
+    const tweetText = `Check out this Blink I just made: https://dial.to/?action=solana-action:${blinkLink}`;
+    const twitterUrl = `https://X.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
+    window.open(twitterUrl, '_blank');
   };
 
   return (
@@ -104,9 +117,24 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
           Generate Blink
         </button>):( <WalletButton />)}
       </div>
-      {blinkLink && <div className="blink">
-        Your Blink Link: <a href={`https://dial.to/?action=solana-action:${blinkLink}`}>https://dial.to/?action=solana-action:{blinkLink}</a>
-      </div>}
+      {blinkLink &&(
+        <div className="blink-box">
+          <span>Your Blink Link: </span>
+          <div className="link-container">
+            <a href={`https://dial.to/?action=solana-action:${blinkLink}`} target='_blank' className="link">
+              https://dial.to/?action=solana-action:{blinkLink}
+            </a>
+            {copied?(<span className="copy-message">Copied!</span>):
+             (<button className="copy-button" onClick={handleCopy}>
+              Copy
+              </button>)
+            }
+            <button className="tweet-button" onClick={handleTweet}>
+              Tweet
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
