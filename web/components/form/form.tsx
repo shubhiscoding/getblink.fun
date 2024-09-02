@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import './form.css';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletButton } from '../solana/solana-provider';
 
 interface FormProps {
   icon: string;
@@ -22,6 +23,12 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
   const handlePreview = async () => {
     if (!connected || !publicKey) {
       console.error('Wallet not connected');
+      return;
+    }
+
+    if(!icon || !label || !description || !title) {
+      console.error('Please fill all fields');
+      window.alert('Please fill all fields');
       return;
     }
 
@@ -95,7 +102,7 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
         </div>
         {publicKey? (<button className="submit-button" onClick={handlePreview} disabled={!connected}>
           Generate Blink
-        </button>):(<h4>Please Connect A Wallet</h4>)}
+        </button>):( <WalletButton />)}
       </div>
       {blinkLink && <div className="blink">
         Your Blink Link: <a href={`https://dial.to/?action=solana-action:${blinkLink}`}>https://dial.to/?action=solana-action:{blinkLink}</a>
