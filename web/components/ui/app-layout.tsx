@@ -11,12 +11,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0px 12px',
+          marginTop: '5px',
         }}
       >
         <div>
-          <Link href="/">
-            <h1 className='Title'>Blink Generator</h1>
-          </Link>
+          <h1 className='Title'>Blink Generator</h1>
         </div>
         <div>
           <WalletButton />

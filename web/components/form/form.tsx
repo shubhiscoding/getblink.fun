@@ -71,10 +71,9 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
 
   return (
     <div className="customize-form">
-      <h1 className="gradient-text">Customize Your Blink</h1>
       <div className="form">
+        <h1 className="gradient-text">Customize Your Blink</h1>
         <div className="form-group">
-          <label className="form-label">Title:</label>
           <input
             type="text"
             value={title}
@@ -84,7 +83,6 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
           />
         </div>
         <div className="form-group">
-          <label className="form-label">Label:</label>
           <input
             type="text"
             value={label}
@@ -94,7 +92,6 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
           />
         </div>
         <div className="form-group">
-          <label className="form-label">Icon URL:</label>
           <input
             type="text"
             value={icon}
@@ -104,7 +101,6 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
           />
         </div>
         <div className="form-group">
-          <label className="form-label">Description:</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -119,11 +115,12 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
       </div>
       {blinkLink &&(
         <div className="blink-box">
-          <span>Your Blink Link: </span>
-          <div className="link-container">
+          <div className="link-container">Your Blink Link:
             <a href={`https://dial.to/?action=solana-action:${blinkLink}`} target='_blank' className="link">
               https://dial.to/?action=solana-action:{blinkLink}
             </a>
+          </div>
+          <div className="button-container">
             {copied?(<span className="copy-message">Copied!</span>):
              (<button className="copy-button" onClick={handleCopy}>
               Copy

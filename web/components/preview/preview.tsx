@@ -7,10 +7,14 @@ interface FormProps {
   }
 
 const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
+    const handleClick = () => {
+        window.alert("It's a dummy button only for preview");
+        return;
+    }
     return (
         <div className="Preview">
-            <h1 className='gradient-text'>Preview</h1>
             <div className='preview-card'>
+            <h1 className='gradient-text'>Preview</h1>
                 <div className='image'>
                     <img src={icon} alt="Icon" />
                 </div>
@@ -18,10 +22,14 @@ const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
                 <p className="text-sm text-gray-600 mb-2">{description}</p>
                 <h5 className="text-xl font-bold">{label}</h5>
                 <div className='payInputs'>
-                    <button className="btn btn-primary mt-4 tnx">Send 0.03 SOL</button>
+                  <div className='senSolsbtns'>
+                    <button className="btn btn-primary" onClick={handleClick}>0.01 SOL</button>
+                    <button className="btn btn-primary" onClick={handleClick}>0.05 SOL</button>
+                    <button className="btn btn-primary" onClick={handleClick}>1.00 SOL</button>
+                  </div>
                     <div className="input-with-button">
                         <input type="text" className="input-box mt-2" placeholder="Enter the amount of SOL to send*" />
-                        <button className="btn btn-secondary mt-2 tnx">Send SOL</button>
+                        <button className="btn btn-secondary mt-2 tnx" onClick={handleClick}>Send SOL</button>
                     </div>
                 </div>
             </div>
