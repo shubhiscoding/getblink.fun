@@ -1,5 +1,5 @@
 .preview-card {
-  width: 100%;
+  width: fit-content;
   padding: 50px;
   border-radius: 50px;
   backdrop-filter: blur(20px) saturate(138%);
@@ -8,6 +8,7 @@
   color: #fff; /* Text color */
   font-family: Arial, sans-serif; /* Font styling */
   box-shadow: inset 0px 0px 20px rgba(255, 255, 255, 0.15);
+  max-width: 600px;
 }
 
 .preview-card h3 {
@@ -24,7 +25,7 @@
 
 .image img {
   width: 100%;
-  max-width: 600px;
+  max-width: 500px;
   border-radius: 16px;
   margin-bottom: 16px;
   box-shadow: 0 0px 4px rgba(255,255,255, 0.2);
@@ -83,7 +84,12 @@
 }
 
 /* Blink link styles */
+.form .blink-box{
+  max-width: 700px;
+}
+
 .blink-box {
+  width: fit-content;
   display: flex;
   flex-direction: column;
   margin-top: 20px;
@@ -122,6 +128,16 @@
 .copy-button, .tweet-button {
   width:100%;
   max-width: 100px;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.new-button {
+  width:100%;
+  max-width: 110px;
   border: none;
   padding: 8px 12px;
   border-radius: 9999px;

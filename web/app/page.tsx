@@ -22,7 +22,7 @@ export default function Index() {
         setTitle={setTitle}
       />
       <Preview
-        icon={icon || 'https://pbs.twimg.com/profile_images/1503437573917757446/lb7nV4mA_400x400.jpg'}
+        icon={icon || 'https://raw.githubusercontent.com/shubhiscoding/Blink-Generator/main/web/public/solana.jpg'}
         label={label || 'Your Label'}
         description={description || 'Your Description shows up here, Keep it short and simple'}
         title={title || "Your Tittle : )"}
