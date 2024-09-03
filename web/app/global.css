@@ -57,3 +57,37 @@ body, html {
   padding: 20px 50px;
   gap: 20px;
 }
+
+/* Media query for screens smaller than 768px (like tablets and mobile devices) */
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 12px;
+  }
+
+  .Title {
+    font-size: 2.5rem;
+  }
+
+  .main {
+    flex-direction: column;
+    padding: 15px 30px;
+    gap: 15px;
+  }
+}
+
+/* Media query for screens smaller than 480px (like mobile devices) */
+@media (max-width: 480px) {
+  .header {
+    padding: 8px 10px;
+  }
+
+  .Title {
+    font-size: 2rem;
+  }
+
+  .main {
+    flex-direction: column;
+    padding: 10px 20px;
+    gap: 10px;
+  }
+}
