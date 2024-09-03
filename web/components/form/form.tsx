@@ -195,9 +195,6 @@ const Form: React.FC<FormProps> = ({
               <button className="tweet-button" onClick={handleTweet}>
                 Tweet
               </button>
-              <button className="new-button" onClick={handleNew}>
-                Create New
-              </button>
             </div>
           </div>
         )}
