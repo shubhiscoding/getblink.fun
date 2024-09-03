@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import './form.css';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletButton } from '../solana/solana-provider';
@@ -17,19 +16,29 @@ interface FormProps {
   setTitle: (value: string) => void;
 }
 
-const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description, setDescription, title, setTitle }) => {
+const Form: React.FC<FormProps> = ({
+  icon,
+  setIcon,
+  label,
+  setLabel,
+  description,
+  setDescription,
+  title,
+  setTitle,
+}) => {
   const { publicKey, connected } = useWallet();
   const [showForm, setShowForm] = useState(true);
   const [blinkLink, setBlinkLink] = useState('');
   const [copied, setCopied] = useState(false);
-  const form = useRef(null);
+  const form = useRef<HTMLDivElement | null>(null);
+
   const handlePreview = async () => {
     if (!connected || !publicKey) {
       console.error('Wallet not connected');
       return;
     }
 
-    if(!icon || !label || !description || !title) {
+    if (!icon || !label || !description || !title) {
       console.error('Please fill all fields');
       window.alert('Please fill all fields');
       return;
@@ -47,7 +56,7 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
         label,
         description,
         title,
-        wallet: walletAddress
+        wallet: walletAddress,
       }),
     });
 
@@ -58,7 +67,8 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
     const data = await response.json();
     setBlinkLink(data.blinkLink);
     setShowForm(false);
-    if(form.current){
+
+    if (form.current) {
       form.current.style.padding = '80px';
     }
   };
@@ -77,51 +87,59 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
 
   const handleNew = () => {
     setShowForm(true);
-    if(form.current){
+    if (form.current) {
       form.current.style.padding = '120px';
     }
-  }
+  };
 
   return (
     <div className="customize-form">
       <div className="form" ref={form}>
-       {showForm && <h1 className="gradient-text">Customize Your Blink</h1>}
-       {showForm && <div className="form-group">
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="form-input"
-            placeholder='Title'
-          />
-        </div>}
-       {showForm && <div className="form-group">
-          <input
-            type="text"
-            value={label}
-            onChange={(e) => setLabel(e.target.value)}
-            className="form-input"
-            placeholder='Label'
-          />
-        </div>}
-        {showForm && <div className="form-group">
-          <input
-            type="text"
-            value={icon}
-            onChange={(e) => setIcon(e.target.value)}
-            className="form-input"
-            placeholder='Image Url'
-          />
-        </div>}
-        {showForm &&<div className="form-group">
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="form-textarea"
-            rows={3}
-            placeholder='Description'
-          />
-        </div>}
+        {showForm && <h1 className="gradient-text">Customize Your Blink</h1>}
+        {showForm && (
+          <div className="form-group">
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="form-input"
+              placeholder="Title"
+            />
+          </div>
+        )}
+        {showForm && (
+          <div className="form-group">
+            <input
+              type="text"
+              value={label}
+              onChange={(e) => setLabel(e.target.value)}
+              className="form-input"
+              placeholder="Label"
+            />
+          </div>
+        )}
+        {showForm && (
+          <div className="form-group">
+            <input
+              type="text"
+              value={icon}
+              onChange={(e) => setIcon(e.target.value)}
+              className="form-input"
+              placeholder="Image Url"
+            />
+          </div>
+        )}
+        {showForm && (
+          <div className="form-group">
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="form-textarea"
+              rows={3}
+              placeholder="Description"
+            />
+          </div>
+        )}
         {showForm && publicKey ? (
           <button className="submit-button" onClick={handlePreview} disabled={!connected}>
             Generate Blink
@@ -129,50 +147,32 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
         ) : (
           showForm && <WalletButton />
         )}
-        {blinkLink && !showForm &&(
-        <div className="blink-box">
-          <h2>Your Blink Link:</h2>
-          <div className="link-container">
-            <a href={`https://dial.to/?action=solana-action:${blinkLink}`} target='_blank' className="link">
-              https://dial.to/?action=solana-action:{blinkLink}
-            </a>
+        {blinkLink && !showForm && (
+          <div className="blink-box">
+            <h2>Your Blink Link:</h2>
+            <div className="link-container">
+              <a href={`https://dial.to/?action=solana-action:${blinkLink}`} target="_blank" className="link">
+                https://dial.to/?action=solana-action:{blinkLink}
+              </a>
+            </div>
+            <div className="button-container">
+              {copied ? (
+                <span className="copy-message">Copied!</span>
+              ) : (
+                <button className="copy-button" onClick={handleCopy}>
+                  Copy
+                </button>
+              )}
+              <button className="tweet-button" onClick={handleTweet}>
+                Tweet
+              </button>
+              <button className="new-button" onClick={handleNew}>
+                Create New
+              </button>
+            </div>
           </div>
-          <div className="button-container">
-            {copied?(<span className="copy-message">Copied!</span>):
-             (<button className="copy-button" onClick={handleCopy}>
-              Copy
-              </button>)
-            }
-            <button className="tweet-button" onClick={handleTweet}>
-              Tweet
-            </button>
-            <button className="new-button" onClick={handleNew}>
-              Create New
-            </button>
-          </div>
-        </div>
-      )}
+        )}
       </div>
-      {blinkLink && showForm &&(
-        <div className="blink-box">
-          <h2>Your Blink Link:</h2>
-          <div className="link-container">
-            <a href={`https://dial.to/?action=solana-action:${blinkLink}`} target='_blank' className="link">
-              https://dial.to/?action=solana-action:{blinkLink}
-            </a>
-          </div>
-          <div className="button-container">
-            {copied?(<span className="copy-message">Copied!</span>):
-             (<button className="copy-button" onClick={handleCopy}>
-              Copy
-              </button>)
-            }
-            <button className="tweet-button" onClick={handleTweet}>
-              Tweet
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
