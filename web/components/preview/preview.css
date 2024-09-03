@@ -8,7 +8,8 @@
   color: #fff; /* Text color */
   font-family: Arial, sans-serif; /* Font styling */
   box-shadow: inset 0px 0px 20px rgba(255, 255, 255, 0.15);
-  max-width: 600px;
+  max-width: 480px;
+  text-wrap: wrap;
 }
 
 .preview-card h3 {
@@ -25,7 +26,8 @@
 
 .image img {
   width: 100%;
-  max-width: 500px;
+  max-width: 450px;
+  max-height: 450px;
   border-radius: 16px;
   margin-bottom: 16px;
   box-shadow: 0 0px 4px rgba(255,255,255, 0.2);

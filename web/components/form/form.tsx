@@ -69,7 +69,7 @@ const Form: React.FC<FormProps> = ({
     setShowForm(false);
 
     if (form.current) {
-      form.current.style.padding = '80px';
+      form.current.style.padding = '70px';
     }
   };
 
@@ -137,6 +137,7 @@ const Form: React.FC<FormProps> = ({
               className="form-textarea"
               rows={3}
               placeholder="Description"
+              maxLength={150}
             />
           </div>
         )}
@@ -173,6 +174,31 @@ const Form: React.FC<FormProps> = ({
           </div>
         )}
       </div>
+      {blinkLink && showForm && (
+          <div className="blink-box">
+            <h2>Your Blink Link:</h2>
+            <div className="link-container">
+              <a href={`https://dial.to/?action=solana-action:${blinkLink}`} target="_blank" className="link">
+                https://dial.to/?action=solana-action:{blinkLink}
+              </a>
+            </div>
+            <div className="button-container">
+              {copied ? (
+                <span className="copy-message">Copied!</span>
+              ) : (
+                <button className="copy-button" onClick={handleCopy}>
+                  Copy
+                </button>
+              )}
+              <button className="tweet-button" onClick={handleTweet}>
+                Tweet
+              </button>
+              <button className="new-button" onClick={handleNew}>
+                Create New
+              </button>
+            </div>
+          </div>
+        )}
     </div>
   );
 };
