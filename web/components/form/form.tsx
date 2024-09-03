@@ -79,7 +79,7 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="form-input"
-            placeholder='Enter the title of your blink'
+            placeholder='Title'
           />
         </div>
         <div className="form-group">
@@ -88,7 +88,7 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
             value={label}
             onChange={(e) => setLabel(e.target.value)}
             className="form-input"
-            placeholder='Enter the label of your blink'
+            placeholder='Label'
           />
         </div>
         <div className="form-group">
@@ -97,7 +97,7 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
             value={icon}
             onChange={(e) => setIcon(e.target.value)}
             className="form-input"
-            placeholder='Enter the icon URL of your blink'
+            placeholder='Image Url'
           />
         </div>
         <div className="form-group">
@@ -106,7 +106,7 @@ const Form: React.FC<FormProps> = ({ icon, setIcon, label, setLabel, description
             onChange={(e) => setDescription(e.target.value)}
             className="form-textarea"
             rows={3}
-            placeholder='Enter the description of your blink'
+            placeholder='Description'
           />
         </div>
         {publicKey? (<button className="submit-button" onClick={handlePreview} disabled={!connected}>

@@ -4,15 +4,15 @@
   justify-content: space-between;
   border-radius: 16px;
   padding: 0 20px;
-  width: 100%;
+  width: 85%;
 }
 
 .form {
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 80px;
+  border-radius: 50px;
   backdrop-filter: blur(20px) saturate(138%);
   -webkit-backdrop-filter: blur(20px) saturate(138%);
+  box-shadow: inset 0px 0px 20px rgba(255, 255, 255, 0.15);
   background-color: rgba(17, 25, 40, 0);
   color: #fff;
   font-family: Arial, sans-serif;
@@ -23,36 +23,36 @@
   font-size: 3rem;
   font-weight: bold;
   margin-bottom: 10px;
-  background: linear-gradient(to left, #c0c0c0, #ffffff, #ffffff, #c0c0c0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #989898;
 }
 
 .form-group {
   margin-bottom: 20px;
 }
 
-.form-label {
-  display: block;
-  margin-bottom: 8px;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0,0,0, 1);
-}
 
-.form-input, .form-textarea {
+.form-input{
   width: 100%;
   padding: 12px;
-  background-color: white;
+  background-color: black;
   box-shadow: 0 3px 10px rgba(0,0,0, 1);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  color: #170D21;
+  border-radius: 9999px;
+  color: #bbbdbd;
   font-size: 1rem;
 }
 
 .form-textarea {
-  resize: vertical;
-  min-height: 100px;
+  width: 100%;
+  padding: 12px;
+  background-color: black;
+  box-shadow: 0 3px 10px rgba(0,0,0, 1);
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  color: #bbbdbd;
+  font-size: 1rem;
+  resize: none;
+  min-height: 20px;
 }
 
 .submit-button, .wallet-button,
@@ -64,53 +64,94 @@
   border-radius: 9999px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 1s;
   box-shadow: 0 3px 10px rgba(0,0,0, 1);
 }
 
-.submit-button:hover, .wallet-button:hover,
-.copy-button:hover, .tweet-button:hover{
-  background-color: rgba(255, 255, 255, 0.9);
+.submit-button:hover, .tweet-button:hover, .copy-button:hover, .btn:hover {
+  backdrop-filter: blur(20px) saturate(138%);
+  -webkit-backdrop-filter: blur(20px) saturate(138%);
+  box-shadow: inset 0px 0px 10px rgba(255, 255, 255, 0.1);
+  background-color: rgba(17, 25, 40, 0);
+  background: linear-gradient(to left, #c0c0c0, #ffffff, #ffffff, #c0c0c0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.wallet-adapter-button-trigger{
+.tweet-button:hover, .copy-button:hover {
+  box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.1);
+}
+
+.wallet-adapter-button-trigger {
+  backdrop-filter: blur(20px) saturate(138%);
+  -webkit-backdrop-filter: blur(20px) saturate(138%);
+  box-shadow: inset 0px 0px 10px rgba(255, 255, 255, 0.1);
+  background-color: rgba(17, 25, 40, 0);
+  color: var(--bg-color);
+  border: none;
+  padding: 30px;
+  border-radius: 9999px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 1s;
+  background: linear-gradient(to left, #c0c0c0, #ffffff, #ffffff, #c0c0c0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.form .wallet-adapter-button-trigger {
+  backdrop-filter: unset;
+  -webkit-backdrop-filter: unset;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background: unset;
+  box-shadow: 0 3px 10px rgba(0,0,0, 1);
   background-color: white;
   color: var(--bg-color);
   border: none;
-  padding: 5px 20px !important;
+  padding: 5px 20px;
   border-radius: 9999px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s;
-  box-shadow: 0 3px 10px rgba(0,0,0, 1);
-}
-.wallet-adapter-button.wallet-adapter-button-trigger {
-  font-size: 12px;
+  transition: background-color 1s;
+  font-size: 15px;
 }
 
 .wallet-adapter-button-trigger:hover  {
+  backdrop-filter: unset;
+  -webkit-backdrop-filter: unset;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background: unset;
   background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
-.wallet-adapter-button-start-icon{
-  margin-right: 0px;
+.form .wallet-adapter-button-trigger:hover {
+  backdrop-filter: blur(20px) saturate(138%);
+  -webkit-backdrop-filter: blur(20px) saturate(138%);
+  box-shadow: inset 0px 0px 10px rgba(255, 255, 255, 0.1);
+  background-color: rgba(17, 25, 40, 0);
+  background: linear-gradient(to left, #c0c0c0, #ffffff, #ffffff, #c0c0c0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.wallet-adapter-button-start-icon img{
-  width: 20px;
-}
 
 /* Media query for screens smaller than 768px (like tablets and mobile devices) */
 @media (max-width: 768px) {
   .customize-form {
     padding: 0px;
+    width: 100%;
   }
   .gradient-text {
     font-size: 2rem;
   }
 
   .form {
-    padding: 12px;
+    padding: 20px;
+    border-radius: 30px;
+    width: 100%;
   }
 
   .form-input, .form-textarea {

@@ -14,7 +14,6 @@ const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
     return (
         <div className="Preview">
             <div className='preview-card'>
-            <h1 className='gradient-text'>Preview</h1>
                 <div className='image'>
                     <img src={icon} alt="Icon" />
                 </div>
