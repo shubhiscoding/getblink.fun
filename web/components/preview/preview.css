@@ -131,3 +131,69 @@
     max-width: 100%;
   }
 }
+
+/* Media query for screens smaller than 768px (tablets and small devices) */
+@media (max-width: 768px) {
+  .image img {
+    max-width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .senSolsbtns {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 10px;
+  }
+
+  .input-with-button .btn {
+    width: 100%;
+    border-radius: 0 0 9999px 9999px;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .copy-button, .tweet-button {
+    max-width: 100%;
+  }
+}
+
+/* Media query for screens smaller than 480px (mobile devices) */
+@media (max-width: 480px) {
+  .preview-card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .image img {
+    border-radius: 12px;
+  }
+
+  .btn {
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .input-box {
+    border-radius: 8px;
+  }
+
+  .input-with-button .btn {
+    width: 100%;
+    border-radius: 0 0 8px 8px;
+  }
+
+  .blink-box {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .link {
+    padding: 2px 8px;
+  }
+}
