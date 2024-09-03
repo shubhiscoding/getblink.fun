@@ -104,6 +104,7 @@ const Form: React.FC<FormProps> = ({
               onChange={(e) => setTitle(e.target.value)}
               className="form-input"
               placeholder="Title"
+              maxLength={50}
             />
           </div>
         )}
@@ -115,6 +116,7 @@ const Form: React.FC<FormProps> = ({
               onChange={(e) => setLabel(e.target.value)}
               className="form-input"
               placeholder="Label"
+              maxLength={50}
             />
           </div>
         )}
