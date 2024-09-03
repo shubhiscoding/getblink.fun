@@ -22,10 +22,10 @@ export default function Index() {
         setTitle={setTitle}
       />
       <Preview
-        icon={icon || 'https://www.vegrecipesofindia.com/wp-content/uploads/2018/02/cafe-style-hot-coffee-recipe-1.jpg'}
-        label={label || 'your label'}
-        description={description || 'your description'}
-        title={title || 'your title'}
+        icon={icon || 'https://raw.githubusercontent.com/shubhiscoding/Blink-Generator/main/web/public/solana.jpg'}
+        label={label || 'Your Label'}
+        description={description || 'Your Description shows up here, Keep it short and simple'}
+        title={title || "Your Tittle : )"}
       />
     </div>
   );

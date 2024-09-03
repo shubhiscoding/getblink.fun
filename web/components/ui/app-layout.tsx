@@ -10,8 +10,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0px 12px',
-          marginTop: '5px',
+          padding: '0px 12px'
         }}
       >
         <div>
@@ -21,7 +20,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <WalletButton />
         </div>
       </div>
-      <div style={{ flexGrow: 1, padding: '6px' }}>{children}</div>
+      <div style={{padding: '10px' }}>{children}</div>
     </div>
   );
 }
