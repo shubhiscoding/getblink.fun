@@ -18,6 +18,8 @@
 }
 .preview-card p {
   margin-bottom: 6px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .preview-card h5 {

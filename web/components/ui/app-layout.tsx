@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import Link from 'next/link';
 import { WalletButton } from '../solana/solana-provider';
+import Navbar from '../navbar/navbar';
 
 export function AppLayout({ children }: { children: ReactNode }) {
   return (
@@ -10,12 +10,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0px 12px'
+          padding: '12px',
         }}
       >
-        <div>
-          <h1 className='Title'>Blink Generator</h1>
-        </div>
+        <h1 className='Title'>Blink Generator</h1>
+        <Navbar />
         <div>
           <WalletButton />
         </div>

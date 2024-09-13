@@ -1,0 +1,25 @@
+
+
+.navbar {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.navButton {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  text-decoration: none;
+}
+
+.navButton:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
