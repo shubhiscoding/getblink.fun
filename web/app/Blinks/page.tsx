@@ -32,7 +32,7 @@ export default function Page() {
         <Suspense fallback={<p>Loading feed...</p>}>
           <div className='Blinks'>
             {data? data.map((blink) => (
-              <DataCard key={blink['_id']} code={blink['_id']} title={blink.title} />
+              <DataCard key={blink['_id']} code={blink['_id']} title={blink.title} endpoint={blink.mint? "tokens": "donate"} />
             )): <p>No Blinks found</p>}
           </div>
         </Suspense>

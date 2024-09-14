@@ -5,11 +5,12 @@ import "../preview/preview.css";
 interface DataProps {
   code: string;
   title: string;
+  endpoint: string;
 }
 
-const DataCard: React.FC<DataProps> = ({ code, title }) => {
+const DataCard: React.FC<DataProps> = ({ code, title, endpoint }) => {
     const [copied, setCopied] = useState(false);
-    const blinkLink = `https://www.getblink.fun/api/actions/donate/${code}`;
+    const blinkLink = `https://www.getblink.fun/api/actions/${endpoint}/${code}`;
 
     const handleCopy = () => {
       navigator.clipboard.writeText(`https://dial.to/?action=solana-action:${blinkLink}`);

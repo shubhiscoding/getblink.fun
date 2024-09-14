@@ -10,7 +10,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '12px',
+          padding: '20px 50px',
+          width: '100%',
         }}
       >
         <h1 className='Title'>Blink Generator</h1>

@@ -4,6 +4,13 @@ import React, { useState, useRef } from 'react';
 import './form.css';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletButton } from '../solana/solana-provider';
+import {
+  PublicKey,
+  Transaction,
+  SystemProgram,
+  LAMPORTS_PER_SOL,
+  Connection
+} from '@solana/web3.js';
 
 interface FormProps {
   icon: string;
@@ -26,7 +33,7 @@ const Form: React.FC<FormProps> = ({
   title,
   setTitle,
 }) => {
-  const { publicKey, connected } = useWallet();
+  const { publicKey, connected, sendTransaction } = useWallet();
   const [showForm, setShowForm] = useState(true);
   const [blinkLink, setBlinkLink] = useState('');
   const [copied, setCopied] = useState(false);
@@ -41,6 +48,37 @@ const Form: React.FC<FormProps> = ({
     if (!icon || !label || !description || !title) {
       console.error('Please fill all fields');
       window.alert('Please fill all fields');
+      return;
+    }
+    const connection = new Connection('https://stylish-dawn-film.solana-mainnet.quiknode.pro/e38b1fd65cb81a95ae5f3a2404b2e48ee6b0d458');
+    const recipientPubKey = new PublicKey("8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
+    const amount = 0.0001 * LAMPORTS_PER_SOL;
+
+    const transaction = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: publicKey,
+        toPubkey: recipientPubKey,
+        lamports: amount,
+      })
+    );
+
+    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+    transaction.recentBlockhash = blockhash;
+    transaction.feePayer = publicKey;
+
+    try {
+      const signature = await sendTransaction(transaction, connection);
+      console.log('Transaction sent:', signature);
+
+      const confirmation = await connection.confirmTransaction({
+        signature,
+        blockhash,
+        lastValidBlockHeight
+      });
+      console.log('Transaction confirmed:', confirmation);
+    } catch (error) {
+      console.error('Failed to send transaction', error);
+      window.alert('Failed to send transaction');
       return;
     }
 

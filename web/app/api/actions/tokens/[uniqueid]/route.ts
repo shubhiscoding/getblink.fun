@@ -51,24 +51,24 @@ export const GET = async (req: NextRequest, { params }: { params: { uniqueid: st
       links: {
         actions: [
           {
-            href: `/api/actions/tokens/${uniqueid}?amount=0.1`,
-            label: "Buy 0.1 SOL worth",
+            href: `/api/actions/tokens/${uniqueid}?amount=100000`,
+            label: `Buy 100k ${blinkData.title.slice(4)}`,
           },
           {
-            href: `/api/actions/tokens/${uniqueid}?amount=0.5`,
-            label: "Buy 0.5 SOL worth",
+            href: `/api/actions/tokens/${uniqueid}?amount=500000`,
+            label: `Buy 500k ${blinkData.title.slice(4)}`,
           },
           {
-            href: `/api/actions/tokens/${uniqueid}?amount=1.0`,
-            label: "Buy 1.0 SOL worth",
+            href: `/api/actions/tokens/${uniqueid}?amount=1000000`,
+            label: `Buy 1M ${blinkData.title.slice(4)}`,
           },
           {
             href: `/api/actions/tokens/${uniqueid}?amount={amount}`,
-            label: "Custom SOL amount",
+            label: "Custom amount",
             parameters: [
               {
                 name: "amount",
-                label: "Enter SOL amount",
+                label: "Enter amount",
               },
             ],
           },
@@ -163,7 +163,7 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
 
     const dataBuffer = Buffer.alloc(24);
     dataBuffer.write("66063d1201daebea", "hex");
-    dataBuffer.writeBigUInt64LE(BigInt(amount * LAMPORTS_PER_SOL), 8);
+    dataBuffer.writeBigUInt64LE(BigInt(amount *(10**6)), 8);
     dataBuffer.writeBigInt64LE(BigInt(-1), 16);
     const data = Buffer.from(dataBuffer);
 

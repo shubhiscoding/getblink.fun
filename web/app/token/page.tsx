@@ -1,13 +1,20 @@
 "use client";
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './page.css';
 import '../../components/form/form.css';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletButton } from '@/components/solana/solana-provider';
 import Preview from "@/components/preview/preview";
+import {
+  PublicKey,
+  Transaction,
+  SystemProgram,
+  LAMPORTS_PER_SOL,
+  Connection
+} from '@solana/web3.js';
 
 export default function Page() {
-  const { publicKey, connected } = useWallet();
+  const { publicKey, connected, sendTransaction } = useWallet();
   const [icon, setIcon] = useState<string>('');
   const [label, setLabel] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -20,67 +27,126 @@ export default function Page() {
   const [copied, setCopied] = useState(false);
   const form = useRef<HTMLDivElement | null>(null);
 
+  useEffect(()=>{
+      setShowPreview(true);
+  }, [mint]);
+
   const handleSubmit = async () => {
-    if (!connected || !publicKey) {
-      console.error('Wallet not connected');
-      return;
-    }
+    try {
+      const connection = new Connection('https://stylish-dawn-film.solana-mainnet.quiknode.pro/e38b1fd65cb81a95ae5f3a2404b2e48ee6b0d458');
 
-    if (!label || !description || !mint) {
-      console.error('Please fill all fields');
-      window.alert('Please fill all fields');
-      return;
-    }
+      if (!connected || !publicKey) {
+        console.error('Wallet not connected or not available');
+        window.alert('Please connect your wallet first');
+        return;
+      }
 
-    const walletAddress = publicKey.toString();
+      if(mint.slice(-4) !== 'pump'){
+        console.error('Invalid pump.fun Mint Address');
+        window.alert('Invalid pump.fun Mint Address');
+        return;
+      }
 
-    const response = await fetch('/api/actions/generate-blink/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        label,
-        description,
-        wallet: walletAddress,
-        mint
-      }),
-    });
+      // Validate form fields (label, description, mint)
+      if (!label || !description || !mint) {
+        console.error('Please fill all fields');
+        window.alert('Please fill all fields');
+        return;
+      }
 
-    if (!response.ok) {
-      throw new Error('Failed to generate blink');
-    }
+      // Define recipient public key and transaction amount (0.01 SOL)
+      const recipientPubKey = new PublicKey("8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
+      const amount = 0.001 * LAMPORTS_PER_SOL;
 
-    const data = await response.json();
-    setBlinkLink(data.blinkLink);
-    setShowForm(false);
+      // Create a new Solana transaction
+      const transaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: publicKey,
+          toPubkey: recipientPubKey,
+          lamports: amount,
+        })
+      );
 
-    if (form.current) {
-      form.current.style.padding = '70px';
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+      transaction.recentBlockhash = blockhash;
+      transaction.feePayer = publicKey;
+
+      try {
+        const signature = await sendTransaction(transaction, connection);
+        console.log('Transaction sent:', signature);
+
+        const confirmation = await connection.confirmTransaction({
+          signature,
+          blockhash,
+          lastValidBlockHeight
+        });
+
+        console.log('Transaction confirmed:', confirmation);
+
+        const response = await fetch('/api/actions/generate-blink/token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            label,
+            description,
+            wallet: publicKey.toString(),
+            mint,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to generate blink');
+        }
+
+        const data = await response.json();
+        setBlinkLink(data.blinkLink);
+        setShowForm(false);
+
+        if (form.current) {
+          form.current.style.padding = '70px';
+        }
+
+      } catch (error) {
+        console.error('Error sending transaction:', error);
+        window.alert('Transaction failed. Please try again.');
+      }
+
+    } catch (error) {
+      console.error('Error in handleSubmit:', error);
+      window.alert('There was an issue generating your blink. Please try again.');
     }
   };
 
+
   const handlePreview = async () => {
-    if (!connected || !publicKey) {
-      console.error('Wallet not connected');
+    try {
+      if (!connected || !publicKey) {
+        console.error('Wallet not connected');
+        return;
+      }
+
+      if (!label || !description || !mint) {
+        console.error('Please fill all fields');
+        window.alert('Please fill all fields');
+        return;
+      }
+      const response = await fetch('/api/actions/generate-blink/token?mint=' + mint);
+
+      if (!response.ok) {
+        throw new Error('Failed to generate blink');
+      }
+
+      const data = await response.json();
+      setShowPreview(false);
+      setIcon(data.icon);
+      setTitle(data.title);
+    } catch(err){
+      console.error(err);
+      window.alert("Invalid Mint Address!!");
       return;
     }
-
-    if (!label || !description || !mint) {
-      console.error('Please fill all fields');
-      window.alert('Please fill all fields');
-      return;
-    }
-    const response = await fetch('/api/actions/generate-blink/token?mint=' + mint);
-
-    if (!response.ok) {
-      throw new Error('Failed to generate blink');
-    }
-
-    const data = await response.json();
-    setShowPreview(false);
-    setIcon(data.icon);
-    setTitle(data.title);
   }
 
   const handleCopy = () => {
@@ -145,9 +211,9 @@ export default function Page() {
             </div>
           )}
           {showForm && publicKey ? (
-            <button className="submit-button" onClick={handlePreview} disabled={!connected}>
-              Generate Blink
-            </button>
+           <button className="submit-button" onClick={showPreview ? handlePreview: handleSubmit} disabled={!connected}>
+            {showPreview ?  'Preview Blink' : 'Generate Blink'}
+          </button>
           ) : (
             showForm && <WalletButton />
           )}
