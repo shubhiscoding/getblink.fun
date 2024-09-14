@@ -6,11 +6,11 @@ import DataCard from '../../components/DataCard/dataCard';
 
 export default function Page() {
   const { publicKey, connected } = useWallet();
-  const [data, setData] = useState();
+  const [data, setData] = useState<any[]>([]);
 
   const getBlinks = async () => {
     try {
-      const response = await fetch('/api/actions/getBlinks?wallet=' + publicKey.toString());
+      const response = await fetch('/api/actions/getBlinks?wallet=' + (publicKey ? publicKey.toString() : ''));
       const { blinks } = await response.json();
       setData(blinks);
       console.log('Blinks:', blinks);
