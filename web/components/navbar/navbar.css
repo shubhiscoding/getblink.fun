@@ -75,7 +75,7 @@
     position: fixed; /* Keep the navbar fixed */
     width: 95%; /* Full width */
     left: 2.5%; /* Align to the left */
-    top:88%; /* Position at the top */
+    top:92%; /* Position at the top */
     gap: 5px; /* Adjust gap for mobile */
   }
   .navButton {
