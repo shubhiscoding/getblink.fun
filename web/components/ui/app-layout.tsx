@@ -6,11 +6,13 @@ export function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div
+        className='Head'
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '20px 50px',
+          paddingBottom: '0px',
           width: '100%',
         }}
       >
