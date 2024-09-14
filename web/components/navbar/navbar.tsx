@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import './navbar.css';
 
@@ -22,7 +22,16 @@ const NavButton: React.FC<NavButtonProps> = ({ href, children, isActive, onClick
 );
 
 const Navbar: React.FC = () => {
-  const [activeButton, setActiveButton] = useState<string>('/'); // Set default active button
+  const [activeButton, setActiveButton] = useState<string>(''); // Set default active button
+
+  useEffect(() => {
+    const path = window.location.pathname;
+
+    const segments = path.split('/');
+    const endpoint = segments[segments.length - 1] || '';
+    
+    setActiveButton('/'+endpoint);
+  }, []);
 
   return (
     <nav className="navbar">
