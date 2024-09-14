@@ -170,7 +170,7 @@ export default function Page() {
 
 
   return (
-    <div className='main-container'>
+    <div className='main'>
       <div className="customize-form">
         <div className="form" ref={form}>
           {showForm && <h1 className="gradient-text">Customize Your Blink</h1>}
@@ -206,7 +206,7 @@ export default function Page() {
                 className="form-textarea"
                 rows={3}
                 placeholder="Description"
-                maxLength={150}
+                maxLength={143}
               />
             </div>
           )}

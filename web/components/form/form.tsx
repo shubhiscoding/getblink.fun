@@ -177,7 +177,7 @@ const Form: React.FC<FormProps> = ({
               className="form-textarea"
               rows={3}
               placeholder="Description"
-              maxLength={150}
+              maxLength={143}
             />
           </div>
         )}

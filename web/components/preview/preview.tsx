@@ -23,7 +23,7 @@ const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
                 <div className='payInputs'>
                   <div className='senSolsbtns'>
                     <button className="btn btn-primary" onClick={handleClick}>0.01 SOL</button>
-                    <button className="btn btn-primary" onClick={handleClick}>0.05 SOL</button>
+                    <button className="btn btn-primary sec" onClick={handleClick}>0.05 SOL</button>
                     <button className="btn btn-primary" onClick={handleClick}>1.00 SOL</button>
                   </div>
                     <div className="input-with-button">

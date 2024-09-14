@@ -1,3 +1,4 @@
+/* Common styles for the navbar */
 .navbar {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -5,8 +6,16 @@
   padding: 10px;
   display: flex;
   gap: 10px;
+  justify-content: space-evenly; /* Center items */
+  align-items: center; /* Vertically center */
+  position: fixed; /* Make navbar fixed */
+  top: 23px; /* Position at the top */
+  left: 39%; /* Center the navbar */
+  width: fit-content; /* Full width */
+  z-index: 1000; /* Ensure it's above other content */
 }
 
+/* Navbar button styles */
 .navButton {
   background: rgba(255, 255, 255, 0.2);
   color: white;
@@ -16,15 +25,18 @@
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
   text-decoration: none;
+  text-align: center; /* Center text in the buttons */
   position: relative;
 }
 
 .navButton:hover {
   background-color: rgba(0, 0, 0, 0.3);
 }
-.navButton.active{
+
+.navButton.active {
   background-color: rgba(0, 0, 0, 0.3);
 }
+
 .navButton.active::after {
   content: '';
   position: absolute;
@@ -35,4 +47,56 @@
   background-color: rgba(0, 0, 0, 0.3); /* Light black color for the underline */
   border-radius: 1px;
   width: 70%; /* Width of the underline */
+}
+
+/* Styles for mobile screens */
+@media (max-width: 1250px) {
+  .navbar {
+    position: fixed; /* Keep the navbar fixed */
+    width: 80%; /* Full width */
+    left: 10%;
+    top:92%; /* Position at the top */
+    gap: 5%; /* Adjust gap for mobile */
+  }
+  .navButton {
+    padding: 10px; /* Adjust padding for mobile */
+    width: 250px;
+  }
+}
+
+@media (max-width: 1069px) {
+  .navButton {
+    width: 200px;
+  }
+}
+
+@media (max-width: 855px) {
+  .navbar {
+    position: fixed; /* Keep the navbar fixed */
+    width: 95%; /* Full width */
+    left: 2.5%; /* Align to the left */
+    top:88%; /* Position at the top */
+    gap: 5px; /* Adjust gap for mobile */
+  }
+  .navButton {
+    min-width: 50px;
+  }
+
+  .navbar .navButton {
+    padding: 10px; /* Adjust padding for mobile */
+    text-align: center; /* Center text in the buttons */
+  }
+}
+
+/* For very small screens, adjust further */
+@media (max-width: 660px) {
+  .navbar {
+    padding: 5px; /* Reduce padding */
+    gap: 5px; /* Adjust gap for very small screens */
+  }
+
+  .navButton {
+    padding: 8px; /* Reduce padding */
+    width: fit-content; /* Adjust width */
+  }
 }

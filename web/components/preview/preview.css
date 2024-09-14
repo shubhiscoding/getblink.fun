@@ -11,7 +11,6 @@
   max-width: 480px;
   text-wrap: wrap;
 }
-
 .preview-card h3 {
   font-weight: bold;
   margin-bottom: 6px;
@@ -24,6 +23,12 @@
 
 .preview-card h5 {
   font-weight: normal;
+}
+
+.image{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .image img {
@@ -152,6 +157,12 @@
 .copy-message {
   color: var(--accent-green);
 }
+@media (max-width: 1250px) {
+  .image img{
+    max-width: 350px;
+    min-height: 350px;
+  }
+}
 
 /* Responsive design */
 @media (max-width: 1024px) {
@@ -162,6 +173,12 @@
 
   .customize-form, .Preview {
     max-width: 100%;
+  }
+  .Preview {
+    margin-bottom: 80px;
+  }
+  .btn.sec{
+    display: none;
   }
 }
 
