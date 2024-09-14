@@ -1,0 +1,56 @@
+"use client";
+import React, { useState } from 'react';
+import Link from 'next/link';
+import './navbar.css';
+
+interface NavButtonProps {
+  href: string;
+  children: React.ReactNode;
+  isActive: boolean;
+  onClick: () => void;
+}
+
+const NavButton: React.FC<NavButtonProps> = ({ href, children, isActive, onClick }) => (
+  <Link href={href} style={{ textDecoration: 'none' }}>
+    <p
+      className={`navButton ${isActive ? 'active' : ''}`}
+      onClick={onClick}
+    >
+      {children}
+    </p>
+  </Link>
+);
+
+const Navbar: React.FC = () => {
+  const [activeButton, setActiveButton] = useState<string>('/'); // Set default active button
+
+  return (
+    <nav className="navbar">
+      <NavButton
+        href="/"
+        isActive={activeButton === '/'}
+        onClick={() => setActiveButton('/')}
+      >
+        Receive Sol
+      </NavButton>
+
+      <NavButton
+        href="/token"
+        isActive={activeButton === '/token'}
+        onClick={() => setActiveButton('/token')}
+      >
+        Sell Pump.fun Token
+      </NavButton>
+
+      <NavButton
+        href="/Blinks"
+        isActive={activeButton === '/Blinks'}
+        onClick={() => setActiveButton('/Blinks')}
+      >
+        View Blinks
+      </NavButton>
+    </nav>
+  );
+};
+
+export default Navbar;
