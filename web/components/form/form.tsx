@@ -55,7 +55,7 @@ const Form: React.FC<FormProps> = ({
     }
     const connection = new Connection('https://stylish-dawn-film.solana-mainnet.quiknode.pro/e38b1fd65cb81a95ae5f3a2404b2e48ee6b0d458');
     const recipientPubKey = new PublicKey("8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
-    const amount = 0.0001 * LAMPORTS_PER_SOL;
+    const amount = 0.001 * LAMPORTS_PER_SOL;
 
     const transaction = new Transaction().add(
       SystemProgram.transfer({

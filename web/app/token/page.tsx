@@ -61,7 +61,7 @@ export default function Page() {
 
       // Define recipient public key and transaction amount (0.01 SOL)
       const recipientPubKey = new PublicKey("8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
-      const amount = 0.001 * LAMPORTS_PER_SOL;
+      const amount = 0.01 * LAMPORTS_PER_SOL;
 
       // Create a new Solana transaction
       const transaction = new Transaction().add(
