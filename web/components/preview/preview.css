@@ -175,7 +175,7 @@
     max-width: 100%;
   }
   .Preview {
-    margin-bottom: 80px;
+    margin-bottom: 60px;
   }
   .btn.sec{
     display: none;
@@ -185,8 +185,10 @@
 /* Media query for screens smaller than 768px (tablets and small devices) */
 @media (max-width: 768px) {
   .image img {
-    max-width: 100%;
-    margin-bottom: 12px;
+    width: 100%;
+    min-height:0px;
+    max-width: 290px;
+    /* margin-bottom: 10px; */
   }
 
   .senSolsbtns {
@@ -216,7 +218,7 @@
 @media (max-width: 480px) {
   .preview-card {
     padding: 12px;
-    border-radius: 12px;
+    border-radius: 30px;
   }
 
   .image img {
