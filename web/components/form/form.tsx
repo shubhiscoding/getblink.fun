@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import './form.css';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletButton } from '../solana/solana-provider';
+import LoadingScreen from '../Loading/loading';
 import {
   PublicKey,
   Transaction,
@@ -38,8 +39,10 @@ const Form: React.FC<FormProps> = ({
   const [blinkLink, setBlinkLink] = useState('');
   const [copied, setCopied] = useState(false);
   const form = useRef<HTMLDivElement | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handlePreview = async () => {
+    setLoading(true);
     if (!connected || !publicKey) {
       console.error('Wallet not connected');
       return;
@@ -77,37 +80,44 @@ const Form: React.FC<FormProps> = ({
       });
       console.log('Transaction confirmed:', confirmation);
     } catch (error) {
+      setLoading(false);
       console.error('Failed to send transaction', error);
       window.alert('Failed to send transaction');
       return;
     }
 
-    const walletAddress = publicKey.toString();
+    try {
+      const walletAddress = publicKey.toString();
+      const response = await fetch('/api/actions/generate-blink', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          icon,
+          label,
+          description,
+          title,
+          wallet: walletAddress,
+        }),
+      });
 
-    const response = await fetch('/api/actions/generate-blink', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        icon,
-        label,
-        description,
-        title,
-        wallet: walletAddress,
-      }),
-    });
+      if (!response.ok) {
+        throw new Error('Failed to generate blink');
+      }
 
-    if (!response.ok) {
-      throw new Error('Failed to generate blink');
-    }
-
-    const data = await response.json();
-    setBlinkLink(data.blinkLink);
-    setShowForm(false);
-
-    if (form.current) {
-      form.current.style.padding = '70px';
+      const data = await response.json();
+      setBlinkLink(data.blinkLink);
+      setShowForm(false);
+      setLoading(false);
+      if (form.current) {
+        form.current.style.padding = '70px';
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error('Failed to generate blink', error);
+      window.alert('Failed to generate blink');
+      return;
     }
   };
 
@@ -132,6 +142,7 @@ const Form: React.FC<FormProps> = ({
 
   return (
     <div className="customize-form">
+      {loading && <LoadingScreen subtext="Waiting For Transaction Confirmation!!" />}
       <div className="form" ref={form}>
         {showForm && <h1 className="gradient-text">Customize Your Blink</h1>}
         {showForm && (

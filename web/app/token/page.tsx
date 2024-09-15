@@ -13,6 +13,8 @@ import {
   Connection
 } from '@solana/web3.js';
 
+import LoadingScreen from '@/components/Loading/loading';
+
 export default function Page() {
   const { publicKey, connected, sendTransaction } = useWallet();
   const [icon, setIcon] = useState<string>('');
@@ -21,7 +23,8 @@ export default function Page() {
   const [title, setTitle] = useState<string>('');
   const [mint, setMint] = useState<string>('');
   const [showPreview, setShowPreview] = useState(true);
-
+  const [loading, setLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState('Please Wait!!');
   const [showForm, setShowForm] = useState(true);
   const [blinkLink, setBlinkLink] = useState('');
   const [copied, setCopied] = useState(false);
@@ -32,6 +35,8 @@ export default function Page() {
   }, [mint]);
 
   const handleSubmit = async () => {
+    setLoading(true);
+    setLoadingText('Waiting for Transaction confirmation!!');
     try {
       const connection = new Connection('https://stylish-dawn-film.solana-mainnet.quiknode.pro/e38b1fd65cb81a95ae5f3a2404b2e48ee6b0d458');
 
@@ -103,17 +108,19 @@ export default function Page() {
         const data = await response.json();
         setBlinkLink(data.blinkLink);
         setShowForm(false);
-
+        setLoading(false);
         if (form.current) {
           form.current.style.padding = '70px';
         }
 
       } catch (error) {
+        setLoading(false);
         console.error('Error sending transaction:', error);
         window.alert('Transaction failed. Please try again.');
       }
 
     } catch (error) {
+      setLoading(false);
       console.error('Error in handleSubmit:', error);
       window.alert('There was an issue generating your blink. Please try again.');
     }
@@ -122,6 +129,8 @@ export default function Page() {
 
   const handlePreview = async () => {
     try {
+      setLoading(true);
+      setLoadingText('Generating Blink Preview!!');
       if (!connected || !publicKey) {
         console.error('Wallet not connected');
         return;
@@ -135,6 +144,7 @@ export default function Page() {
       const response = await fetch('/api/actions/generate-blink/token?mint=' + mint);
 
       if (!response.ok) {
+        console.log('Error:', response);
         throw new Error('Failed to generate blink');
       }
 
@@ -142,7 +152,9 @@ export default function Page() {
       setShowPreview(false);
       setIcon(data.icon);
       setTitle(data.title);
+      setLoading(false);
     } catch(err){
+      setLoading(false);
       console.error(err);
       window.alert("Invalid Mint Address!!");
       return;
@@ -171,6 +183,7 @@ export default function Page() {
 
   return (
     <div className='main'>
+      {loading && <LoadingScreen subtext={loadingText}/>}
       <div className="customize-form">
         <div className="form" ref={form}>
           {showForm && <h1 className="gradient-text">Customize Your Blink</h1>}

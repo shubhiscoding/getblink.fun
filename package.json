@@ -23,6 +23,7 @@
     "buffer": "6.0.3",
     "encoding": "0.1.13",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.441.0",
     "mongodb": "^6.8.0",
     "next": "14.0.4",
     "react": "18.3.1",
