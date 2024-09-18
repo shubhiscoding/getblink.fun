@@ -23,6 +23,11 @@ cd <repo-name>
 npm install
 ```
 
+### Create .env File
+```
+MONGODB_URI=MONGODB-URI
+```
+
 #### Start the web app
 
 ```

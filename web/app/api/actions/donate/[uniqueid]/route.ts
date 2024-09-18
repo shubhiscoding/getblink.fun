@@ -36,7 +36,7 @@ export const GET = async (req: NextRequest, { params }: { params: { uniqueid: st
         icon: "https://www.vegrecipesofindia.com/wp-content/uploads/2018/02/cafe-style-hot-coffee-recipe-1.jpg",
         label: "Buy me a coffee ☕️",
         description: "👋 If you are interested in helping to support my work, buy me a coffee with SOL using this super sweet blink of mine :)",
-        title: "Nick Frostbutter - Buy Me a Coffee? ☕️",
+        title: "Buy Me a Coffee? ☕️",
       };
     }
 

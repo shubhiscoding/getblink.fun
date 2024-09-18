@@ -17,45 +17,8 @@ import {
   Transaction,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token";
-
-async function getAssociatedTokenAddress(
-  mint: PublicKey,
-  owner: PublicKey
-): Promise<PublicKey> {
-  return (
-    await PublicKey.findProgramAddress(
-      [
-        owner.toBuffer(),
-        TOKEN_PROGRAM_ID.toBuffer(),
-        mint.toBuffer(),
-      ],
-      ASSOCIATED_TOKEN_PROGRAM_ID
-    )
-  )[0];
-}
-
-function createAssociatedTokenAccountInstruction(
-  payer: PublicKey,        // The payer of the transaction (usually the user)
-  associatedTokenAddress: PublicKey,  // The address of the associated token account
-  owner: PublicKey,        // The owner of the associated token account
-  mint: PublicKey          // The token mint address
-): TransactionInstruction {
-  return new TransactionInstruction({
-    keys: [
-      { pubkey: payer, isSigner: true, isWritable: true },
-      { pubkey: associatedTokenAddress, isSigner: false, isWritable: true },
-      { pubkey: owner, isSigner: false, isWritable: false },
-      { pubkey: mint, isSigner: false, isWritable: false },
-      { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
-      { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
-      { pubkey: ASSOCIATED_TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
-    ],
-    programId: ASSOCIATED_TOKEN_PROGRAM_ID,
-    data: Buffer.alloc(0),  // The instruction data (empty in this case)
-  });
-}
-
+import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { getAssociatedTokenAddress, createAssociatedTokenAccountInstruction } from "@/lib/constant";
 
 const PUMP_PROGRAM_ID = new PublicKey("6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P");
 
