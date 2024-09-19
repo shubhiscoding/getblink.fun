@@ -46,12 +46,6 @@ export default function Page() {
         return;
       }
 
-      if(mint.slice(-4) !== 'pump'){
-        console.error('Invalid pump.fun Mint Address');
-        window.alert('Invalid pump.fun Mint Address');
-        return;
-      }
-
       // Validate form fields (label, description, mint)
       if (!label || !description || !mint) {
         console.error('Please fill all fields');
