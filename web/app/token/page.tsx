@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, use } from 'react';
 import './page.css';
 import '../../components/form/form.css';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -12,6 +12,7 @@ import {
   LAMPORTS_PER_SOL,
   Connection
 } from '@solana/web3.js';
+import { FaInfoCircle } from 'react-icons/fa';
 
 import LoadingScreen from '@/components/Loading/loading';
 
@@ -19,6 +20,8 @@ export default function Page() {
   const { publicKey, connected, sendTransaction } = useWallet();
   const [icon, setIcon] = useState<string>('');
   const [label, setLabel] = useState<string>('');
+  const [percentage, setPercentage] = useState<number>(0);
+  const [takeCommission, setTakeCommission] = useState<string>("no");
   const [description, setDescription] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [mint, setMint] = useState<string>('');
@@ -30,9 +33,35 @@ export default function Page() {
   const [copied, setCopied] = useState(false);
   const form = useRef<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    const infoCard = document.querySelector('.radio-container')?.querySelector('label')?.querySelector('svg');
+
+    const handleClick = () => {
+      console.log('clicked');
+      window.alert("If you opt to take a commission, the specified percentage of the total transaction amount will be credited to your wallet. Please note that the maximum commission percentage allowed is 1%.");
+    };
+
+    if (infoCard) {
+      infoCard.addEventListener('click', handleClick);
+      console.log('added');
+    }
+
+    return () => {
+      if (infoCard) {
+        infoCard.removeEventListener('click', handleClick);
+      }
+    };
+  }, []);
+
   useEffect(()=>{
       setShowPreview(true);
   }, [mint]);
+
+  useEffect(()=>{
+    if(takeCommission === "no"){
+      setPercentage(0);
+    }
+  }, [takeCommission]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -92,6 +121,8 @@ export default function Page() {
             description,
             wallet: publicKey.toString(),
             mint,
+            commission: takeCommission,
+            percentage: percentage,
           }),
         });
 
@@ -202,6 +233,50 @@ export default function Page() {
                 className="form-input"
                 placeholder="Label"
                 maxLength={30}
+              />
+            </div>
+          )}
+          {showForm && (
+            <div className="form-group">
+              <div className='radio-container'>
+                <label>Take commission: <FaInfoCircle /></label>
+                <div className='radio'>
+                  <label>
+                    <input
+                      type="radio"
+                      value="yes"
+                      checked={takeCommission === "yes"}
+                      onChange={(e) => setTakeCommission(e.target.value)}
+                    />
+                    Yes
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      value="no"
+                      checked={takeCommission === "no"}
+                      onChange={(e) => setTakeCommission(e.target.value)}
+                    />
+                    No
+                  </label>
+                </div>
+              </div>
+               <input
+                type="number"
+                value={percentage}
+                onChange={(e) => {
+                  if (takeCommission === "yes") {
+                    const value = Math.min(1, parseFloat(e.target.value) || 0);
+                    setPercentage(value);
+                  }
+                }}
+                className="form-input"
+                placeholder="Commission Percentage"
+                max={1}
+                min={0}
+                step={0.01}
+                maxLength={30}
+                disabled={takeCommission === "no"}
               />
             </div>
           )}
