@@ -5,6 +5,41 @@
   gap: 20px;
 }
 
+.form-group{
+  display: flex;
+  justify-content: space-between;
+}
+
+.radio-container{
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 10px;
+  margin-right: 30px;
+  color: #c6c6c6;
+}
+
+.radio-container label{
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.radio-container label svg{
+  color: #b2b2b2;
+  cursor: pointer;
+}
+
+.radio{
+  display: flex;
+  justify-content: space-between;
+}
+
+.radio input[type="radio"]{
+  cursor: pointer;
+}
+
 /* Media query for screens smaller than 768px (like tablets and mobile devices) */
 @media (max-width: 768px) {
   .customize-form {
@@ -24,6 +59,24 @@
   .form-input, .form-textarea {
     padding: 10px;
     font-size: 0.9rem;
+  }
+  .form-group{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .radio-container{
+    min-width: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 10px;
+  }
+  .radio{
+    display: flex;
+    margin-left: 10px;
+    min-width: 90px;
+    justify-content: space-between;
   }
 
   .submit-button, .wallet-button,
@@ -52,6 +105,7 @@
     padding: 8px;
     font-size: 0.8rem;
   }
+
 
   .submit-button, .wallet-button,
   .copy-button, .tweet-button {

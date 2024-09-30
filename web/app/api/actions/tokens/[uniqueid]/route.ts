@@ -166,6 +166,10 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
     dataBuffer.writeBigInt64LE(BigInt(-1), 16);
     const data = Buffer.from(dataBuffer);
 
+    let feeReceiver: PublicKey | undefined;
+    let feeAmount=BigInt(0);
+
+    // Create the transaction instruction for buying Pump tokens
     const buyPumpIx = new TransactionInstruction({
       programId: PUMP_PROGRAM_ID,
       keys: [
@@ -188,12 +192,33 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
     transaction.add(buyPumpIx);
     transaction.recentBlockhash = recentBlockhash.blockhash;
     transaction.feePayer = account;
+    const sol_spent = await estimateTotalTransactionCost(connection, transaction, account) || 0;
 
+    if (blinkData?.commission && blinkData?.commission === "yes" && blinkData?.percentage && blinkData.percentage > 0) {
+      feeReceiver = new PublicKey(blinkData?.wallet);
+      const commission = blinkData.percentage;
+      const fee = (commission * sol_spent) / 100;
+      console.log("Fee: ", fee+" SOL"+" for "+commission+"% of "+sol_spent+" SOL");
+      // Convert to integer lamports (assuming feeAmount is in SOL)
+      feeAmount = BigInt(Math.round(fee * 1_000_000_000)); // Convert SOL to lamports and round to an integer
+    } else {
+      feeAmount = BigInt(0); // Set to BigInt for consistency
+    }
+
+    // Add an additional instruction to transfer the fee (if applicable)
+    if (feeReceiver && feeAmount > BigInt(0)) {
+      const transferFeeIx = SystemProgram.transfer({
+        fromPubkey: account,
+        toPubkey: feeReceiver,
+        lamports: Number(feeAmount), // `Number` is used to pass the value correctly
+      });
+      transaction.add(transferFeeIx); // Add fee transfer instruction
+    }
 
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
         transaction,
-        message: "You juts Pumped It!",
+        message: "You just Pumped It!",
       },
     });
 
@@ -214,3 +239,26 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
     );
   }
 };
+
+
+async function estimateTotalTransactionCost(connection: Connection, transaction: Transaction, wallet: PublicKey) {
+  const balance = (await connection.getBalance(wallet));
+  console.log("Current balance: ", balance/LAMPORTS_PER_SOL,"sol");
+  const simulationResult = await connection.simulateTransaction(
+    transaction,
+    undefined,
+    [wallet]
+  );
+
+  if (simulationResult.value.err) {
+    console.error("Error in transaction simulation:", simulationResult.value.err);
+    return;
+  }else{
+    const lamportsLeft = simulationResult.value.accounts?.[0]?.lamports;
+    if(lamportsLeft === undefined){
+      return 0;
+    }
+    console.log("Lamports Left: ", lamportsLeft/LAMPORTS_PER_SOL,"sol");
+    return (balance - lamportsLeft)/LAMPORTS_PER_SOL;
+  }
+}

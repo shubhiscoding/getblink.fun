@@ -65,7 +65,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid JSON in request body' }, { status: 400 });
     }
 
-    const { label, description, wallet, mint } = data;
+    const { label, description, wallet, mint, commission, percentage } = data;
     if (!label || !description || !wallet || !mint) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
@@ -106,6 +106,8 @@ export async function POST(req: Request) {
       title,
       wallet,
       mint,
+      commission,
+      percentage,
       createdAt: new Date()
     });
     console.log(result.insertedId);
