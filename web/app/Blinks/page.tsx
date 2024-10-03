@@ -36,7 +36,7 @@ export default function Page() {
         {publicKey && loading && <p>Loading...</p>}
         {publicKey?(<div className='Blinks'>
           {data && data.length>0? data.map((blink) => (
-            <DataCard key={blink['_id']} code={blink['_id']} title={blink.title} endpoint={blink.mint? "tokens": "donate"} />
+            <DataCard key={blink['_id']} code={blink['_id']} title={blink.title} endpoint={blink.mint? "tokens":(blink.privateKey?"testGamble" : "donate")} />
           )): <p>No Blinks found</p>}
         </div>): <WalletButton />}
       </div>
