@@ -27,7 +27,7 @@ const Form: React.FC<FormProps> = ({
 
   const handleSubmit = async () => {
     try {
-      console.log(balance, title);
+      setLoading(true);
       if(!balance || balance < 0.01 || title.length< 1){
         window.alert("Balance can't be less than 0.01, and title can't be empty!!");
         throw new Error("Please Fill All The Fields!!");
@@ -86,7 +86,9 @@ const Form: React.FC<FormProps> = ({
         form.current.style.padding = '70px';
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      console.error('Error in handleSubmit:', error);
+      window.alert('There was an issue generating your blink. Please try again.');
     }
   }
 

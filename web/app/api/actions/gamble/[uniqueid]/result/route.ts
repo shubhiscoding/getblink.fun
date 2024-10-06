@@ -194,9 +194,9 @@ export const POST = async (req: NextRequest, {params}:{params:{uniqueid: string}
     const balance = await connection.getBalance(wallet.publicKey);
     const nextAction: NextAction ={
       type: "action",
-      icon: 'https://www.pianobook.co.uk/wp-content/uploads/2022/02/banner-1-1024x576.jpeg',
+      icon: 'https://logicalfact.in/wp-content/uploads/2024/02/Screenshot-2024-02-13-124229.png',
       label: 'Roll The Dice',
-      description: 'Gamble on the dice',
+      description: 'Choose your bet and amount to gamble and once you place the bet, a number will be generated between 1-10 and based on your bet you will win or lose the amount!!',
       title: blinkData.title,
       links:{
         actions: [
