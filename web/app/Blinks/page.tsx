@@ -35,8 +35,13 @@ export default function Page() {
         <h1 className='gradient-text txt'>Your Blinks</h1>
         {publicKey && loading && <p>Loading...</p>}
         {publicKey?(<div className='Blinks'>
-          {data && data.length>0? data.map((blink) => (
-            <DataCard key={blink['_id']} code={blink['_id']} title={blink.title} endpoint={blink.mint? "tokens": "donate"} />
+          {data && data.length>0? data.slice().reverse().map((blink) => (
+            <DataCard
+             key={blink['_id']}
+             code={blink['_id']}
+             base={blink.privateKey?"https://dial.to/devnet?action=solana-action:":"https://dial.to/?action=solana-action:"}
+             title={blink.title}
+             endpoint={blink.mint? "tokens":(blink.privateKey?"gamble" : "donate")} />
           )): <p>No Blinks found</p>}
         </div>): <WalletButton />}
       </div>
