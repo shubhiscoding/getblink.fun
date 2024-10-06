@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
 
     const segments = path.split('/');
     const endpoint = segments[segments.length - 1] || '';
-    
+
     setActiveButton('/'+endpoint);
   }, []);
 
@@ -49,6 +49,14 @@ const Navbar: React.FC = () => {
         onClick={() => setActiveButton('/token')}
       >
         Sell Pump.fun Token
+      </NavButton>
+
+      <NavButton
+        href="/gamble"
+        isActive={activeButton === '/gamble'}
+        onClick={() => setActiveButton('/gamble')}
+      >
+        gamble Testnet
       </NavButton>
 
       <NavButton

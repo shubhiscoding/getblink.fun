@@ -26,14 +26,14 @@ export const GET = async (req: NextRequest, {params}:{params: {uniqueid: string}
     }
 
     const payload: ActionGetResponse = {
-      icon: 'https://www.pianobook.co.uk/wp-content/uploads/2022/02/banner-1-1024x576.jpeg',
+      icon: 'https://logicalfact.in/wp-content/uploads/2024/02/Screenshot-2024-02-13-124229.png',
       label: 'Roll The Dice',
-      description: 'Gamble on the dice',
+      description: 'Choose your bet and amount to gamble and once you place the bet, a number will be generated between 1-10 and based on your bet you will win or lose the amount!!',
       title: blinkData.title,
       links: {
         actions: [
           {
-            href: `/api/actions/testGamble/${uniqueid}?amount={amount}&bet={Bet}`,
+            href: `/api/actions/gamble/${uniqueid}?amount={amount}&bet={Bet}`,
             label: `Place Bet`,
             parameters: [
               {
@@ -110,13 +110,13 @@ export const POST = async (req: NextRequest, {params}:{params:{uniqueid: string}
 
     const wallet = Keypair.fromSecretKey(privateKeyUint8Array);
     const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
-    const balance = await connection.getBalance(wallet.publicKey);
+
     // Create user's transaction
     const transaction = new Transaction().add(
       SystemProgram.transfer({
         fromPubkey: account,
         toPubkey: wallet.publicKey,
-        lamports: (parseFloat(amount))*LAMPORTS_PER_SOL + 100000,
+        lamports: (parseFloat(amount))*LAMPORTS_PER_SOL,
       })
     );
 
@@ -125,22 +125,6 @@ export const POST = async (req: NextRequest, {params}:{params:{uniqueid: string}
       await connection.getLatestBlockhash()
     ).blockhash;
 
-    const nextAction: NextAction ={
-      type: "action",
-      icon: 'https://www.pianobook.co.uk/wp-content/uploads/2022/02/banner-1-1024x576.jpeg',
-      label: 'Roll The Dice',
-      description: 'Gamble on the dice',
-      title: blinkData.title,
-      links:{
-        actions: [
-          {
-            href: `/api/actions/testGamble/${uniqueid}/result?amount=${amount}&bet=${bet}`,
-            label: `Roll The Dice!!`
-          }
-        ]
-      }
-    }
-
     // Create the payload with a next action link
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
@@ -148,8 +132,8 @@ export const POST = async (req: NextRequest, {params}:{params:{uniqueid: string}
         message: "Placing your bet...",
         links: {
           next: {
-            action: nextAction,
-            type: 'inline'
+            href: `/api/actions/gamble/${uniqueid}/result?amount=${amount}&bet=${bet}`,
+            type: 'post',
           },
         }
       },

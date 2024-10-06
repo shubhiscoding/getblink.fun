@@ -10,7 +10,7 @@
   align-items: center; /* Vertically center */
   position: fixed; /* Make navbar fixed */
   top: 23px; /* Position at the top */
-  left: 39%; /* Center the navbar */
+  left: 35%; /* Center the navbar */
   width: fit-content; /* Full width */
   z-index: 1000; /* Ensure it's above other content */
 }
@@ -50,7 +50,7 @@
 }
 
 /* Styles for mobile screens */
-@media (max-width: 1250px) {
+@media (max-width: 1400px) {
   .navbar {
     position: fixed; /* Keep the navbar fixed */
     width: 80%; /* Full width */
@@ -60,26 +60,40 @@
   }
   .navButton {
     padding: 10px; /* Adjust padding for mobile */
-    width: 250px;
-  }
-}
-
-@media (max-width: 1069px) {
-  .navButton {
     width: 200px;
   }
 }
 
-@media (max-width: 855px) {
+@media (max-width: 1200px) {
+  .navButton {
+    width: 170px;
+  }
+}
+
+@media (max-width: 1030px){
+  .navbar{
+    width: 90%;
+    left: 5%;
+    gap: 0;
+    justify-content: space-evenly;
+  }
+  .navButton {
+    width: 170px;
+  }
+}
+
+@media (max-width: 775px) {
   .navbar {
     position: fixed; /* Keep the navbar fixed */
-    width: 95%; /* Full width */
-    left: 2.5%; /* Align to the left */
+    width: 90%; /* Full width */
+    left: 5%; /* Align to the left */
     top:89%; /* Position at the top */
     gap: 5px; /* Adjust gap for mobile */
   }
   .navButton {
     min-width: 50px;
+    padding: 8px; /* Reduce padding */
+    width: fit-content; /* Adjust width */
   }
 
   .navbar .navButton {

@@ -20,7 +20,10 @@ export async function POST(req: Request) {
       createdAt: new Date()
     });
 
-    const blinkLink = `http://localhost:3000/api/actions/testGamble/${result.insertedId}`;
+    const blinkLink = `https://getblink.fun/api/actions/gamble/${result.insertedId}`;
+    console.log("---------------------Blink Link---------------------");
+    console.log(blinkLink);
+    console.log("----------------------------------------------------");
     return NextResponse.json({ blinkLink });
   } catch (error) {
     console.log(error);
