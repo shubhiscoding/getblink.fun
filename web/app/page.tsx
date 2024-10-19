@@ -2,6 +2,7 @@
 import Form from "@/components/form/form";
 import Preview from "@/components/preview/preview";
 import { useState } from "react";
+import { FaTwitter } from 'react-icons/fa';
 
 export default function Index() {
   const [icon, setIcon] = useState<string>('');
@@ -27,6 +28,9 @@ export default function Index() {
         description={description || 'Your Description shows up here, Keep it short and simple'}
         title={title || "Your Tittle : )"}
       />
+      <div className="Xbutton">
+        <a href="https://x.com/getblinkdotfun" target="_blank"><strong>X</strong>/ @getblinkdotfun</a>
+      </div>
     </div>
   );
 }

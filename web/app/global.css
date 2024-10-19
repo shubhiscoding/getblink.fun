@@ -58,6 +58,29 @@ body, html {
   padding: 20px 50px;
   gap: 20px;
 }
+
+.Xbutton{
+  position: absolute;
+  min-width: 100px;
+  background-color: black;
+  border-radius: 15px;
+  padding: 10px;
+  top:94%;
+  left: 1%;
+  text-decoration: none;
+  color:white;
+}
+.Xbutton a{
+  text-decoration: none;
+  color: white;
+}
+
+.Xbutton:hover{
+  background-color: #333;
+  cursor: pointer;
+  text-decoration: none;
+}
+
 @media (max-width: 1250px) {
   .form{
     padding: 50px !important;
