@@ -2,7 +2,6 @@
 import Form from "@/components/form/form";
 import Preview from "@/components/preview/preview";
 import { useState } from "react";
-import { FaTwitter } from 'react-icons/fa';
 
 export default function Index() {
   const [icon, setIcon] = useState<string>('');
