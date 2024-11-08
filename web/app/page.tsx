@@ -28,9 +28,6 @@ export default function Index() {
         description={description || 'Your Description shows up here, Keep it short and simple'}
         title={title || "Your Tittle : )"}
       />
-      <div className="Xbutton">
-        <a href="https://x.com/getblinkdotfun" target="_blank"><strong>X</strong>/ @getblinkdotfun</a>
-      </div>
     </div>
   );
 }
