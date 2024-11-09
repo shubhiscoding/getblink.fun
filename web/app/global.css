@@ -28,19 +28,6 @@ body, html {
   min-height: 100vh;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px;
-  background-color: rgba(21, 32, 43, 0.9);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-color);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
 .Title {
   font-size: 3.5rem;
   font-weight: bold;
@@ -62,6 +49,9 @@ body, html {
   .form{
     padding: 50px !important;
   }
+  .Title {
+    font-size: 3rem;
+  }
 }
 
 @media (max-width: 1025px) {
@@ -73,7 +63,7 @@ body, html {
 }
 
 /* Media query for screens smaller than 768px (like tablets and mobile devices) */
-@media (max-width: 768px) {
+@media (max-width: 930px) {
   .header {
     padding: 10px 12px;
   }
@@ -93,18 +83,21 @@ body, html {
   }
   .Head .wallet-adapter-button-trigger{
     padding: 4px 16px !important;
-    font-size: 20px;
   }
 }
 
 /* Media query for screens smaller than 480px (like mobile devices) */
-@media (max-width: 480px) {
+@media (max-width: 610px) {
   .header {
     padding: 8px 10px;
   }
 
   .Title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+
+  .wallet-adapter-dropdown .button{
+    font-size: 10px !important;
   }
 
   .main {
