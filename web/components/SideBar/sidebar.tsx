@@ -24,7 +24,7 @@ const SideBarButtons: React.FC<SideButtonProps> = ({ href, children, isActive, o
 
 const Sidebar = () => {
   const [activeButton, setActiveButton] = useState('');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Sidebar is open by default on larger screens
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar is open by default on larger screens
   const [isMobile, setIsMobile] = useState(true);
 
   // useEffect(() => {

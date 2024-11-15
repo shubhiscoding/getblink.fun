@@ -26,7 +26,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             width: '100%',
           }}
         >
-          <h1 className='Title'>Blink Generator</h1>
+          <h1 className='Title'>Getblink.fun</h1>
           <div>
             <WalletButton />
           </div>
