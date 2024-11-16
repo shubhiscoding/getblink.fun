@@ -10,7 +10,8 @@ import {
   Transaction,
   SystemProgram,
   LAMPORTS_PER_SOL,
-  Connection
+  Connection,
+  clusterApiUrl
 } from '@solana/web3.js';
 
 interface FormProps {
@@ -53,7 +54,7 @@ const Form: React.FC<FormProps> = ({
       return;
     }
     setLoading(true);
-    const connection = new Connection('https://stylish-dawn-film.solana-mainnet.quiknode.pro/e38b1fd65cb81a95ae5f3a2404b2e48ee6b0d458');
+    const connection = new Connection(process.env.SOLANA_RPC || clusterApiUrl("mainnet-beta"));
     const recipientPubKey = new PublicKey("8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
     const amount = 0.001 * LAMPORTS_PER_SOL;
 

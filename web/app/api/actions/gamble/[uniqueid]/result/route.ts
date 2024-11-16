@@ -203,6 +203,7 @@ export const POST = async (req: NextRequest, {params}:{params:{uniqueid: string}
           {
             href: `/api/actions/gamble/${uniqueid}?amount={amount}&bet={Bet}`,
             label: `${result}, Place Bet Again!`,
+            type: "post",
             parameters: [
               {
                 type: "radio",

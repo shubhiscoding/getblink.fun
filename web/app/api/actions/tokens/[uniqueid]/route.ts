@@ -9,6 +9,7 @@ import {
   ActionPostResponse,
 } from "@solana/actions";
 import {
+  AddressLookupTableAccount,
   clusterApiUrl,
   Connection,
   LAMPORTS_PER_SOL,
@@ -16,6 +17,8 @@ import {
   SystemProgram,
   Transaction,
   TransactionInstruction,
+  TransactionMessage,
+  VersionedTransaction,
 } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { getAssociatedTokenAddress, createAssociatedTokenAccountInstruction } from "@/lib/constant";
@@ -54,18 +57,22 @@ export const GET = async (req: NextRequest, { params }: { params: { uniqueid: st
           {
             href: `/api/actions/tokens/${uniqueid}?amount=100000`,
             label: `Buy 100k ${blinkData.title.slice(4)}`,
+            type: "post",
           },
           {
             href: `/api/actions/tokens/${uniqueid}?amount=500000`,
             label: `Buy 500k ${blinkData.title.slice(4)}`,
+            type: "post",
           },
           {
             href: `/api/actions/tokens/${uniqueid}?amount=1000000`,
             label: `Buy 1M ${blinkData.title.slice(4)}`,
+            type: "post",
           },
           {
             href: `/api/actions/tokens/${uniqueid}?amount={amount}`,
             label: "Custom amount",
+            type: "post",
             parameters: [
               {
                 name: "amount",
@@ -99,6 +106,9 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
     if (ObjectId.isValid(uniqueid)) {
       blinkData = await db.collection("blinks").findOne({ _id: new ObjectId(uniqueid) });
     }
+    if(!blinkData){
+      throw "Invalid BLINK!!";
+    }
 
     const { searchParams } = new URL(req.url);
     const body: ActionPostRequest = await req.json();
@@ -122,9 +132,7 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
       }
     }
 
-    const SOLANA_RPC_URL = clusterApiUrl("mainnet-beta", false);
-    if (!SOLANA_RPC_URL) throw "Unable to find RPC url...awkward...";
-    const connection = new Connection(SOLANA_RPC_URL);
+    const connection = new Connection(process.env.SOLANA_RPC || clusterApiUrl("mainnet-beta"));
 
     const recentBlockhash = await connection.getLatestBlockhash();
 
@@ -192,32 +200,40 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
     transaction.add(buyPumpIx);
     transaction.recentBlockhash = recentBlockhash.blockhash;
     transaction.feePayer = account;
-    const sol_spent = await estimateTotalTransactionCost(connection, transaction, account) || 0;
-
-    if (blinkData?.commission && blinkData?.commission === "yes" && blinkData?.percentage && blinkData.percentage > 0) {
-      feeReceiver = new PublicKey(blinkData?.wallet);
-      const commission = blinkData.percentage;
-      const fee = (commission * sol_spent) / 100;
-      console.log("Fee: ", fee+" SOL"+" for "+commission+"% of "+sol_spent+" SOL");
-      // Convert to integer lamports (assuming feeAmount is in SOL)
-      feeAmount = BigInt(Math.round(fee * 1_000_000_000)); // Convert SOL to lamports and round to an integer
-    } else {
-      feeAmount = BigInt(0); // Set to BigInt for consistency
+    let sol_spent = await estimateTotalTransactionCost(connection, transaction, account);
+    if(!sol_spent){
+      sol_spent = 0;
     }
+    let updatedTransaction:any = transaction;
+    if(sol_spent === "Error"){
+      updatedTransaction = await tradeJUP(blinkData, amount, account, connection, blinkData.decimals || 9);
+    }else if(typeof(sol_spent) === "number"){
+      if (blinkData?.commission && blinkData?.commission === "yes" && blinkData?.percentage && blinkData.percentage > 0) {
+        feeReceiver = new PublicKey(blinkData?.wallet);
+        const commission = blinkData.percentage;
+        const fee = (commission * sol_spent) / 100;
+        console.log("Fee: ", fee+" SOL"+" for "+commission+"% of "+sol_spent+" SOL");
+        // Convert to integer lamports (assuming feeAmount is in SOL)
+        feeAmount = BigInt(Math.round(fee * 1_000_000_000)); // Convert SOL to lamports and round to an integer
+      } else {
+        feeAmount = BigInt(0); // Set to BigInt for consistency
+      }
 
-    // Add an additional instruction to transfer the fee (if applicable)
-    if (feeReceiver && feeAmount > BigInt(0)) {
-      const transferFeeIx = SystemProgram.transfer({
-        fromPubkey: account,
-        toPubkey: feeReceiver,
-        lamports: Number(feeAmount), // `Number` is used to pass the value correctly
-      });
-      transaction.add(transferFeeIx); // Add fee transfer instruction
+      // Add an additional instruction to transfer the fee (if applicable)
+      if (feeReceiver && feeAmount > BigInt(0)) {
+        const transferFeeIx = SystemProgram.transfer({
+          fromPubkey: account,
+          toPubkey: feeReceiver,
+          lamports: Number(feeAmount), // `Number` is used to pass the value correctly
+        });
+        transaction.add(transferFeeIx); // Add fee transfer instruction
+      }
     }
 
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
-        transaction,
+        type: "transaction",
+        transaction: updatedTransaction,
         message: "You just Pumped It!",
       },
     });
@@ -252,7 +268,10 @@ async function estimateTotalTransactionCost(connection: Connection, transaction:
 
   if (simulationResult.value.err) {
     console.error("Error in transaction simulation:", simulationResult.value.err);
-    return;
+    if(simulationResult.value.err === "BlockhashNotFound"){
+      return;
+    }
+    return "Error";
   }else{
     const lamportsLeft = simulationResult.value.accounts?.[0]?.lamports;
     if(lamportsLeft === undefined){
@@ -262,3 +281,95 @@ async function estimateTotalTransactionCost(connection: Connection, transaction:
     return (balance - lamportsLeft)/LAMPORTS_PER_SOL;
   }
 }
+
+const tradeJUP = async(
+  blinkData: any,
+  amount: number,
+  account: PublicKey,
+  connection: Connection,
+  decimals: number,
+)  =>{
+  console.log("MINT IS :" + blinkData.mint);
+  const quoteResponse = await (
+    await fetch(`https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${blinkData.mint}&amount=${amount * 10**decimals}&slippageBps=300&swapMode=ExactOut`
+    )
+  ).json();
+  console.log(quoteResponse);
+
+  const { swapTransaction } = await (
+    await fetch('https://quote-api.jup.ag/v6/swap', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        // quoteResponse from /quote api
+        quoteResponse,
+        // user public key to be used for the swap
+        userPublicKey: account.toString(),
+        // auto wrap and unwrap SOL. default is true
+        wrapAndUnwrapSol: true,
+        // feeAccount is optional. Use if you want to charge a fee.  feeBps must have been passed in /quote API.
+        // feeAccount: "fee_account_public_key"
+      })
+    })
+  ).json();
+
+  console.log({ swapTransaction });
+
+  const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
+    const transaction = VersionedTransaction.deserialize(swapTransactionBuf);
+    let updatedTransaction = transaction;
+    // Check if fee needs to be added
+
+    let feeReceiver: PublicKey | undefined;
+    let feeAmount=BigInt(0);
+
+    const sol_spent = quoteResponse.inAmount;
+
+    if (blinkData?.commission && blinkData?.commission === "yes" && blinkData?.percentage && blinkData.percentage > 0) {
+      feeReceiver = new PublicKey(blinkData?.wallet);
+      const commission = blinkData.percentage;
+      const fee = (commission * sol_spent) / 100;
+      console.log("Fee: ", fee+" SOL"+" for "+commission+"% of "+sol_spent+" SOL");
+      // Convert to integer lamports (assuming feeAmount is in SOL)
+      feeAmount = BigInt(Math.round(fee)); // Convert SOL to lamports and round to an integer
+    } else {
+      feeAmount = BigInt(0); // Set to BigInt for consistency
+    }
+
+    if (feeReceiver && feeAmount > BigInt(0)) {
+      const transferFeeIx = SystemProgram.transfer({
+        fromPubkey: account,
+        toPubkey: feeReceiver,
+        lamports: Number(feeAmount), // Convert BigInt to number safely if it's within range
+      });
+
+      const lookupTablePubkeys = transaction.message.addressTableLookups.map(lookup => lookup.accountKey);
+
+      // Fetch all address lookup tables
+      const lookupTablesResponses = await Promise.all(
+          lookupTablePubkeys.map(pubkey => connection.getAddressLookupTable(pubkey))
+      );
+
+      // Filter out null results and extract the AddressLookupTableAccount
+      const lookupTables = lookupTablesResponses
+          .map(response => response.value) // Extract the `value` from the response
+          .filter(table => table !== null); // Remove nulls
+
+      // Resolve the address lookups
+      const resolvedMessage = TransactionMessage.decompile(transaction.message, {
+        addressLookupTableAccounts: lookupTables.filter((table): table is AddressLookupTableAccount => table !== null),
+      });
+
+      console.log(resolvedMessage);
+
+      resolvedMessage.instructions.push(transferFeeIx);
+      // Recreate the message with updated instructions
+      const updatedMessage = resolvedMessage.compileToLegacyMessage();
+
+      // Recreate the VersionedTransaction
+      updatedTransaction = new VersionedTransaction(updatedMessage);
+    }
+    return updatedTransaction;
+};

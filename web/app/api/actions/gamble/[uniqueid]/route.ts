@@ -35,6 +35,7 @@ export const GET = async (req: NextRequest, {params}:{params: {uniqueid: string}
           {
             href: `/api/actions/gamble/${uniqueid}?amount={amount}&bet={Bet}`,
             label: `Place Bet`,
+            type: "post",
             parameters: [
               {
                 type: "radio",
@@ -128,6 +129,7 @@ export const POST = async (req: NextRequest, {params}:{params:{uniqueid: string}
     // Create the payload with a next action link
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
+        type: "transaction",
         transaction,
         message: "Placing your bet...",
         links: {

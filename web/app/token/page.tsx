@@ -10,7 +10,8 @@ import {
   Transaction,
   SystemProgram,
   LAMPORTS_PER_SOL,
-  Connection
+  Connection,
+  clusterApiUrl
 } from '@solana/web3.js';
 import { FaInfoCircle } from 'react-icons/fa';
 
@@ -67,7 +68,7 @@ export default function Page() {
     setLoading(true);
     setLoadingText('Waiting for Transaction confirmation!!');
     try {
-      const connection = new Connection('https://stylish-dawn-film.solana-mainnet.quiknode.pro/e38b1fd65cb81a95ae5f3a2404b2e48ee6b0d458');
+      const connection = new Connection(process.env.SOLANA_RPC || clusterApiUrl("mainnet-beta"));
 
       if (!connected || !publicKey) {
         console.error('Wallet not connected or not available');

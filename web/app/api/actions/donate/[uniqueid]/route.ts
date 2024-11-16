@@ -50,18 +50,22 @@ export const GET = async (req: NextRequest, { params }: { params: { uniqueid: st
           {
             href: `/api/actions/donate/${uniqueid}?amount=0.1`,
             label: "0.1 SOL",
+            type: "post",
           },
           {
             href: `/api/actions/donate/${uniqueid}?amount=0.5`,
             label: "0.5 SOL",
+            type: "post",
           },
           {
             href: `/api/actions/donate/${uniqueid}?amount=1.0`,
             label: "1.0 SOL",
+            type: "post",
           },
           {
             href: `/api/actions/donate/${uniqueid}?amount={amount}`,
             label: "Send SOL",
+            type: "post",
             parameters: [
               {
                 name: "amount",
@@ -133,6 +137,7 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
 
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
+        type: "transaction",
         transaction,
         message: "Thanks for the coffee fren :)",
       },
