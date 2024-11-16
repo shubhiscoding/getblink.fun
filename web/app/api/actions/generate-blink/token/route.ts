@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { programs } from '@metaplex/js';
-import { getMint } from "@solana/spl-token";
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { getMint } from '../../../../../../node_modules/@solana/spl-token';
 
 const { metadata: { Metadata } } = programs;
 

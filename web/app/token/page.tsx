@@ -10,7 +10,8 @@ import {
   Transaction,
   SystemProgram,
   LAMPORTS_PER_SOL,
-  Connection
+  Connection,
+  clusterApiUrl
 } from '@solana/web3.js';
 import { FaInfoCircle } from 'react-icons/fa';
 

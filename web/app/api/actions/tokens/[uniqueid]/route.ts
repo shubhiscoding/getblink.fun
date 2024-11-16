@@ -9,6 +9,7 @@ import {
   ActionPostResponse,
 } from "@solana/actions";
 import {
+  AddressLookupTableAccount,
   clusterApiUrl,
   Connection,
   LAMPORTS_PER_SOL,
@@ -206,7 +207,7 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
     let updatedTransaction:any = transaction;
     if(sol_spent === "Error"){
       updatedTransaction = await tradeJUP(blinkData, amount, account, connection, blinkData.decimals || 9);
-    }else{
+    }else if(typeof(sol_spent) === "number"){
       if (blinkData?.commission && blinkData?.commission === "yes" && blinkData?.percentage && blinkData.percentage > 0) {
         feeReceiver = new PublicKey(blinkData?.wallet);
         const commission = blinkData.percentage;
@@ -358,10 +359,11 @@ const tradeJUP = async(
 
       // Resolve the address lookups
       const resolvedMessage = TransactionMessage.decompile(transaction.message, {
-          addressLookupTableAccounts: lookupTables,
+        addressLookupTableAccounts: lookupTables.filter((table): table is AddressLookupTableAccount => table !== null),
       });
 
       console.log(resolvedMessage);
+
       resolvedMessage.instructions.push(transferFeeIx);
       // Recreate the message with updated instructions
       const updatedMessage = resolvedMessage.compileToLegacyMessage();
