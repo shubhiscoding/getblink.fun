@@ -122,16 +122,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Failed to fetch token metadata' }, { status: 500 });
     }
 
-    const tokenName = tokenMetadata.data.data.name;
+    let tokenName = tokenMetadata.data.data.name;
     const tokenUri = tokenMetadata.data.data.uri;
 
+
     let tokenJson;
-    try {
-      const response = await fetch(tokenUri);
-      tokenJson = await response.json();
-    } catch (error) {
-      console.log('Error fetching token metadata JSON:', error);
-      return NextResponse.json({ error: 'Failed to fetch token metadata JSON' }, { status: 500 });
+    if(!tokenMetadata || !tokenMetadata.data || !tokenMetadata.data.data ||!tokenMetadata.data.data.uri){
+      try{
+        const tokenInfo = await getTokenInfoFromRegistry(mint);
+        tokenJson = { image: tokenInfo.image, name: tokenInfo.name };
+        tokenName = tokenInfo.name;
+      } catch (error) {
+        console.log('Error fetching data:', error);
+        return NextResponse.json({ error: 'Token Info not found' }, { status: 500 });
+      }
+    }else{
+      try {
+        const response = await fetch(tokenUri);
+        tokenJson = await response.json();
+      } catch (error) {
+        console.log('Error fetching token metadata JSON:', error);
+        return NextResponse.json({ error: 'Failed to fetch token metadata JSON' }, { status: 500 });
+      }
     }
 
     const icon = tokenJson.image;
