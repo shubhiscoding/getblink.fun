@@ -132,7 +132,7 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
       }
     }
 
-    const connection = new Connection(process.env.SOLANA_RPC || clusterApiUrl("mainnet-beta"));
+    const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC|| clusterApiUrl("mainnet-beta"));
 
     const recentBlockhash = await connection.getLatestBlockhash();
 
