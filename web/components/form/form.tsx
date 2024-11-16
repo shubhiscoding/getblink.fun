@@ -54,7 +54,7 @@ const Form: React.FC<FormProps> = ({
       return;
     }
     setLoading(true);
-    const connection = new Connection(process.env.SOLANA_RPC || clusterApiUrl("mainnet-beta"));
+    const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC|| clusterApiUrl("mainnet-beta"));
     const recipientPubKey = new PublicKey("8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
     const amount = 0.001 * LAMPORTS_PER_SOL;
 
