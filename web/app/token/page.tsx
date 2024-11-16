@@ -67,7 +67,7 @@ export default function Page() {
     setLoading(true);
     setLoadingText('Waiting for Transaction confirmation!!');
     try {
-      const connection = new Connection(process.env.SOLANA_RPC);
+      const connection = new Connection(process.env.SOLANA_RPC || clusterApiUrl("mainnet-beta"));
 
       if (!connected || !publicKey) {
         console.error('Wallet not connected or not available');

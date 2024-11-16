@@ -127,7 +127,7 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
       }
     }
 
-    const connection = new Connection(process.env.SOLANA_RPC);
+    const connection = new Connection(process.env.SOLANA_RPC || clusterApiUrl("mainnet-beta"));
 
     const recentBlockhash = await connection.getLatestBlockhash();
 
@@ -199,7 +199,7 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
     if(!sol_spent){
       sol_spent = 0;
     }
-    let updatedTransaction = transaction;
+    let updatedTransaction:any = transaction;
     if(sol_spent === "Error"){
       updatedTransaction = await tradeJUP(blinkData, amount, account, connection, blinkData.decimals || 9);
     }else{
