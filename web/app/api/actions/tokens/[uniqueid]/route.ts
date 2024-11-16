@@ -56,18 +56,22 @@ export const GET = async (req: NextRequest, { params }: { params: { uniqueid: st
           {
             href: `/api/actions/tokens/${uniqueid}?amount=100000`,
             label: `Buy 100k ${blinkData.title.slice(4)}`,
+            type: "post",
           },
           {
             href: `/api/actions/tokens/${uniqueid}?amount=500000`,
             label: `Buy 500k ${blinkData.title.slice(4)}`,
+            type: "post",
           },
           {
             href: `/api/actions/tokens/${uniqueid}?amount=1000000`,
             label: `Buy 1M ${blinkData.title.slice(4)}`,
+            type: "post",
           },
           {
             href: `/api/actions/tokens/${uniqueid}?amount={amount}`,
             label: "Custom amount",
+            type: "post",
             parameters: [
               {
                 name: "amount",
@@ -227,6 +231,7 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
 
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
+        type: "transaction",
         transaction: updatedTransaction,
         message: "You just Pumped It!",
       },
