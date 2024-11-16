@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { programs } from '@metaplex/js';
+import { getMint } from "@solana/spl-token";
 
 const { metadata: { Metadata } } = programs;
 
@@ -35,6 +36,7 @@ export async function GET(req: Request) {
     try {
       const response = await fetch(tokenUri);
       tokenJson = await response.json();
+      console.log(tokenJson);
     } catch (error) {
       console.log('Error fetching token metadata JSON:', error);
       return NextResponse.json({ error: 'Failed to fetch token metadata JSON' }, { status: 500 });
@@ -71,6 +73,13 @@ export async function POST(req: Request) {
     }
 
     const mintAddress = new PublicKey(mint);
+    const mintInfo = await getMint(connection, mintAddress);
+
+    console.log(mintInfo);
+    const decimals = mintInfo.decimals;
+    if(!decimals){
+      throw new Error('Invalid mint, missing token decimals');
+    }
 
     let tokenMetadata;
     try {
@@ -108,6 +117,7 @@ export async function POST(req: Request) {
       mint,
       commission,
       percentage,
+      decimals,
       createdAt: new Date()
     });
     console.log(result.insertedId);

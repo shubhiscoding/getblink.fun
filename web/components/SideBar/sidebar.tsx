@@ -110,7 +110,7 @@ const Sidebar = () => {
             </li>
             <li>
               <SideBarButtons href="/token" isActive={activeButton === '/token'} onClick={() => handleButtonClick('/token')}>
-                Sell pump.fun token
+                Sell/ReSell tokens
               </SideBarButtons>
             </li>
             <li>
