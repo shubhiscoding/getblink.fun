@@ -1,3 +1,7 @@
+At getblink.fun you can create BLINKS that can power transactions on solana from the twitter itself!!
+
+# Here's what getblink.fun can do: https://youtu.be/cYiuhx9dmcQ?si=ReEVOwNUaYp1sXOX
+
 # app
 
 This project is generated with the [create-solana-dapp](https://github.com/solana-developers/create-solana-dapp) generator.
