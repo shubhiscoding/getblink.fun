@@ -45,6 +45,15 @@ body, html {
   padding: 20px 50px;
   gap: 20px;
 }
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  font-size: 0.8rem;
+}
+
 @media (max-width: 1250px) {
   .form{
     padding: 50px !important;

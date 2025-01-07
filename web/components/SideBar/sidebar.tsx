@@ -114,13 +114,18 @@ const Sidebar = () => {
               </SideBarButtons>
             </li>
             <li>
-              <SideBarButtons href="/gamble" isActive={activeButton === '/gamble'} onClick={() => handleButtonClick('/gamble')}>
-                Gamble Testnet
+              <SideBarButtons href="/Blinks" isActive={activeButton === '/Blinks'} onClick={() => handleButtonClick('/Blinks')}>
+                My Blinks
               </SideBarButtons>
             </li>
             <li>
-              <SideBarButtons href="/Blinks" isActive={activeButton === '/Blinks'} onClick={() => handleButtonClick('/Blinks')}>
-                My Blinks
+              <SideBarButtons href="/ComingSoon" isActive={activeButton === '/gamble'} onClick={() => handleButtonClick('/gamble')}>
+                Gamble Blinks
+              </SideBarButtons>
+            </li>
+            <li>
+              <SideBarButtons href="/ComingSoon" isActive={activeButton === '/gaming'} onClick={() => handleButtonClick('/gaming')}>
+                Gaming Blinks
               </SideBarButtons>
             </li>
           </ul>
@@ -129,12 +134,12 @@ const Sidebar = () => {
           <a href='https://x.com/getblinkdotfun' target='_blank' className={activeButton === '/saved' ? 'active' : ''}>
             <span>X /@getblinkdotfun</span>
           </a>
-          <a href='https://github.com/shubhiscoding/Blink-Generator' target='_blank' className={activeButton === '/draft' ? 'active' : ''}>
+          <a href='https://github.com/Getblink-fun/Getblink.fun' target='_blank' className={activeButton === '/draft' ? 'active' : ''}>
             <span><FaGithub /> /Blink-Generator</span>
           </a>
-          <a href='https://x.com/LookWhatIbuild' target='_blank' className={activeButton === '/trash' ? 'active' : ''}>
+          {/* <a href='https://x.com/LookWhatIbuild' target='_blank' className={activeButton === '/trash' ? 'active' : ''}>
             <span><FaHardHat /> /@LookWhatIBuild</span>
-          </a>
+          </a> */}
         </div>
       </div>
 

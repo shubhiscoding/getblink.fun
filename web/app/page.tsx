@@ -2,7 +2,7 @@
 import Form from "@/components/form/form";
 import Preview from "@/components/preview/preview";
 import { useState } from "react";
-
+import { Footer } from "@/components/footer";
 export default function Index() {
   const [icon, setIcon] = useState<string>('');
   const [label, setLabel] = useState<string>('');
@@ -10,6 +10,7 @@ export default function Index() {
   const [title, setTitle] = useState<string>('');
 
   return (
+    <>
     <div className="main">
       <Form
         icon={icon}
@@ -28,5 +29,7 @@ export default function Index() {
         title={title || "Your Tittle : )"}
       />
     </div>
+    <Footer />
+    </>
   );
 }

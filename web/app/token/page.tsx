@@ -14,6 +14,7 @@ import {
   clusterApiUrl
 } from '@solana/web3.js';
 import { FaInfoCircle } from 'react-icons/fa';
+import { Footer } from '@/components/footer';
 
 import LoadingScreen from '@/components/Loading/loading';
 
@@ -208,6 +209,7 @@ export default function Page() {
 
 
   return (
+    <>
     <div className='main'>
       {loading && <LoadingScreen subtext={loadingText}/>}
       <div className="customize-form">
@@ -358,5 +360,7 @@ export default function Page() {
           />
       </div>
     </div>
+    <Footer />
+    </>
   );
 }

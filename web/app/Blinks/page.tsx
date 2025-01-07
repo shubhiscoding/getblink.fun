@@ -4,6 +4,7 @@ import './page.css';
 import { useWallet } from '@solana/wallet-adapter-react';
 import DataCard from '../../components/DataCard/dataCard';
 import { WalletButton } from '@/components/solana/solana-provider';
+import { Footer } from '@/components/footer';
 
 export default function Page() {
   const { publicKey, connected } = useWallet();
@@ -30,6 +31,7 @@ export default function Page() {
   }, [publicKey]);
 
   return (
+    <>
     <div className='parnt-container'>
       <div className='Container'>
         <h1 className='gradient-text txt'>Your Blinks</h1>
@@ -46,5 +48,7 @@ export default function Page() {
         </div>): <WalletButton />}
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
