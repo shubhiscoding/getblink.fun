@@ -4,6 +4,7 @@ import { clusterApiUrl, Connection, Keypair, LAMPORTS_PER_SOL, SystemProgram, Tr
 import Form from "@/components/GamebleForm/gambleform";
 import Preview from "@/components/GamblePreview/gamblePreview";
 import { useState } from "react";
+import { Footer } from "@/components/footer";
 
 export default function Page(){
   const [title, setTitle] = useState<string>('');
@@ -67,9 +68,12 @@ export default function Page(){
     }
   }
   return(
-    <div className="main">
-      <Form title={title} setTitle={setTitle} balance={balance} setBalance={setBalance}/>
-      <Preview icon={icon} label="" description={description} title={title || "Roll The Number"}/>
-    </div>
+    <>
+      <div className="main">
+        <Form title={title} setTitle={setTitle} balance={balance} setBalance={setBalance}/>
+        <Preview icon={icon} label="" description={description} title={title || "Roll The Number"}/>
+      </div>
+      <Footer />
+    </>
   );
 }
