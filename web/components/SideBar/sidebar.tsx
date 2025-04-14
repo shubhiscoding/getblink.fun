@@ -134,7 +134,7 @@ const Sidebar = () => {
           <a href='https://x.com/getblinkdotfun' target='_blank' className={activeButton === '/saved' ? 'active' : ''}>
             <span>X /@getblinkdotfun</span>
           </a>
-          <a href='https://github.com/Getblink-fun/Getblink.fun' target='_blank' className={activeButton === '/draft' ? 'active' : ''}>
+          <a href='https://github.com/shubhiscoding/Blink-Generator' target='_blank' className={activeButton === '/draft' ? 'active' : ''}>
             <span><FaGithub /> /Blink-Generator</span>
           </a>
           {/* <a href='https://x.com/LookWhatIbuild' target='_blank' className={activeButton === '/trash' ? 'active' : ''}>
