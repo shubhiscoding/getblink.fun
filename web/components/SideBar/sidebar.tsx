@@ -137,9 +137,9 @@ const Sidebar = () => {
           <a href='https://github.com/shubhiscoding/Blink-Generator' target='_blank' className={activeButton === '/draft' ? 'active' : ''}>
             <span><FaGithub /> /Blink-Generator</span>
           </a>
-          {/* <a href='https://x.com/LookWhatIbuild' target='_blank' className={activeButton === '/trash' ? 'active' : ''}>
+          <a href='https://x.com/LookWhatIbuild' target='_blank' className={activeButton === '/trash' ? 'active' : ''}>
             <span><FaHardHat /> /@LookWhatIBuild</span>
-          </a> */}
+          </a>
         </div>
       </div>
 
