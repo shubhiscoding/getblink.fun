@@ -114,13 +114,18 @@ const Sidebar = () => {
               </SideBarButtons>
             </li>
             <li>
-              <SideBarButtons href="/gamble" isActive={activeButton === '/gamble'} onClick={() => handleButtonClick('/gamble')}>
-                Gamble Testnet
+              <SideBarButtons href="/Blinks" isActive={activeButton === '/Blinks'} onClick={() => handleButtonClick('/Blinks')}>
+                My Blinks
               </SideBarButtons>
             </li>
             <li>
-              <SideBarButtons href="/Blinks" isActive={activeButton === '/Blinks'} onClick={() => handleButtonClick('/Blinks')}>
-                My Blinks
+              <SideBarButtons href="/ComingSoon" isActive={activeButton === '/gamble'} onClick={() => handleButtonClick('/gamble')}>
+                Gamble Blinks
+              </SideBarButtons>
+            </li>
+            <li>
+              <SideBarButtons href="/ComingSoon" isActive={activeButton === '/gaming'} onClick={() => handleButtonClick('/gaming')}>
+                Gaming Blinks
               </SideBarButtons>
             </li>
           </ul>
