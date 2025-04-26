@@ -197,18 +197,18 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col md:min-h-screen">
       {loading && <LoadingScreen subtext={loadingText}/>}
-      
-      <div className="flex-1 flex flex-col md:flex-row items-start justify-center gap-8 p-4 md:p-8">
+
+      <div className="flex-1 flex flex-col md:flex-row items-start md:justify-center gap-8 md:p-8">
         <div className="w-full max-w-2xl">
-          <div className="glass-card p-8 md:p-10" ref={form}>
+          <div className="glass-card md:p-10" ref={form}>
             {showForm && (
               <div className="space-y-6">
                 <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
                   Sell/Resell Token
                 </h1>
-                
+
                 <div>
                   <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Mint Address</label>
                   <input
@@ -220,7 +220,7 @@ export default function Page() {
                     maxLength={45}
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Label</label>
                   <input
@@ -232,7 +232,7 @@ export default function Page() {
                     maxLength={30}
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Description</label>
                   <textarea
@@ -247,7 +247,7 @@ export default function Page() {
                     {description.length}/143 characters
                   </p>
                 </div>
-                
+
                 <div className="bg-[var(--card-bg)] rounded-xl p-4 border border-[var(--border-color)]">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
@@ -256,7 +256,7 @@ export default function Page() {
                       </label>
                       <FaInfoCircle className="text-[var(--text-secondary)] cursor-pointer info-icon" />
                     </div>
-                    
+
                     <div className="flex items-center gap-4">
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
@@ -268,7 +268,7 @@ export default function Page() {
                         />
                         <span className="text-[var(--text-color)]">Yes</span>
                       </label>
-                      
+
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
                           type="radio"
@@ -281,7 +281,7 @@ export default function Page() {
                       </label>
                     </div>
                   </div>
-                  
+
                   {takeCommission === "yes" && (
                     <div className="mt-4">
                       <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">
@@ -304,11 +304,11 @@ export default function Page() {
                     </div>
                   )}
                 </div>
-                
+
                 {publicKey ? (
-                  <button 
+                  <button
                     className="button-primary w-full mt-4 flex items-center justify-center gap-2"
-                    onClick={showPreview ? handlePreview : handleSubmit} 
+                    onClick={showPreview ? handlePreview : handleSubmit}
                     disabled={!connected}
                   >
                     {showPreview ? 'Preview Blink' : 'Generate Blink'}
@@ -321,21 +321,21 @@ export default function Page() {
                 )}
               </div>
             )}
-            
+
             {!showForm && (
               <div className="space-y-6">
                 <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
                   Your Blink is Ready!
                 </h1>
-                
+
                 <div className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--border-color)]">
                   <p className="text-sm text-[var(--text-secondary)] mb-2">Blink Link:</p>
                   <div className="flex items-center gap-2">
                     <div className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
                       https://dial.to/?action=solana-action:{blinkLink}
                     </div>
-                    <button 
-                      onClick={handleCopy} 
+                    <button
+                      onClick={handleCopy}
                       className="p-3 rounded-lg bg-[var(--border-color)] hover:bg-[var(--accent-primary)] transition-colors duration-300"
                       title="Copy to clipboard"
                     >
@@ -343,17 +343,17 @@ export default function Page() {
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="flex flex-col sm:flex-row gap-4 mt-6">
-                  <button 
+                  <button
                     className="button-primary flex-1 flex items-center justify-center gap-2"
                     onClick={handleTweet}
                   >
                     <HiOutlineShare size={18} />
                     Share on X
                   </button>
-                  
-                  <button 
+
+                  <button
                     className="button-secondary flex-1 flex items-center justify-center gap-2"
                     onClick={handleNew}
                   >
@@ -364,31 +364,31 @@ export default function Page() {
               </div>
             )}
           </div>
-          
+
           {blinkLink && showForm && (
             <div className="glass-card p-6 mt-6">
               <h2 className="text-xl font-semibold mb-4 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
                 Your Previous Blink
               </h2>
-              
+
               <div className="p-3 bg-[var(--card-bg)] rounded-lg mb-4 border border-[var(--border-color)]">
-                <a 
-                  href={`https://dial.to/?action=solana-action:${blinkLink}`} 
-                  target="_blank" 
+                <a
+                  href={`https://dial.to/?action=solana-action:${blinkLink}`}
+                  target="_blank"
                   className="text-[var(--text-color)] hover:text-[var(--accent-primary)] transition-colors break-all"
                 >
                   https://dial.to/?action=solana-action:{blinkLink}
                 </a>
               </div>
-              
+
               <div className="flex gap-3">
-                <button 
+                <button
                   className="button-secondary flex items-center gap-2 py-2 px-4"
                   onClick={handleCopy}
                 >
                   {copied ? 'Copied!' : <><HiOutlineClipboardCopy size={18} /> Copy</>}
                 </button>
-                <button 
+                <button
                   className="button-primary flex items-center gap-2 py-2 px-4"
                   onClick={handleTweet}
                 >
@@ -398,7 +398,7 @@ export default function Page() {
             </div>
           )}
         </div>
-        
+
         {!showPreview && (
           <div className="w-full md:w-auto">
             <TokenPreview
@@ -410,7 +410,7 @@ export default function Page() {
           </div>
         )}
       </div>
-      
+
       <Footer />
     </div>
   );

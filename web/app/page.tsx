@@ -11,8 +11,8 @@ export default function Index() {
   const [title, setTitle] = useState<string>('');
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex-1 flex flex-col md:flex-row items-start justify-center gap-8 p-4 md:p-8">
+    <div className="flex flex-col md:min-h-screen">
+      <div className="flex-1 flex flex-col md:flex-row items-start md:justify-center gap-8 md:p-8">
         <Form
           icon={icon}
           setIcon={setIcon}

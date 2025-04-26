@@ -138,13 +138,13 @@ const Form: React.FC<FormProps> = ({
   return (
     <div className="w-full max-w-2xl">
       {loading && <LoadingScreen subtext="Waiting For Transaction Confirmation!!" />}
-      <div className="glass-card p-8 md:p-10" ref={form}>
+      <div className="glass-card md:p-10" ref={form}>
         {showForm && (
           <div className="space-y-6">
             <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
               Customize Your Blink
             </h1>
-            
+
             <div>
               <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Title</label>
               <input
@@ -156,7 +156,7 @@ const Form: React.FC<FormProps> = ({
                 maxLength={50}
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Label</label>
               <input
@@ -168,7 +168,7 @@ const Form: React.FC<FormProps> = ({
                 maxLength={50}
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Image URL</label>
               <input
@@ -179,7 +179,7 @@ const Form: React.FC<FormProps> = ({
                 placeholder="Enter image URL"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Description</label>
               <textarea
@@ -194,11 +194,11 @@ const Form: React.FC<FormProps> = ({
                 {description.length}/143 characters
               </p>
             </div>
-            
+
             {publicKey ? (
-              <button 
+              <button
                 className="button-primary w-full mt-4 flex items-center justify-center gap-2"
-                onClick={handlePreview} 
+                onClick={handlePreview}
                 disabled={!connected}
               >
                 Generate Blink
@@ -211,21 +211,21 @@ const Form: React.FC<FormProps> = ({
             )}
           </div>
         )}
-        
+
         {!showForm && (
           <div className="space-y-6">
             <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
               Your Blink is Ready!
             </h1>
-            
+
             <div className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--border-color)]">
               <p className="text-sm text-[var(--text-secondary)] mb-2">Blink Link:</p>
               <div className="flex items-center gap-2">
                 <div className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
                   https://dial.to/?action=solana-action:{blinkLink}
                 </div>
-                <button 
-                  onClick={handleCopy} 
+                <button
+                  onClick={handleCopy}
                   className="p-3 rounded-lg bg-[var(--border-color)] hover:bg-[var(--accent-primary)] transition-colors duration-300"
                   title="Copy to clipboard"
                 >
@@ -233,17 +233,17 @@ const Form: React.FC<FormProps> = ({
                 </button>
               </div>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
-              <button 
+              <button
                 className="button-primary flex-1 flex items-center justify-center gap-2"
                 onClick={handleTweet}
               >
                 <HiOutlineShare size={18} />
                 Share on X
               </button>
-              
-              <button 
+
+              <button
                 className="button-secondary flex-1"
                 onClick={handleNew}
               >
