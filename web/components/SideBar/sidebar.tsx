@@ -69,9 +69,9 @@ const Sidebar = () => {
         <div>
           <div className="flex justify-center items-center mb-6">
             <Image
-              src={'/Blink.png'}
-              width={60}
-              height={60}
+              src={'/Blink.gif'}
+              width={150}
+              height={150}
               alt="Logo"
               className="rounded-full shadow-sm"
             />

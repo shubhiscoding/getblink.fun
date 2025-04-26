@@ -202,7 +202,7 @@ export default function Page() {
 
       <div className="flex-1 flex flex-col md:flex-row items-center md:items-start md:justify-center gap-8 md:p-8">
         <div className="w-full max-w-2xl">
-          <div className="glass-card md:p-10" ref={form}>
+          <div className="card md:p-10" ref={form}>
             {showForm && (
               <div className="space-y-6">
                 <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
