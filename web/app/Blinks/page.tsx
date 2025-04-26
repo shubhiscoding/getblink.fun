@@ -13,7 +13,7 @@ export default function Page() {
   useEffect(() => {
     const getBlinks = async () => {
       if (!publicKey) return;
-      
+
       try {
         const response = await fetch('/api/actions/getBlinks?wallet=' + publicKey.toString());
         const { blinks } = await response.json();
@@ -28,30 +28,62 @@ export default function Page() {
 
     if (publicKey) {
       getBlinks();
+    } else {
+      setLoading(false);
     }
   }, [publicKey]);
 
   return (
-    <>
-    <div className='flex p-[10px_50px] h-[80vh] w-full justify-center md:p-[10px_30px] sm:p-[10px_20px] xs:p-[10px]'>
-      <div className='flex flex-col items-center justify-center rounded-[50px] p-10 backdrop-blur-md saturate-[138%] shadow-[inset_0px_0px_20px_rgba(27,27,27,0.8)] bg-[rgba(17,25,40,0)] text-white font-sans w-full md:p-[30px] sm:p-5'>
-        <h1 className='bg-gradient-to-r from-[#6d6d6d] via-[#dadada] to-[#989898] bg-clip-text text-transparent text-[3rem] font-bold mb-2.5 md:text-[2.5rem] sm:text-[2rem] xs:text-[1.5rem]'>Your Blinks</h1>
-        {publicKey && loading && <p>Loading...</p>}
-        {publicKey ? (
-          <div className='p-[20px_40px] max-h-[400px] overflow-y-scroll rounded-[50px] shadow-[inset_0px_0px_100px_rgba(26,36,33,0.8)] bg-[rgba(17,25,40,0)] text-white font-sans scrollbar-none md:p-5 sm:p-[15px] xs:p-2.5 xs:max-h-[300px]'>
-            {data && data.length > 0 ? data.slice().reverse().map((blink) => (
-              <DataCard
-               key={blink['_id']}
-               code={blink['_id']}
-               base={blink.privateKey ? "https://dial.to/devnet?action=solana-action:" : "https://dial.to/?action=solana-action:"}
-               title={blink.title}
-               endpoint={blink.mint ? "tokens" : (blink.privateKey ? "gamble" : "donate")} />
-            )) : <p>No Blinks found</p>}
+    <div className="flex flex-col min-h-screen">
+      <main className="flex-grow px-4 sm:px-6 md:px-8 py-8 max-w-7xl mx-auto w-full">
+        <div className="glass-card w-full max-w-4xl mx-auto overflow-hidden fade-in">
+          <div className="p-4 sm:p-6 md:p-8">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center gradient-text">
+              Your Blinks
+            </h1>
+            
+            {!publicKey ? (
+              <div className="flex flex-col items-center justify-center py-10 space-y-4 fade-in">
+                <p className="text-[var(--text-secondary)] text-center mb-4">
+                  Connect your wallet to view your Blinks
+                </p>
+                <div className="pulse-subtle">
+                  <WalletButton />
+                </div>
+              </div>
+            ) : loading ? (
+              <div className="flex justify-center items-center py-10">
+                <div className="shimmer w-full max-w-md h-40 rounded-xl"></div>
+              </div>
+            ) : (
+              <div className="space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar pr-1">
+                {data && data.length > 0 ? (
+                  data.slice().reverse().map((blink, index) => (
+                    <div 
+                      key={blink['_id']} 
+                      className="hover-lift fade-in" 
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <DataCard
+                        code={blink['_id']}
+                        base={blink.privateKey ? "https://dial.to/devnet?action=solana-action:" : "https://dial.to/?action=solana-action:"}
+                        title={blink.title}
+                        endpoint={blink.mint ? "tokens" : (blink.privateKey ? "gamble" : "donate")} 
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 fade-in">
+                    <p className="text-[var(--text-secondary)]">No Blinks found</p>
+                    <p className="text-sm mt-2 text-[var(--text-secondary)]">Create your first Blink to get started</p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-        ) : <WalletButton />}
-      </div>
+        </div>
+      </main>
+      <Footer />
     </div>
-    <Footer />
-    </>
   );
 }

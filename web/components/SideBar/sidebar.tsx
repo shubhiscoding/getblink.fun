@@ -16,10 +16,10 @@ interface SideButtonProps {
 const SideBarButton: React.FC<SideButtonProps> = ({ href, children, icon, isActive, onClick }) => (
   <Link href={href} className="no-underline w-full">
     <div
-      className={`flex items-center gap-3 py-3 px-4 my-2 rounded-xl transition-all duration-300 ${
+      className={`flex items-center gap-3 py-3 px-4 my-2 rounded-md transition-all duration-300 ${
         isActive 
-          ? 'bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] text-white font-medium shadow-lg' 
-          : 'text-[var(--text-secondary)] hover:bg-[var(--card-bg)] hover:text-white'
+          ? 'bg-[var(--accent-primary)] text-white font-medium shadow-sm' 
+          : 'text-[var(--text-secondary)] hover:bg-[var(--border-color)] hover:text-[var(--text-color)]'
       }`}
       onClick={onClick}
     >
@@ -39,19 +39,6 @@ const Sidebar = () => {
     const segments = path.split('/');
     const endpoint = segments[segments.length - 1] || '';
     setActiveButton('/' + endpoint);
-    
-    // Logo animation
-    const logoElement = document.querySelector('.logo-Blink');
-    if (logoElement) {
-      setInterval(() => {
-        const IMG = logoElement.querySelector('img');
-        if (!IMG) { return; }
-        IMG.setAttribute('src', 'Blink.gif');
-        setTimeout(() => {
-          IMG.setAttribute('src', 'Blink.png');
-        }, 1000);
-      }, 10000);
-    }
     
     // Check if mobile
     const handleResize = () => {
@@ -76,17 +63,17 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className={`fixed md:relative w-[280px] h-full glass-card py-6 flex flex-col justify-between z-20 transition-transform duration-300 ${
+      <div className={`fixed md:relative w-[260px] h-full card py-6 flex flex-col justify-between z-20 transition-transform duration-300 ${
         isMobile ? (isSidebarOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'
-      } sm:w-full sm:max-w-[280px]`}>
+      } sm:w-full sm:max-w-[260px]`}>
         <div>
-          <div className="logo-Blink flex justify-center items-center mb-6">
+          <div className="flex justify-center items-center mb-6">
             <Image 
               src={'/Blink.png'} 
-              width={80} 
-              height={80} 
+              width={60} 
+              height={60} 
               alt="Logo"
-              className="rounded-full shadow-lg p-1 bg-[rgba(255,255,255,0.1)]" 
+              className="rounded-full shadow-sm" 
             />
           </div>
           
@@ -138,11 +125,11 @@ const Sidebar = () => {
           </div>
         </div>
         
-        <div className="px-4 space-y-3">
+        <div className="px-4 space-y-2">
           <a 
             href='https://x.com/getblinkdotfun' 
             target='_blank' 
-            className="flex items-center gap-2 p-3 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--card-bg)] hover:text-white"
+            className="flex items-center gap-2 p-3 text-[var(--text-secondary)] rounded-md transition-all duration-300 hover:bg-[var(--border-color)] hover:text-[var(--text-color)]"
           >
             <FaTwitter />
             <span>@getblinkdotfun</span>
@@ -151,7 +138,7 @@ const Sidebar = () => {
           <a 
             href='https://github.com/Getblink-fun/Getblink.fun' 
             target='_blank' 
-            className="flex items-center gap-2 p-3 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--card-bg)] hover:text-white"
+            className="flex items-center gap-2 p-3 text-[var(--text-secondary)] rounded-md transition-all duration-300 hover:bg-[var(--border-color)] hover:text-[var(--text-color)]"
           >
             <FaGithub />
             <span>Blink-Generator</span>
@@ -166,7 +153,7 @@ const Sidebar = () => {
             onClick={handleSidebarToggle}
             aria-label="Toggle sidebar"
           >
-            {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+            {isSidebarOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
           </button>
           
           {isSidebarOpen && (

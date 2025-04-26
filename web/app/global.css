@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --bg-color: #0f172a;
-  --card-bg: #1e293b;
-  --text-color: #f8fafc;
-  --text-secondary: #94a3b8;
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-color: #212529;
+  --text-secondary: #6c757d;
   --accent-primary: #3b82f6;
   --accent-secondary: #10b981;
-  --border-color: #334155;
-  --shadow-color: rgba(0, 0, 0, 0.25);
+  --border-color: #e9ecef;
+  --shadow-color: rgba(0, 0, 0, 0.05);
   --gradient-start: #3b82f6;
   --gradient-end: #10b981;
 }
@@ -22,7 +22,11 @@
   
   body, html {
     @apply font-sans bg-[var(--bg-color)] text-[var(--text-color)] h-full;
-    background: radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 1) 0%, rgba(30, 41, 59, 0.8) 90%);
+  }
+  
+  /* Add smooth scrolling */
+  html {
+    @apply scroll-smooth;
   }
 }
 
@@ -32,11 +36,7 @@
   }
   
   .Title {
-    @apply text-[3.5rem] font-bold m-0;
-    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-decoration: none;
+    @apply text-[2.5rem] font-bold m-0 text-[var(--text-color)];
   }
   
   .main {
@@ -47,59 +47,97 @@
     @apply flex justify-center items-center p-4 text-[0.9rem] text-[var(--text-secondary)];
   }
 
-  .glass-card {
-    @apply rounded-2xl backdrop-blur-md bg-[rgba(30,41,59,0.4)] shadow-lg border border-[rgba(255,255,255,0.1)];
+  .card {
+    @apply rounded-lg bg-[var(--card-bg)] shadow-sm border border-[var(--border-color)] transition-all duration-300;
   }
 
   .button-primary {
-    @apply py-3 px-5 rounded-full font-medium cursor-pointer transition-all duration-300 bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] text-white hover:shadow-lg hover:shadow-blue-500/20 active:scale-95;
+    @apply py-2.5 px-5 rounded-md font-medium cursor-pointer transition-all duration-300 bg-[var(--accent-primary)] text-white hover:opacity-90 active:scale-95 flex items-center justify-center gap-2;
   }
 
   .button-secondary {
-    @apply py-3 px-5 rounded-full font-medium cursor-pointer transition-all duration-300 bg-[var(--card-bg)] text-white border border-[var(--border-color)] hover:bg-[var(--border-color)] active:scale-95;
+    @apply py-2.5 px-5 rounded-md font-medium cursor-pointer transition-all duration-300 bg-white text-[var(--text-color)] border border-[var(--border-color)] hover:bg-[var(--border-color)] active:scale-95 flex items-center justify-center gap-2;
   }
 
   .input-field {
-    @apply w-full p-3 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-full text-[var(--text-color)] text-base focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all duration-300;
+    @apply w-full p-3 bg-white border border-[var(--border-color)] rounded-md text-[var(--text-color)] text-base focus:outline-none focus:ring-1 focus:ring-[var(--accent-primary)] transition-all duration-300;
   }
 
   .textarea-field {
-    @apply w-full p-3 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl text-[var(--text-color)] text-base resize-none focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all duration-300;
+    @apply w-full p-3 bg-white border border-[var(--border-color)] rounded-md text-[var(--text-color)] text-base resize-none focus:outline-none focus:ring-1 focus:ring-[var(--accent-primary)] transition-all duration-300;
   }
 
   /* Mobile navigation styles */
   .mobile-menu-button {
-    @apply fixed bottom-6 left-6 z-30 flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] text-white shadow-lg;
+    @apply fixed bottom-6 left-6 z-30 flex items-center justify-center w-12 h-12 rounded-full bg-[var(--accent-primary)] text-white shadow-md;
   }
 
   .mobile-overlay {
-    @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-10;
+    @apply fixed inset-0 bg-black/20 backdrop-blur-sm z-10;
+  }
+  
+  /* Custom scrollbar */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 2px;
+  }
+  
+  /* Card hover effect */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+  }
+  
+  /* Fade in animation */
+  .fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* Gradient text */
+  .gradient-text {
+    @apply text-[var(--accent-primary)];
   }
 }
 
 /* Large screens */
 @media (min-width: 1536px) {
-  .glass-card {
-    @apply p-10;
+  .card {
+    @apply p-6;
   }
   
   .Title {
-    @apply text-[4rem];
+    @apply text-[3rem];
   }
 }
 
 /* Desktop */
 @media (max-width: 1250px) {
   .form {
-    @apply !p-8;
+    @apply !p-6;
   }
   
   .Title {
-    @apply text-[3rem];
+    @apply text-[2.5rem];
   }
   
-  .glass-card {
-    @apply p-6;
+  .card {
+    @apply p-5;
   }
 }
 
@@ -109,8 +147,8 @@
     @apply p-5 gap-4 justify-between;
   }
   
-  .glass-card {
-    @apply p-5;
+  .card {
+    @apply p-4;
   }
 }
 
@@ -121,7 +159,7 @@
   }
 
   .Title {
-    @apply text-[2.5rem];
+    @apply text-[2rem];
   }
 
   .main {
@@ -130,18 +168,6 @@
   
   .Head {
     @apply flex-col !p-[15px];
-  }
-  
-  .Head .wallet-adapter-button-trigger {
-    @apply !py-2 !px-4;
-  }
-  
-  .glass-card {
-    @apply p-4;
-  }
-  
-  .button-primary, .button-secondary {
-    @apply py-2.5 px-4 text-sm;
   }
 }
 
@@ -155,15 +181,11 @@
     @apply text-[1.8rem];
   }
 
-  .wallet-adapter-dropdown .button {
-    @apply !text-[12px];
-  }
-
   .main {
     @apply flex-col py-3 px-3 gap-4;
   }
   
-  .glass-card {
+  .card {
     @apply p-4 rounded-xl;
   }
   
@@ -181,5 +203,38 @@
   
   h2.text-xl {
     @apply text-lg;
+  }
+}
+
+/* Hide scrollbar for cleaner look */
+@layer utilities {
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Animation delay utilities */
+  .animation-delay-100 {
+    animation-delay: 0.1s;
+  }
+  
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+  
+  .animation-delay-300 {
+    animation-delay: 0.3s;
+  }
+  
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+  }
+  
+  .animation-delay-500 {
+    animation-delay: 0.5s;
   }
 }
