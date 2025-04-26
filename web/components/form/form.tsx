@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import './form.css';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletButton } from '../solana/solana-provider';
 import LoadingScreen from '../Loading/loading';
@@ -112,7 +111,7 @@ const Form: React.FC<FormProps> = ({
       setShowForm(false);
       setLoading(false);
       if (form.current) {
-        form.current.style.padding = '70px';
+        form.current.className = form.current.className.replace('p-[120px]', 'p-[70px]');
       }
     } catch (error) {
       setLoading(false);
@@ -137,56 +136,56 @@ const Form: React.FC<FormProps> = ({
   const handleNew = () => {
     setShowForm(true);
     if (form.current) {
-      form.current.style.padding = '120px';
+      form.current.className = form.current.className.replace('p-[70px]', 'p-[120px]');
     }
   };
 
   return (
-    <div className="customize-form">
+    <div className="flex flex-col justify-between rounded-2xl px-0 md:px-5 w-fit">
       {loading && <LoadingScreen subtext="Waiting For Transaction Confirmation!!" />}
-      <div className="form" ref={form}>
-        {showForm && <h1 className="gradient-text">Customize Your Blink</h1>}
+      <div className="p-[120px] rounded-[50px] backdrop-blur-[20px] saturate-[138%] shadow-[inset_0px_0px_20px_rgba(255,255,255,0.15)] bg-[rgba(17,25,40,0)] text-white font-sans" ref={form}>
+        {showForm && <h1 className="text-3xl md:text-[3rem] font-bold mb-2.5 text-[#989898]">Customize Your Blink</h1>}
         {showForm && (
-          <div className="form-group">
+          <div className="mb-5">
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="form-input"
+              className="w-full p-3 max-w-[900px] bg-black shadow-[0_3px_10px_rgba(0,0,0,1)] border border-[var(--border-color)] rounded-full text-[#bbbdbd] text-base"
               placeholder="Title"
               maxLength={50}
             />
           </div>
         )}
         {showForm && (
-          <div className="form-group">
+          <div className="mb-5">
             <input
               type="text"
               value={label}
               onChange={(e) => setLabel(e.target.value)}
-              className="form-input"
+              className="w-full p-3 max-w-[900px] bg-black shadow-[0_3px_10px_rgba(0,0,0,1)] border border-[var(--border-color)] rounded-full text-[#bbbdbd] text-base"
               placeholder="Label"
               maxLength={50}
             />
           </div>
         )}
         {showForm && (
-          <div className="form-group">
+          <div className="mb-5">
             <input
               type="text"
               value={icon}
               onChange={(e) => setIcon(e.target.value)}
-              className="form-input"
+              className="w-full p-3 max-w-[900px] bg-black shadow-[0_3px_10px_rgba(0,0,0,1)] border border-[var(--border-color)] rounded-full text-[#bbbdbd] text-base"
               placeholder="Image Url"
             />
           </div>
         )}
         {showForm && (
-          <div className="form-group">
+          <div className="mb-5">
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="form-textarea"
+              className="w-full p-3 max-w-[900px] bg-black shadow-[0_3px_10px_rgba(0,0,0,1)] border border-[var(--border-color)] rounded-[30px] text-[#bbbdbd] text-base resize-none min-h-[20px]"
               rows={3}
               placeholder="Description"
               maxLength={143}
@@ -194,60 +193,45 @@ const Form: React.FC<FormProps> = ({
           </div>
         )}
         {showForm && publicKey ? (
-          <button className="submit-button" onClick={handlePreview} disabled={!connected}>
+          <button 
+            className="bg-white text-[var(--bg-color)] border-none py-3 px-5 rounded-full font-bold cursor-pointer transition-colors duration-1000 shadow-[0_3px_10px_rgba(0,0,0,1)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_10px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent" 
+            onClick={handlePreview} 
+            disabled={!connected}
+          >
             Generate Blink
           </button>
         ) : (
           showForm && <WalletButton />
         )}
         {blinkLink && !showForm && (
-          <div className="blink-box">
-            <h2>Your Blink Link:</h2>
-            <div className="link-container">
-              <a href={`https://dial.to/?action=solana-action:${blinkLink}`} target="_blank" className="link">
-                https://dial.to/?action=solana-action:{blinkLink}
-              </a>
-            </div>
-            <div className="button-container">
-              {copied ? (
-                <span className="copy-message">Copied!</span>
-              ) : (
-                <button className="copy-button" onClick={handleCopy}>
-                  Copy
+          <div className="flex flex-col items-center gap-4">
+            <h2 className="text-2xl font-bold mb-2">Your Blink is Ready!</h2>
+            <div className="flex flex-col items-center gap-2 mb-4">
+              <p className="text-center">Share your Blink with the world:</p>
+              <div className="flex flex-wrap justify-center gap-2">
+                <button 
+                  className="bg-white text-[var(--bg-color)] border-none py-2 px-4 rounded-full font-bold cursor-pointer transition-colors duration-1000 shadow-[0_3px_10px_rgba(0,0,0,1)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_10px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent"
+                  onClick={handleCopy}
+                >
+                  {copied ? 'Copied!' : 'Copy Link'}
                 </button>
-              )}
-              <button className="tweet-button" onClick={handleTweet}>
-                Tweet
-              </button>
-              <button className="new-button" onClick={handleNew}>
-                Create New
-              </button>
+                <button 
+                  className="bg-white text-[var(--bg-color)] border-none py-2 px-4 rounded-full font-bold cursor-pointer transition-colors duration-1000 shadow-[0_3px_10px_rgba(0,0,0,1)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_10px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent"
+                  onClick={handleTweet}
+                >
+                  Tweet
+                </button>
+                <button 
+                  className="bg-white text-[var(--bg-color)] border-none py-2 px-4 rounded-full font-bold cursor-pointer transition-colors duration-1000 shadow-[0_3px_10px_rgba(0,0,0,1)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_10px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent"
+                  onClick={handleNew}
+                >
+                  Create New
+                </button>
+              </div>
             </div>
           </div>
         )}
       </div>
-      {blinkLink && showForm && (
-          <div className="blink-box">
-            <h2>Your Blink Link:</h2>
-            <div className="link-container">
-              <a href={`https://dial.to/?action=solana-action:${blinkLink}`} target="_blank" className="link">
-                https://dial.to/?action=solana-action:{blinkLink}
-              </a>
-            </div>
-            <div className="button-container">
-              {copied ? (
-                <span className="copy-message">Copied!</span>
-              ) : (
-                <button className="copy-button" onClick={handleCopy}>
-                  Copy
-                </button>
-              )}
-              <button className="tweet-button" onClick={handleTweet}>
-                Tweet
-              </button>
-            </div>
-          </div>
-        )}
     </div>
   );
 };

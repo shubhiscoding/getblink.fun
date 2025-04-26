@@ -15,6 +15,10 @@ const nextConfig = {
     ];
     return config;
   },
+  images: {
+    unoptimized: true,
+    domains: ['raw.githubusercontent.com'],
+  },
   nx: {
     // Set this to true if you would like to use SVGR
     // See: https://github.com/gregberge/svgr

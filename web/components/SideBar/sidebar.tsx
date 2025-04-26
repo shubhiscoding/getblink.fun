@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import "./sidebar.css";
 import { FaGithub, FaHardHat, FaBars } from 'react-icons/fa';
+import Image from 'next/image';
 
 interface SideButtonProps {
   href: string;
@@ -12,9 +12,9 @@ interface SideButtonProps {
 }
 
 const SideBarButtons: React.FC<SideButtonProps> = ({ href, children, isActive, onClick }) => (
-  <Link href={href} style={{ textDecoration: 'none' }}>
+  <Link href={href} className="no-underline">
     <p
-      className={`navButton ${isActive ? 'active' : ''}`}
+      className={`py-3 px-5 text-lg font-medium text-white/70 transition-colors duration-300 rounded-lg cursor-pointer bg-[rgba(17,25,40,0)] backdrop-blur-[20px] saturate-[138%] shadow-[inset_0px_0px_15px_rgba(255,255,255,0.15)] my-1.5 ${isActive ? 'text-white bg-white/20 shadow-[inset_0px_0px_40px_rgba(0,0,150,0.4)]' : 'hover:text-white hover:bg-white/20 hover:shadow-[inset_0px_0px_40px_rgba(0,0,150,0.4)]'}`}
       onClick={onClick}
     >
       {children}
@@ -24,21 +24,8 @@ const SideBarButtons: React.FC<SideButtonProps> = ({ href, children, isActive, o
 
 const Sidebar = () => {
   const [activeButton, setActiveButton] = useState('');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar is open by default on larger screens
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
-
-  // useEffect(() => {
-  //   // Check if the screen is mobile-sized
-  //   const handleResize = () => setIsMobile(window.innerWidth < 768);
-
-  //   // Set initial state and add resize listener
-  //   handleResize();
-  //   window.addEventListener('resize', handleResize);
-
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, []);
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -91,18 +78,18 @@ const Sidebar = () => {
   const handleButtonClick = (href: string) => {
     setActiveButton(href);
     if (isMobile) {
-      setIsSidebarOpen(false); // Close sidebar on mobile after option click
+      setIsSidebarOpen(false);
     }
   };
 
   return (
     <>
-      <div className={`sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
-        <nav className="sidebar-nav">
-          <div className="logo-Blink" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <img src='Blink.png' width={'80%'} alt="Logo" />
+      <div className={`w-[300px] h-full bg-[rgba(17,25,40,0)] backdrop-blur-[20px] saturate-[138%] rounded-tr-[30px] rounded-br-[30px] py-5 px-0 shadow-[inset_0px_0px_80px_rgba(255,255,255,0.15)] flex flex-col justify-between items-center transition-transform duration-300 ease-in-out z-[2] fixed overflow-y-scroll scrollbar-none ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:w-[180px]`}>
+        <nav className="w-full">
+          <div className="logo-Blink flex justify-center w-full">
+            <Image src={'/Blink.png'} width={80} height={80} alt="Logo" />
           </div>
-          <ul>
+          <ul className="list-none p-2.5 m-0">
             <li>
               <SideBarButtons href="/" isActive={activeButton === '/'} onClick={() => handleButtonClick('/')}>
                 Receive Sol
@@ -130,25 +117,33 @@ const Sidebar = () => {
             </li>
           </ul>
         </nav>
-        <div className="sidebar-bottom">
-          <a href='https://x.com/getblinkdotfun' target='_blank' className={activeButton === '/saved' ? 'active' : ''}>
+        <div className="flex flex-col gap-2.5 p-2.5 w-fit">
+          <a 
+            href='https://x.com/getblinkdotfun' 
+            target='_blank' 
+            className={`text-center text-white/70 bg-[rgba(17,25,40,0)] backdrop-blur-[20px] saturate-[138%] shadow-[inset_0px_0px_20px_rgba(255,255,255,0.15)] p-2.5 text-base rounded-md transition-all duration-300 no-underline whitespace-nowrap overflow-hidden text-ellipsis ${activeButton === '/saved' ? 'text-white bg-white/40 shadow-[0px_0px_10px_rgba(255,255,255,0.4)]' : 'hover:text-white hover:bg-white/40 hover:shadow-[0px_0px_10px_rgba(255,255,255,0.4)]'}`}
+          >
             <span>X /@getblinkdotfun</span>
           </a>
-          <a href='https://github.com/Getblink-fun/Getblink.fun' target='_blank' className={activeButton === '/draft' ? 'active' : ''}>
+          <a 
+            href='https://github.com/Getblink-fun/Getblink.fun' 
+            target='_blank' 
+            className={`text-center text-white/70 bg-[rgba(17,25,40,0)] backdrop-blur-[20px] saturate-[138%] shadow-[inset_0px_0px_20px_rgba(255,255,255,0.15)] p-2.5 text-base rounded-md transition-all duration-300 no-underline whitespace-nowrap overflow-hidden text-ellipsis ${activeButton === '/draft' ? 'text-white bg-white/40 shadow-[0px_0px_10px_rgba(255,255,255,0.4)]' : 'hover:text-white hover:bg-white/40 hover:shadow-[0px_0px_10px_rgba(255,255,255,0.4)]'}`}
+          >
             <span><FaGithub /> /Blink-Generator</span>
           </a>
-          {/* <a href='https://x.com/LookWhatIbuild' target='_blank' className={activeButton === '/trash' ? 'active' : ''}>
-            <span><FaHardHat /> /@LookWhatIBuild</span>
-          </a> */}
         </div>
       </div>
 
       {isMobile && (
         <>
-          <button className="sidebar-toggle" onClick={handleSidebarToggle}>
-            <strong>x</strong>
+          <button 
+            className={`transition-transform duration-300 ease-in-out fixed bottom-[3%] left-8 backdrop-blur-[20px] saturate-[138%] shadow-[inset_0px_0px_20px_rgba(0,0,0,0.3)] bg-white/10 text-white border-none rounded-full h-20 w-20 text-[2.5rem] cursor-pointer z-[3] md:h-[60px] md:w-[60px] md:text-[1.6rem] ${isSidebarOpen ? 'translate-x-[300px] md:translate-x-40' : 'translate-x-0'}`}
+            onClick={handleSidebarToggle}
+          >
+            <strong>☰</strong>
           </button>
-          {isSidebarOpen && <div className="backdrop" onClick={handleSidebarToggle}></div>}
+          {isSidebarOpen && <div className="fixed top-0 left-0 w-full h-full bg-black/60 backdrop-blur-[10px] z-[1]" onClick={handleSidebarToggle}></div>}
         </>
       )}
     </>
