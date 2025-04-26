@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import "../form/form.css";
-import "../preview/preview.css";
+import { HiOutlineClipboardCopy, HiOutlineShare } from 'react-icons/hi';
+
 interface DataProps {
   base: string;
   code: string;
@@ -16,7 +16,7 @@ const DataCard: React.FC<DataProps> = ({ base, code, title, endpoint }) => {
     const handleCopy = () => {
       navigator.clipboard.writeText(`${base}${blinkLink}`);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1000);
+      setTimeout(() => setCopied(false), 1500);
     };
 
     const handleTweet = () => {
@@ -26,23 +26,25 @@ const DataCard: React.FC<DataProps> = ({ base, code, title, endpoint }) => {
     };
 
     return (
-      <div className="blink-box">
-        <h2>{title}:</h2>
-        <div className="link-container">
-          <a href={`${base}${blinkLink}`} target="_blank" className="link">
-          {base}{base.includes("devnet") ? blinkLink.slice(0, -9)+"..." : blinkLink}
+      <div className="glass-card p-6 mb-4">
+        <h2 className="text-xl font-semibold mb-3 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">{title}</h2>
+        <div className="p-3 bg-[var(--card-bg)] rounded-lg mb-4 border border-[var(--border-color)]">
+          <a href={`${base}${blinkLink}`} target="_blank" className="text-[var(--text-color)] hover:text-[var(--accent-primary)] transition-colors break-all">
+            {base}{base.includes("devnet") ? blinkLink.slice(0, -9)+"..." : blinkLink}
           </a>
         </div>
-        <div className="button-container">
-          {copied ? (
-            <span className="copy-message">Copied!</span>
-          ) : (
-            <button className="copy-button" onClick={handleCopy}>
-              Copy
-            </button>
-          )}
-          <button className="tweet-button" onClick={handleTweet}>
-            Tweet
+        <div className="flex gap-3">
+          <button 
+            className="button-secondary flex items-center gap-2 py-2 px-4"
+            onClick={handleCopy}
+          >
+            {copied ? 'Copied!' : <><HiOutlineClipboardCopy size={18} /> Copy</>}
+          </button>
+          <button 
+            className="button-primary flex items-center gap-2 py-2 px-4"
+            onClick={handleTweet}
+          >
+            <HiOutlineShare size={18} /> Tweet
           </button>
         </div>
       </div>

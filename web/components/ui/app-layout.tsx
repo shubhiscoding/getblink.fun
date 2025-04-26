@@ -4,38 +4,18 @@ import Sidebar from '../SideBar/sidebar';
 
 export function AppLayout({ children }: { children: ReactNode }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', height: '100%'}}>
+    <div className="flex flex-row h-full">
       <Sidebar />
-      <div className='Content' style={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        boxShadow: 'inset 0px 0px 80px rgba(255, 255, 255, 0.15)',
-        margin: '20px',
-        borderRadius: '20px',
-        }}>
-        <div
-          className='Head'
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'start',
-            justifyContent: 'space-between',
-            padding: '20px 50px',
-            paddingBottom: '0px',
-            width: '100%',
-          }}
-        >
-          <h1 className='Title'>Getblink.fun</h1>
-          <div>
+      <div className="flex-1 flex flex-col m-4 md:m-6 glass-card overflow-hidden">
+        <div className="flex flex-row items-center justify-between p-6 border-b border-[var(--border-color)] bg-[rgba(30,41,59,0.6)]">
+          <h1 className="Title">Getblink.fun</h1>
+          <div className="flex items-center">
             <WalletButton />
           </div>
         </div>
-        <div style={{
-          padding: '10px',
-          overflowY: 'scroll',
-          scrollbarWidth: 'none',
-        }}>{children}</div>
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto scrollbar-thin scrollbar-thumb-[var(--border-color)] scrollbar-track-transparent">
+          {children}
+        </div>
       </div>
     </div>
   );

@@ -11,44 +11,68 @@ interface FormProps {
 const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
     const handleClick = () => {
       window.alert("It's a dummy button only for preview, Generate Blink and try it for real!!");
-        return;
     }
+    
     return (
-        <div className="w-fit">
-            <div className="w-fit p-[50px] rounded-[50px] backdrop-blur-[20px] saturate-[138%] bg-[rgba(17,25,40,0)] text-white font-sans shadow-[inset_0px_0px_20px_rgba(255,255,255,0.15)] max-w-[480px] text-wrap">
-                <div className="flex justify-center items-center">
-                    <div className="relative w-full max-w-[300px] h-[300px] rounded-2xl mb-4 shadow-[0_0px_4px_rgba(255,255,255,0.2)] md:max-w-[350px] md:min-h-[350px] overflow-hidden">
-                        <Image
-                            src={icon}
-                            alt="Icon"
-                            fill
-                            style={{ objectFit: 'cover' }}
-                            className="rounded-2xl"
-                        />
+        <div className="w-full max-w-md">
+            <div className="glass-card p-8 flex flex-col items-center">
+                <h2 className="text-xl font-semibold mb-6 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
+                    Preview
+                </h2>
+                
+                <div className="w-full bg-[var(--card-bg)] rounded-2xl p-6 shadow-lg">
+                    <div className="flex justify-center mb-6">
+                        <div className="relative w-full max-w-[250px] h-[250px] rounded-xl overflow-hidden border border-[var(--border-color)] shadow-lg">
+                            <Image
+                                src={icon}
+                                alt="Icon"
+                                fill
+                                style={{ objectFit: 'cover' }}
+                                className="rounded-xl"
+                            />
+                        </div>
                     </div>
-                </div>
-                <h3 className="text-lg font-bold mb-1.5">{title}</h3>
-                <p className="mb-1.5 break-words">{description}</p>
-                {label.length > 0 && <h5 className="text-xl font-normal">{label}</h5>}
-                <div className="mt-5">
-                  <div className="flex gap-1.5 md:flex-col md:gap-2.5">
-                    <button className="w-full py-3 px-0 border-none rounded-[50px] font-bold cursor-pointer mb-3 shadow-[0_3px_10px_rgba(0,0,0,1)] transition-colors duration-1000 bg-white text-[var(--bg-color)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_10px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent" onClick={handleClick}>0.01 SOL</button>
-                    <button className="w-full py-3 px-0 border-none rounded-[50px] font-bold cursor-pointer mb-3 shadow-[0_3px_10px_rgba(0,0,0,1)] transition-colors duration-1000 bg-white text-[var(--bg-color)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_10px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent md:hidden" onClick={handleClick}>0.05 SOL</button>
-                    <button className="w-full py-3 px-0 border-none rounded-[50px] font-bold cursor-pointer mb-3 shadow-[0_3px_10px_rgba(0,0,0,1)] transition-colors duration-1000 bg-white text-[var(--bg-color)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_10px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent" onClick={handleClick}>1.00 SOL</button>
-                  </div>
-                  <div className="flex mt-3">
-                    <input
-                        type="text"
-                        className="w-full py-3 px-0 bg-black border border-[var(--border-color)] rounded-l-full text-[#bbbdbd] shadow-[0_3px_10px_rgba(0,0,0,1)] pl-3"
-                        placeholder="Enter the amount of SOL to send*"
-                    />
-                    <button
-                        className="w-1/2 rounded-r-full mb-0 bg-white text-black border-none py-3 px-0 font-bold cursor-pointer shadow-[0_3px_10px_rgba(0,0,0,1)] transition-colors duration-1000 hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_10px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent"
-                        onClick={handleClick}
-                    >
-                        Send SOL
-                    </button>
-                  </div>
+                    
+                    <h3 className="text-lg font-bold mb-2 text-[var(--text-color)]">{title}</h3>
+                    <p className="mb-3 text-[var(--text-secondary)] break-words">{description}</p>
+                    {label.length > 0 && <h5 className="text-lg font-medium text-[var(--text-color)] mb-4">{label}</h5>}
+                    
+                    <div className="space-y-4 mt-6">
+                        <div className="grid grid-cols-3 gap-3">
+                            <button 
+                                className="button-primary py-2 text-sm"
+                                onClick={handleClick}
+                            >
+                                0.01 SOL
+                            </button>
+                            <button 
+                                className="button-primary py-2 text-sm"
+                                onClick={handleClick}
+                            >
+                                0.05 SOL
+                            </button>
+                            <button 
+                                className="button-primary py-2 text-sm"
+                                onClick={handleClick}
+                            >
+                                1.00 SOL
+                            </button>
+                        </div>
+                        
+                        <div className="flex mt-3">
+                            <input
+                                type="text"
+                                className="flex-1 py-2 px-4 bg-[rgba(0,0,0,0.2)] border border-[var(--border-color)] rounded-l-full text-[var(--text-color)] text-sm focus:outline-none"
+                                placeholder="Enter amount of SOL to send"
+                            />
+                            <button
+                                className="px-4 rounded-r-full bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] text-white font-medium"
+                                onClick={handleClick}
+                            >
+                                Send SOL
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
