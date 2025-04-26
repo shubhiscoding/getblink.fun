@@ -7,7 +7,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <div className="flex flex-row h-full">
       <Sidebar />
       <div className="flex-1 flex flex-col m-4 md:m-6 glass-card overflow-hidden">
-        <div className="flex flex-row items-center justify-between p-6 border-b border-[var(--border-color)] bg-[rgba(30,41,59,0.6)]">
+        <div className="flex flex-col md:flex-row items-center justify-between p-6 border-b border-[var(--border-color)] bg-[rgba(30,41,59,0.6)]">
           <h1 className="Title">Getblink.fun</h1>
           <div className="flex items-center">
             <WalletButton />

@@ -16,12 +16,15 @@ import { HiOutlineClipboardCopy, HiOutlineShare, HiOutlinePlus } from 'react-ico
 import { Footer } from '@/components/footer';
 import LoadingScreen from '@/components/Loading/loading';
 
+// Define commission types for type safety
+type CommissionType = "yes" | "no";
+
 export default function Page() {
   const { publicKey, connected, sendTransaction } = useWallet();
   const [icon, setIcon] = useState<string>('');
   const [label, setLabel] = useState<string>('');
   const [percentage, setPercentage] = useState<number>(0);
-  const [takeCommission, setTakeCommission] = useState<string>("no");
+  const [takeCommission, setTakeCommission] = useState<CommissionType>("no");
   const [description, setDescription] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [mint, setMint] = useState<string>('');
@@ -260,7 +263,7 @@ export default function Page() {
                           type="radio"
                           value="yes"
                           checked={takeCommission === "yes"}
-                          onChange={(e) => setTakeCommission(e.target.value)}
+                          onChange={(e) => setTakeCommission(e.target.value as CommissionType)}
                           className="accent-[var(--accent-primary)]"
                         />
                         <span className="text-[var(--text-color)]">Yes</span>
@@ -271,7 +274,7 @@ export default function Page() {
                           type="radio"
                           value="no"
                           checked={takeCommission === "no"}
-                          onChange={(e) => setTakeCommission(e.target.value)}
+                          onChange={(e) => setTakeCommission(e.target.value as CommissionType)}
                           className="accent-[var(--accent-primary)]"
                         />
                         <span className="text-[var(--text-color)]">No</span>

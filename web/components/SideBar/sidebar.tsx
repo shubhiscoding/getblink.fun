@@ -78,7 +78,7 @@ const Sidebar = () => {
     <>
       <div className={`fixed md:relative w-[280px] h-full glass-card py-6 flex flex-col justify-between z-20 transition-transform duration-300 ${
         isMobile ? (isSidebarOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'
-      }`}>
+      } sm:w-full sm:max-w-[280px]`}>
         <div>
           <div className="logo-Blink flex justify-center items-center mb-6">
             <Image 
@@ -162,7 +162,7 @@ const Sidebar = () => {
       {isMobile && (
         <>
           <button 
-            className="fixed bottom-6 left-6 z-30 flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] text-white shadow-lg"
+            className="mobile-menu-button"
             onClick={handleSidebarToggle}
             aria-label="Toggle sidebar"
           >
@@ -171,7 +171,7 @@ const Sidebar = () => {
           
           {isSidebarOpen && (
             <div 
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-10"
+              className="mobile-overlay"
               onClick={handleSidebarToggle}
             />
           )}

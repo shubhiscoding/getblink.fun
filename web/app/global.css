@@ -66,24 +66,55 @@
   .textarea-field {
     @apply w-full p-3 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl text-[var(--text-color)] text-base resize-none focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all duration-300;
   }
+
+  /* Mobile navigation styles */
+  .mobile-menu-button {
+    @apply fixed bottom-6 left-6 z-30 flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] text-white shadow-lg;
+  }
+
+  .mobile-overlay {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-10;
+  }
 }
 
+/* Large screens */
+@media (min-width: 1536px) {
+  .glass-card {
+    @apply p-10;
+  }
+  
+  .Title {
+    @apply text-[4rem];
+  }
+}
+
+/* Desktop */
 @media (max-width: 1250px) {
   .form {
-    @apply !p-[40px];
+    @apply !p-8;
   }
+  
   .Title {
     @apply text-[3rem];
   }
+  
+  .glass-card {
+    @apply p-6;
+  }
 }
 
+/* Tablets */
 @media (max-width: 1025px) {
   .main {
     @apply p-5 gap-4 justify-between;
   }
+  
+  .glass-card {
+    @apply p-5;
+  }
 }
 
-/* Media query for screens smaller than 768px (like tablets and mobile devices) */
+/* Small tablets */
 @media (max-width: 930px) {
   .header {
     @apply py-3 px-4;
@@ -94,7 +125,7 @@
   }
 
   .main {
-    @apply flex-col py-[20px] px-[30px] gap-[20px];
+    @apply flex-col py-[20px] px-[20px] gap-[20px];
   }
   
   .Head {
@@ -104,10 +135,18 @@
   .Head .wallet-adapter-button-trigger {
     @apply !py-2 !px-4;
   }
+  
+  .glass-card {
+    @apply p-4;
+  }
+  
+  .button-primary, .button-secondary {
+    @apply py-2.5 px-4 text-sm;
+  }
 }
 
-/* Media query for screens smaller than 480px (like mobile devices) */
-@media (max-width: 610px) {
+/* Mobile devices */
+@media (max-width: 640px) {
   .header {
     @apply py-2 px-3;
   }
@@ -121,6 +160,26 @@
   }
 
   .main {
-    @apply flex-col py-3 px-4 gap-4;
+    @apply flex-col py-3 px-3 gap-4;
+  }
+  
+  .glass-card {
+    @apply p-4 rounded-xl;
+  }
+  
+  .button-primary, .button-secondary {
+    @apply py-2 px-3 text-sm;
+  }
+  
+  .input-field, .textarea-field {
+    @apply p-2.5 text-sm;
+  }
+  
+  h1.text-2xl {
+    @apply text-xl;
+  }
+  
+  h2.text-xl {
+    @apply text-lg;
   }
 }
