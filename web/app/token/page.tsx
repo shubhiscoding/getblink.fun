@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletButton } from '@/components/solana/solana-provider';
-import Preview from "@/components/preview/preview";
+import TokenPreview from "@/components/preview/token-preview";
 import {
   PublicKey,
   Transaction,
@@ -12,6 +12,7 @@ import {
   clusterApiUrl
 } from '@solana/web3.js';
 import { FaInfoCircle } from 'react-icons/fa';
+import { HiOutlineClipboardCopy, HiOutlineShare, HiOutlinePlus } from 'react-icons/hi';
 import { Footer } from '@/components/footer';
 import LoadingScreen from '@/components/Loading/loading';
 
@@ -33,30 +34,26 @@ export default function Page() {
   const form = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const infoCard = document.querySelector('.info-icon');
-
-    const handleClick = () => {
-      console.log('clicked');
+    const handleInfoClick = (e: MouseEvent) => {
       window.alert("If you opt to take a commission, the specified percentage of the total transaction amount will be credited to your wallet. Please note that the maximum commission percentage allowed is 1%.");
     };
 
-    if (infoCard) {
-      infoCard.addEventListener('click', handleClick);
-      console.log('added');
-    }
+    document.querySelectorAll('.info-icon').forEach(icon => {
+      icon.addEventListener('click', handleInfoClick as EventListener);
+    });
 
     return () => {
-      if (infoCard) {
-        infoCard.removeEventListener('click', handleClick);
-      }
+      document.querySelectorAll('.info-icon').forEach(icon => {
+        icon.removeEventListener('click', handleInfoClick as EventListener);
+      });
     };
   }, []);
 
-  useEffect(()=>{
-      setShowPreview(true);
+  useEffect(() => {
+    setShowPreview(true);
   }, [mint]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if(takeCommission === "no"){
       setPercentage(0);
     }
@@ -133,10 +130,6 @@ export default function Page() {
         setBlinkLink(data.blinkLink);
         setShowForm(false);
         setLoading(false);
-        if (form.current) {
-          form.current.className = form.current.className.replace('p-[120px]', 'p-[70px]');
-        }
-
       } catch (error) {
         setLoading(false);
         console.error('Error sending transaction:', error);
@@ -149,7 +142,6 @@ export default function Page() {
       window.alert('There was an issue generating your blink. Please try again.');
     }
   };
-
 
   const handlePreview = async () => {
     try {
@@ -188,7 +180,7 @@ export default function Page() {
   const handleCopy = () => {
     navigator.clipboard.writeText(`https://dial.to/?action=solana-action:${blinkLink}`);
     setCopied(true);
-    setTimeout(() => setCopied(false), 1000);
+    setTimeout(() => setCopied(false), 1500);
   };
 
   const handleTweet = () => {
@@ -199,188 +191,224 @@ export default function Page() {
 
   const handleNew = () => {
     setShowForm(true);
-    if (form.current) {
-      form.current.className = form.current.className.replace('p-[70px]', 'p-[120px]');
-    }
   };
 
-
   return (
-    <>
-    <div className='flex-grow flex justify-center p-5 gap-5'>
+    <div className="flex flex-col min-h-screen">
       {loading && <LoadingScreen subtext={loadingText}/>}
-      <div className="flex flex-col justify-between rounded-2xl px-0 md:px-5 w-fit">
-        <div className="p-[120px] rounded-[50px] backdrop-blur-[20px] saturate-[138%] shadow-[inset_0px_0px_20px_rgba(255,255,255,0.15)] bg-[rgba(17,25,40,0)] text-white font-sans md:p-5 sm:p-2.5" ref={form}>
-          {showForm && <h1 className="text-3xl md:text-[3rem] font-bold mb-2.5 text-[#989898]">Customize Your Blink</h1>}
-          {showForm && (
-            <div className="flex justify-between mb-5 md:flex-col">
-              <input
-                type="text"
-                value={mint}
-                onChange={(e) => setMint(e.target.value)}
-                className="w-full p-3 max-w-[900px] bg-black shadow-[0_3px_10px_rgba(0,0,0,1)] border border-[var(--border-color)] rounded-full text-[#bbbdbd] text-base"
-                placeholder="Mint Address"
-                maxLength={45}
-              />
-            </div>
-          )}
-          {showForm && (
-            <div className="flex justify-between mb-5 md:flex-col">
-              <input
-                type="text"
-                value={label}
-                onChange={(e) => setLabel(e.target.value)}
-                className="w-full p-3 max-w-[900px] bg-black shadow-[0_3px_10px_rgba(0,0,0,1)] border border-[var(--border-color)] rounded-full text-[#bbbdbd] text-base"
-                placeholder="Label"
-                maxLength={30}
-              />
-            </div>
-          )}
-          {showForm && (
-            <div className="flex justify-between mb-5 md:flex-col">
-              <div className='min-w-[150px] flex flex-col justify-between ml-2.5 mr-[30px] text-[#c6c6c6] md:flex-row md:justify-start md:min-w-0'>
-                <label className="flex gap-0.5 items-center">
-                  Take commission: <FaInfoCircle className="text-[#b2b2b2] cursor-pointer info-icon" />
-                </label>
-                <div className='flex justify-between md:ml-2.5 md:min-w-[90px]'>
-                  <label className="flex gap-0.5 items-center">
-                    <input
-                      type="radio"
-                      value="yes"
-                      checked={takeCommission === "yes"}
-                      onChange={(e) => setTakeCommission(e.target.value)}
-                      className="cursor-pointer"
-                    />
-                    Yes
-                  </label>
-                  <label className="flex gap-0.5 items-center">
-                    <input
-                      type="radio"
-                      value="no"
-                      checked={takeCommission === "no"}
-                      onChange={(e) => setTakeCommission(e.target.value)}
-                      className="cursor-pointer"
-                    />
-                    No
-                  </label>
+      
+      <div className="flex-1 flex flex-col md:flex-row items-start justify-center gap-8 p-4 md:p-8">
+        <div className="w-full max-w-2xl">
+          <div className="glass-card p-8 md:p-10" ref={form}>
+            {showForm && (
+              <div className="space-y-6">
+                <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
+                  Sell/Resell Token
+                </h1>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Mint Address</label>
+                  <input
+                    type="text"
+                    value={mint}
+                    onChange={(e) => setMint(e.target.value)}
+                    className="input-field"
+                    placeholder="Enter token mint address"
+                    maxLength={45}
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Label</label>
+                  <input
+                    type="text"
+                    value={label}
+                    onChange={(e) => setLabel(e.target.value)}
+                    className="input-field"
+                    placeholder="Enter a label"
+                    maxLength={30}
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Description</label>
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="textarea-field"
+                    rows={3}
+                    placeholder="Enter a description"
+                    maxLength={143}
+                  />
+                  <p className="text-xs text-[var(--text-secondary)] mt-1">
+                    {description.length}/143 characters
+                  </p>
+                </div>
+                
+                <div className="bg-[var(--card-bg)] rounded-xl p-4 border border-[var(--border-color)]">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex items-center gap-2">
+                      <label className="text-sm font-medium text-[var(--text-color)]">
+                        Take commission
+                      </label>
+                      <FaInfoCircle className="text-[var(--text-secondary)] cursor-pointer info-icon" />
+                    </div>
+                    
+                    <div className="flex items-center gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          value="yes"
+                          checked={takeCommission === "yes"}
+                          onChange={(e) => setTakeCommission(e.target.value)}
+                          className="accent-[var(--accent-primary)]"
+                        />
+                        <span className="text-[var(--text-color)]">Yes</span>
+                      </label>
+                      
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          value="no"
+                          checked={takeCommission === "no"}
+                          onChange={(e) => setTakeCommission(e.target.value)}
+                          className="accent-[var(--accent-primary)]"
+                        />
+                        <span className="text-[var(--text-color)]">No</span>
+                      </label>
+                    </div>
+                  </div>
+                  
+                  {takeCommission === "yes" && (
+                    <div className="mt-4">
+                      <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">
+                        Commission Percentage (max 1%)
+                      </label>
+                      <input
+                        type="number"
+                        value={percentage}
+                        onChange={(e) => {
+                          const value = Math.min(1, parseFloat(e.target.value) || 0);
+                          setPercentage(value);
+                        }}
+                        className="input-field"
+                        placeholder="Enter commission percentage"
+                        max={1}
+                        min={0}
+                        step={0.01}
+                        disabled={takeCommission === "no"}
+                      />
+                    </div>
+                  )}
+                </div>
+                
+                {publicKey ? (
+                  <button 
+                    className="button-primary w-full mt-4 flex items-center justify-center gap-2"
+                    onClick={showPreview ? handlePreview : handleSubmit} 
+                    disabled={!connected}
+                  >
+                    {showPreview ? 'Preview Blink' : 'Generate Blink'}
+                  </button>
+                ) : (
+                  <div className="mt-4 text-center">
+                    <p className="text-[var(--text-secondary)] mb-3">Connect your wallet to generate a Blink</p>
+                    <WalletButton />
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {!showForm && (
+              <div className="space-y-6">
+                <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
+                  Your Blink is Ready!
+                </h1>
+                
+                <div className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--border-color)]">
+                  <p className="text-sm text-[var(--text-secondary)] mb-2">Blink Link:</p>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
+                      https://dial.to/?action=solana-action:{blinkLink}
+                    </div>
+                    <button 
+                      onClick={handleCopy} 
+                      className="p-3 rounded-lg bg-[var(--border-color)] hover:bg-[var(--accent-primary)] transition-colors duration-300"
+                      title="Copy to clipboard"
+                    >
+                      {copied ? 'Copied!' : <HiOutlineClipboardCopy size={20} />}
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-4 mt-6">
+                  <button 
+                    className="button-primary flex-1 flex items-center justify-center gap-2"
+                    onClick={handleTweet}
+                  >
+                    <HiOutlineShare size={18} />
+                    Share on X
+                  </button>
+                  
+                  <button 
+                    className="button-secondary flex-1 flex items-center justify-center gap-2"
+                    onClick={handleNew}
+                  >
+                    <HiOutlinePlus size={18} />
+                    Create New Blink
+                  </button>
                 </div>
               </div>
-               <input
-                type="number"
-                value={percentage}
-                onChange={(e) => {
-                  if (takeCommission === "yes") {
-                    const value = Math.min(1, parseFloat(e.target.value) || 0);
-                    setPercentage(value);
-                  }
-                }}
-                className="w-full p-3 max-w-[900px] bg-black shadow-[0_3px_10px_rgba(0,0,0,1)] border border-[var(--border-color)] rounded-full text-[#bbbdbd] text-base disabled:opacity-50"
-                placeholder="Commission Percentage"
-                max={1}
-                min={0}
-                step={0.01}
-                maxLength={30}
-                disabled={takeCommission === "no"}
-              />
-            </div>
-          )}
-          {showForm && (
-            <div className="flex justify-between mb-5 md:flex-col">
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full p-3 max-w-[900px] bg-black shadow-[0_3px_10px_rgba(0,0,0,1)] border border-[var(--border-color)] rounded-[30px] text-[#bbbdbd] text-base resize-none min-h-[20px]"
-                rows={3}
-                placeholder="Description"
-                maxLength={143}
-              />
-            </div>
-          )}
-          {showForm && publicKey ? (
-           <button 
-            className="bg-white text-[var(--bg-color)] border-none py-3 px-5 rounded-full font-bold cursor-pointer transition-colors duration-1000 shadow-[0_3px_10px_rgba(0,0,0,1)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_10px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent md:py-2.5 md:px-4 md:text-[0.9rem] sm:py-2 sm:px-3 sm:text-[0.8rem]" 
-            onClick={showPreview ? handlePreview: handleSubmit} 
-            disabled={!connected}
-           >
-            {showPreview ?  'Preview Blink' : 'Generate Blink'}
-          </button>
-          ) : (
-            showForm && <WalletButton />
-          )}
-          {blinkLink && !showForm && (
-            <div className="w-fit flex flex-col mt-5 p-[30px] rounded-[50px] shadow-[inset_0px_0px_20px_rgba(255,255,255,0.15)] backdrop-blur-[20px] saturate-[138%] bg-[rgba(17,25,40,0)] text-white font-sans max-w-[700px]">
-              <h2 className="text-xl font-bold mb-2">Your Blink Link:</h2>
-              <div className="flex items-center mt-2 flex-wrap gap-2">
-                <a href={`https://dial.to/?action=solana-action:${blinkLink}`} target="_blank" className="py-[3px] px-2.5 rounded-full text-white break-all bg-black/30">
+            )}
+          </div>
+          
+          {blinkLink && showForm && (
+            <div className="glass-card p-6 mt-6">
+              <h2 className="text-xl font-semibold mb-4 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
+                Your Previous Blink
+              </h2>
+              
+              <div className="p-3 bg-[var(--card-bg)] rounded-lg mb-4 border border-[var(--border-color)]">
+                <a 
+                  href={`https://dial.to/?action=solana-action:${blinkLink}`} 
+                  target="_blank" 
+                  className="text-[var(--text-color)] hover:text-[var(--accent-primary)] transition-colors break-all"
+                >
                   https://dial.to/?action=solana-action:{blinkLink}
                 </a>
               </div>
-              <div className="flex gap-[15px] mt-[5px]">
-                {copied ? (
-                  <span className="text-[var(--accent-green)]">Copied!</span>
-                ) : (
-                  <button 
-                    className="w-full max-w-[100px] border-none py-2 px-3 rounded-full text-[0.9rem] cursor-pointer bg-white text-[var(--bg-color)] shadow-[0_3px_10px_rgba(0,0,0,1)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_5px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent md:py-2.5 md:px-4 md:text-[0.9rem] sm:py-2 sm:px-3 sm:text-[0.8rem]" 
-                    onClick={handleCopy}
-                  >
-                    Copy
-                  </button>
-                )}
+              
+              <div className="flex gap-3">
                 <button 
-                  className="w-full max-w-[100px] border-none py-2 px-3 rounded-full text-[0.9rem] cursor-pointer bg-white text-[var(--bg-color)] shadow-[0_3px_10px_rgba(0,0,0,1)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_5px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent md:py-2.5 md:px-4 md:text-[0.9rem] sm:py-2 sm:px-3 sm:text-[0.8rem]" 
-                  onClick={handleTweet}
+                  className="button-secondary flex items-center gap-2 py-2 px-4"
+                  onClick={handleCopy}
                 >
-                  Tweet
+                  {copied ? 'Copied!' : <><HiOutlineClipboardCopy size={18} /> Copy</>}
                 </button>
                 <button 
-                  className="w-full max-w-[110px] border-none py-2 px-3 rounded-full text-[0.9rem] cursor-pointer bg-white text-[var(--bg-color)] shadow-[0_3px_10px_rgba(0,0,0,1)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_5px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent md:py-2.5 md:px-4 md:text-[0.9rem] sm:py-2 sm:px-3 sm:text-[0.8rem]" 
-                  onClick={handleNew}
+                  className="button-primary flex items-center gap-2 py-2 px-4"
+                  onClick={handleTweet}
                 >
-                  Create New
+                  <HiOutlineShare size={18} /> Tweet
                 </button>
               </div>
             </div>
           )}
         </div>
-        {blinkLink && showForm && (
-            <div className="w-fit flex flex-col mt-5 p-[30px] rounded-[50px] shadow-[inset_0px_0px_20px_rgba(255,255,255,0.15)] backdrop-blur-[20px] saturate-[138%] bg-[rgba(17,25,40,0)] text-white font-sans">
-              <h2 className="text-xl font-bold mb-2">Your Blink Link:</h2>
-              <div className="flex items-center mt-2 flex-wrap gap-2">
-                <a href={`https://dial.to/?action=solana-action:${blinkLink}`} target="_blank" className="py-[3px] px-2.5 rounded-full text-white break-all bg-black/30">
-                  https://dial.to/?action=solana-action:{blinkLink}
-                </a>
-              </div>
-              <div className="flex gap-[15px] mt-[5px]">
-                {copied ? (
-                  <span className="text-[var(--accent-green)]">Copied!</span>
-                ) : (
-                  <button 
-                    className="w-full max-w-[100px] border-none py-2 px-3 rounded-full text-[0.9rem] cursor-pointer bg-white text-[var(--bg-color)] shadow-[0_3px_10px_rgba(0,0,0,1)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_5px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent md:py-2.5 md:px-4 md:text-[0.9rem] sm:py-2 sm:px-3 sm:text-[0.8rem]" 
-                    onClick={handleCopy}
-                  >
-                    Copy
-                  </button>
-                )}
-                <button 
-                  className="w-full max-w-[100px] border-none py-2 px-3 rounded-full text-[0.9rem] cursor-pointer bg-white text-[var(--bg-color)] shadow-[0_3px_10px_rgba(0,0,0,1)] hover:backdrop-blur-[20px] hover:saturate-[138%] hover:shadow-[inset_0px_0px_5px_rgba(255,255,255,0.1)] hover:bg-[rgba(17,25,40,0)] hover:bg-gradient-to-l hover:from-[#c0c0c0] hover:via-white hover:to-[#c0c0c0] hover:bg-clip-text hover:text-transparent md:py-2.5 md:px-4 md:text-[0.9rem] sm:py-2 sm:px-3 sm:text-[0.8rem]" 
-                  onClick={handleTweet}
-                >
-                  Tweet
-                </button>
-              </div>
-            </div>
+        
+        {!showPreview && (
+          <div className="w-full md:w-auto">
+            <TokenPreview
+              icon={icon || 'https://raw.githubusercontent.com/shubhiscoding/Blink-Generator/main/web/public/solana.jpg'}
+              label={label || 'Your Label'}
+              description={description || 'Your Description shows up here, Keep it short and simple'}
+              title={title || "Your Title"}
+            />
+          </div>
         )}
       </div>
-      {!showPreview && (
-        <Preview
-          icon={icon || 'https://raw.githubusercontent.com/shubhiscoding/Blink-Generator/main/web/public/solana.jpg'}
-          label={label || 'Your Label'}
-          description={description || 'Your Description shows up here, Keep it short and simple'}
-          title={title || "Your Tittle : )"}
-        />
-      )}
+      
+      <Footer />
     </div>
-    <Footer />
-    </>
   );
 }
