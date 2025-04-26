@@ -15,6 +15,10 @@ module.exports = {
         'accent-green': '#14F195',
         'border-color': '#38444D',
       },
+      screens: {
+        'lap': '1270px',
+        'md': '1000px',
+      }
     },
   },
   plugins: [],

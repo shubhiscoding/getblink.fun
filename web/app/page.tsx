@@ -12,7 +12,7 @@ export default function Index() {
 
   return (
     <div className="flex flex-col md:min-h-screen">
-      <div className="flex-1 flex flex-col md:flex-row items-start md:justify-center gap-8 md:p-8">
+      <div className="flex-1 flex flex-col md:flex-row items-center md:items-start md:justify-center gap-8 md:p-8">
         <Form
           icon={icon}
           setIcon={setIcon}

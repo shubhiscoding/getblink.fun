@@ -14,7 +14,7 @@ const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
     }
 
     return (
-        <div className="w-full md:max-w-md">
+        <div className="w-full max-w-2xl">
             <div className="card p-6 flex flex-col items-center">
                 <h2 className="text-xl font-semibold mb-6 text-[var(--accent-primary)]">
                     Preview

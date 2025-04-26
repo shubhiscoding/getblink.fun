@@ -17,8 +17,8 @@ const SideBarButton: React.FC<SideButtonProps> = ({ href, children, icon, isActi
   <Link href={href} className="no-underline w-full">
     <div
       className={`flex items-center gap-3 py-3 px-4 my-2 rounded-md transition-all duration-300 ${
-        isActive 
-          ? 'bg-[var(--accent-primary)] text-white font-medium shadow-sm' 
+        isActive
+          ? 'bg-[var(--accent-primary)] text-white font-medium shadow-sm'
           : 'text-[var(--text-secondary)] hover:bg-[var(--border-color)] hover:text-[var(--text-color)]'
       }`}
       onClick={onClick}
@@ -39,12 +39,12 @@ const Sidebar = () => {
     const segments = path.split('/');
     const endpoint = segments[segments.length - 1] || '';
     setActiveButton('/' + endpoint);
-    
+
     // Check if mobile
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
+      setIsMobile(window.innerWidth <= 1270);
     };
-    
+
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -63,81 +63,81 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className={`fixed md:relative w-[260px] h-full card py-6 flex flex-col justify-between z-20 transition-transform duration-300 ${
+      <div className={`fixed lap:relative w-[260px] h-full card py-6 flex flex-col justify-between z-20 transition-transform duration-300 ${
         isMobile ? (isSidebarOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'
       } sm:w-full sm:max-w-[260px]`}>
         <div>
           <div className="flex justify-center items-center mb-6">
-            <Image 
-              src={'/Blink.png'} 
-              width={60} 
-              height={60} 
+            <Image
+              src={'/Blink.png'}
+              width={60}
+              height={60}
               alt="Logo"
-              className="rounded-full shadow-sm" 
+              className="rounded-full shadow-sm"
             />
           </div>
-          
+
           <div className="px-4">
-            <SideBarButton 
-              href="/" 
+            <SideBarButton
+              href="/"
               icon={<HiOutlineCash />}
-              isActive={activeButton === '/'} 
+              isActive={activeButton === '/'}
               onClick={() => handleButtonClick('/')}
             >
               Receive Sol
             </SideBarButton>
-            
-            <SideBarButton 
-              href="/token" 
+
+            <SideBarButton
+              href="/token"
               icon={<HiOutlineShoppingCart />}
-              isActive={activeButton === '/token'} 
+              isActive={activeButton === '/token'}
               onClick={() => handleButtonClick('/token')}
             >
               Sell/ReSell Tokens
             </SideBarButton>
-            
-            <SideBarButton 
-              href="/Blinks" 
+
+            <SideBarButton
+              href="/Blinks"
               icon={<HiOutlineCollection />}
-              isActive={activeButton === '/Blinks'} 
+              isActive={activeButton === '/Blinks'}
               onClick={() => handleButtonClick('/Blinks')}
             >
               My Blinks
             </SideBarButton>
-            
-            <SideBarButton 
-              href="/ComingSoon" 
+
+            <SideBarButton
+              href="/ComingSoon"
               icon={<HiOutlineCube />}
-              isActive={activeButton === '/gamble'} 
+              isActive={activeButton === '/gamble'}
               onClick={() => handleButtonClick('/gamble')}
             >
               Gamble Blinks
             </SideBarButton>
-            
-            <SideBarButton 
-              href="/ComingSoon" 
+
+            <SideBarButton
+              href="/ComingSoon"
               icon={<HiOutlineChip />}
-              isActive={activeButton === '/gaming'} 
+              isActive={activeButton === '/gaming'}
               onClick={() => handleButtonClick('/gaming')}
             >
               Gaming Blinks
             </SideBarButton>
           </div>
         </div>
-        
+
         <div className="px-4 space-y-2">
-          <a 
-            href='https://x.com/getblinkdotfun' 
-            target='_blank' 
+          <a
+            href='https://x.com/getblinkdotfun'
+            target='_blank'
             className="flex items-center gap-2 p-3 text-[var(--text-secondary)] rounded-md transition-all duration-300 hover:bg-[var(--border-color)] hover:text-[var(--text-color)]"
           >
             <FaTwitter />
             <span>@getblinkdotfun</span>
           </a>
-          
-          <a 
-            href='https://github.com/Getblink-fun/Getblink.fun' 
-            target='_blank' 
+
+          <a
+            href='https://github.com/Getblink-fun/Getblink.fun'
+            target='_blank'
             className="flex items-center gap-2 p-3 text-[var(--text-secondary)] rounded-md transition-all duration-300 hover:bg-[var(--border-color)] hover:text-[var(--text-color)]"
           >
             <FaGithub />
@@ -148,16 +148,16 @@ const Sidebar = () => {
 
       {isMobile && (
         <>
-          <button 
+          <button
             className="mobile-menu-button"
             onClick={handleSidebarToggle}
             aria-label="Toggle sidebar"
           >
             {isSidebarOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
           </button>
-          
+
           {isSidebarOpen && (
-            <div 
+            <div
               className="mobile-overlay"
               onClick={handleSidebarToggle}
             />

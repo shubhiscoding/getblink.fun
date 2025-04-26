@@ -200,7 +200,7 @@ export default function Page() {
     <div className="flex flex-col md:min-h-screen">
       {loading && <LoadingScreen subtext={loadingText}/>}
 
-      <div className="flex-1 flex flex-col md:flex-row items-start md:justify-center gap-8 md:p-8">
+      <div className="flex-1 flex flex-col md:flex-row items-center md:items-start md:justify-center gap-8 md:p-8">
         <div className="w-full max-w-2xl">
           <div className="glass-card md:p-10" ref={form}>
             {showForm && (
@@ -400,7 +400,7 @@ export default function Page() {
         </div>
 
         {!showPreview && (
-          <div className="w-full md:w-auto">
+          <div className="w-full md:w-auto flex justify-center">
             <TokenPreview
               icon={icon || 'https://raw.githubusercontent.com/shubhiscoding/Blink-Generator/main/web/public/solana.jpg'}
               label={label || 'Your Label'}

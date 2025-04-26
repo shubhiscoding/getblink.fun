@@ -14,7 +14,7 @@ const TokenPreview: React.FC<TokenPreviewProps> = ({ icon, label, description, t
     }
 
     return (
-        <div className="w-full md:max-w-md">
+        <div className="w-full max-w-2xl">
             <div className="glass-card p-4 sm:p-6 md:p-8 flex flex-col items-center">
                 <h2 className="text-xl font-semibold mb-4 md:mb-6 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
                     Preview

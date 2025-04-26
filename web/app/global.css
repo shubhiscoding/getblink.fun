@@ -30,11 +30,11 @@
   * {
     @apply box-border m-0 p-0;
   }
-  
+
   body, html {
     @apply font-sans bg-[var(--bg-color)] text-[var(--text-color)] h-full transition-colors duration-200;
   }
-  
+
   /* Add smooth scrolling */
   html {
     @apply scroll-smooth;
@@ -45,15 +45,15 @@
   .app-layout {
     @apply flex flex-col min-h-screen;
   }
-  
+
   .Title {
     @apply text-[2.5rem] font-bold m-0 text-[var(--text-color)];
   }
-  
+
   .main {
     @apply flex-grow flex justify-center py-8 px-[50px] gap-8;
   }
-  
+
   footer {
     @apply flex justify-center items-center p-4 text-[0.9rem] text-[var(--text-secondary)];
   }
@@ -106,38 +106,38 @@
 
   /* Mobile navigation styles */
   .mobile-menu-button {
-    @apply fixed bottom-6 left-6 z-30 flex items-center justify-center w-12 h-12 rounded-full bg-[var(--accent-primary)] text-white shadow-md;
+    @apply fixed bottom-6 right-6 z-30 flex items-center justify-center w-12 h-12 rounded-full bg-[var(--accent-primary)] text-white shadow-md;
   }
 
   .mobile-overlay {
     @apply fixed inset-0 bg-black/20 backdrop-blur-sm z-10;
   }
-  
+
   /* Custom scrollbar - hide completely */
   .custom-scrollbar {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
-  
+
   .custom-scrollbar::-webkit-scrollbar {
     display: none;  /* Chrome, Safari and Opera */
   }
-  
+
   /* Card hover effect */
   .hover-lift {
     @apply transition-transform duration-300 hover:-translate-y-1;
   }
-  
+
   /* Fade in animation */
   .fade-in {
     animation: fadeIn 0.5s ease-in-out;
   }
-  
+
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
   }
-  
+
   /* Gradient text */
   .gradient-text {
     @apply text-[var(--accent-primary)];
@@ -149,7 +149,7 @@
   .card {
     @apply p-6;
   }
-  
+
   .Title {
     @apply text-[3rem];
   }
@@ -160,11 +160,11 @@
   .form {
     @apply !p-6;
   }
-  
+
   .Title {
     @apply text-[2.5rem];
   }
-  
+
   .card {
     @apply p-5;
   }
@@ -175,7 +175,7 @@
   .main {
     @apply p-5 gap-4 justify-between;
   }
-  
+
   .card {
     @apply p-4;
   }
@@ -194,7 +194,7 @@
   .main {
     @apply flex-col py-[20px] px-[20px] gap-[20px];
   }
-  
+
   .Head {
     @apply flex-col !p-[15px];
   }
@@ -213,23 +213,23 @@
   .main {
     @apply flex-col py-3 px-3 gap-4;
   }
-  
+
   .card {
     @apply p-4 rounded-xl;
   }
-  
+
   .button-primary, .button-secondary {
     @apply py-2 px-3 text-sm;
   }
-  
+
   .input-field, .textarea-field {
     @apply p-2.5 text-sm;
   }
-  
+
   h1.text-2xl {
     @apply text-xl;
   }
-  
+
   h2.text-xl {
     @apply text-lg;
   }
@@ -241,28 +241,28 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  
+
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
-  
+
   /* Animation delay utilities */
   .animation-delay-100 {
     animation-delay: 0.1s;
   }
-  
+
   .animation-delay-200 {
     animation-delay: 0.2s;
   }
-  
+
   .animation-delay-300 {
     animation-delay: 0.3s;
   }
-  
+
   .animation-delay-400 {
     animation-delay: 0.4s;
   }
-  
+
   .animation-delay-500 {
     animation-delay: 0.5s;
   }
