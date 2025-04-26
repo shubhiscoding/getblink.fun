@@ -20,7 +20,7 @@ const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
                     Preview
                 </h2>
 
-                <div className="w-full bg-white rounded-md p-5 shadow-sm border border-[var(--border-color)]">
+                <div className="w-full bg-[var(--card-bg)] rounded-md p-5 shadow-sm border border-[var(--border-color)]">
                     <div className="flex justify-center mb-6">
                         <div className="relative w-full max-w-[200px] sm:max-w-[220px] md:max-w-[250px] h-[200px] sm:h-[220px] md:h-[250px] rounded-md overflow-hidden border border-[var(--border-color)]">
                             <Image

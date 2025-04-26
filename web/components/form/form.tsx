@@ -221,7 +221,7 @@ const Form: React.FC<FormProps> = ({
             <div className="p-4 rounded-md bg-[var(--bg-color)] border border-[var(--border-color)]">
               <p className="text-sm font-medium mb-2 text-[var(--text-secondary)]">Blink Link:</p>
               <div className="flex items-center gap-2">
-                <div className="flex-1 p-3 bg-white rounded-md text-sm overflow-hidden overflow-ellipsis whitespace-nowrap border border-[var(--border-color)]">
+                <div className="flex-1 p-3 bg-[var(--card-bg)] rounded-md text-sm overflow-hidden overflow-ellipsis whitespace-nowrap border border-[var(--border-color)]">
                   https://dial.to/?action=solana-action:{blinkLink}
                 </div>
                 <button

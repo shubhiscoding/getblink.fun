@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  /* Light mode (default) */
   --bg-color: #f8f9fa;
   --card-bg: #ffffff;
   --text-color: #212529;
@@ -15,13 +16,23 @@
   --gradient-end: #10b981;
 }
 
+.dark-mode {
+  /* Dark mode */
+  --bg-color: #121212;
+  --card-bg: #1e1e1e;
+  --text-color: #e9ecef;
+  --text-secondary: #adb5bd;
+  --border-color: #2d2d2d;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+}
+
 @layer base {
   * {
     @apply box-border m-0 p-0;
   }
   
   body, html {
-    @apply font-sans bg-[var(--bg-color)] text-[var(--text-color)] h-full;
+    @apply font-sans bg-[var(--bg-color)] text-[var(--text-color)] h-full transition-colors duration-200;
   }
   
   /* Add smooth scrolling */
@@ -56,15 +67,41 @@
   }
 
   .button-secondary {
-    @apply py-2.5 px-5 rounded-md font-medium cursor-pointer transition-all duration-300 bg-white text-[var(--text-color)] border border-[var(--border-color)] hover:bg-[var(--border-color)] active:scale-95 flex items-center justify-center gap-2;
+    @apply py-2.5 px-5 rounded-md font-medium cursor-pointer transition-all duration-300 bg-[var(--card-bg)] text-[var(--text-color)] border border-[var(--border-color)] hover:bg-[var(--border-color)] active:scale-95 flex items-center justify-center gap-2;
   }
 
   .input-field {
-    @apply w-full p-3 bg-white border border-[var(--border-color)] rounded-md text-[var(--text-color)] text-base focus:outline-none focus:ring-1 focus:ring-[var(--accent-primary)] transition-all duration-300;
+    @apply w-full p-3 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-md text-[var(--text-color)] text-base focus:outline-none focus:ring-1 focus:ring-[var(--accent-primary)] transition-all duration-300;
   }
 
   .textarea-field {
-    @apply w-full p-3 bg-white border border-[var(--border-color)] rounded-md text-[var(--text-color)] text-base resize-none focus:outline-none focus:ring-1 focus:ring-[var(--accent-primary)] transition-all duration-300;
+    @apply w-full p-3 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-md text-[var(--text-color)] text-base resize-none focus:outline-none focus:ring-1 focus:ring-[var(--accent-primary)] transition-all duration-300;
+  }
+
+  /* Theme toggle */
+  .theme-toggle {
+    @apply relative inline-flex items-center cursor-pointer;
+  }
+
+  .theme-toggle-checkbox {
+    @apply sr-only;
+  }
+
+  .theme-toggle-slider {
+    @apply w-11 h-6 bg-[var(--border-color)] rounded-full transition-all duration-300;
+  }
+
+  .theme-toggle-slider:before {
+    content: "";
+    @apply absolute h-5 w-5 left-0.5 bottom-0.5 bg-white rounded-full transition-all duration-300;
+  }
+
+  .theme-toggle-checkbox:checked + .theme-toggle-slider {
+    @apply bg-[var(--accent-primary)];
+  }
+
+  .theme-toggle-checkbox:checked + .theme-toggle-slider:before {
+    @apply transform translate-x-5;
   }
 
   /* Mobile navigation styles */
