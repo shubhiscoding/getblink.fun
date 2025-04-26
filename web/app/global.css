@@ -113,22 +113,14 @@
     @apply fixed inset-0 bg-black/20 backdrop-blur-sm z-10;
   }
   
-  /* Custom scrollbar */
+  /* Custom scrollbar - hide completely */
   .custom-scrollbar {
-    scrollbar-width: thin;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
   }
   
   .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-  }
-  
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: var(--border-color);
-    border-radius: 2px;
+    display: none;  /* Chrome, Safari and Opera */
   }
   
   /* Card hover effect */
