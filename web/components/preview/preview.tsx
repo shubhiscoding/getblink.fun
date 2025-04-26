@@ -43,12 +43,6 @@ const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
                                 className="button-primary py-1.5 sm:py-2 text-xs sm:text-sm"
                                 onClick={handleClick}
                             >
-                                0.01 SOL
-                            </button>
-                            <button
-                                className="button-primary py-1.5 sm:py-2 text-xs sm:text-sm"
-                                onClick={handleClick}
-                            >
                                 0.05 SOL
                             </button>
                             <button
