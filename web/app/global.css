@@ -148,17 +148,17 @@
   .gradient-text {
     @apply bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-transparent bg-clip-text;
   }
-  
+
   /* Glass effect */
   .glass-effect {
     @apply backdrop-blur-md bg-white/10 border border-white/20;
   }
-  
+
   /* Pulse animation */
   .pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
-  
+
   @keyframes pulse {
     0%, 100% {
       opacity: 1;
@@ -167,13 +167,13 @@
       opacity: 0.5;
     }
   }
-  
+
   /* Shimmer effect */
   .shimmer {
     position: relative;
     overflow: hidden;
   }
-  
+
   .shimmer::after {
     content: '';
     position: absolute;
@@ -191,18 +191,18 @@
     );
     animation: shimmer 2s infinite;
   }
-  
+
   @keyframes shimmer {
     100% {
       transform: translateX(100%);
     }
   }
-  
+
   /* Glow effect */
   .glow {
     position: relative;
   }
-  
+
   .glow::after {
     content: "";
     position: absolute;
@@ -217,22 +217,22 @@
     transition: opacity 0.3s;
     border-radius: inherit;
   }
-  
+
   .glow:hover::after {
     opacity: 0.3;
   }
-  
+
   /* Floating animation */
   .floating {
     animation: floating 3s ease-in-out infinite;
   }
-  
+
   @keyframes floating {
     0% {
       transform: translateY(0px);
     }
     50% {
-      transform: translateY(-10px);
+      transform: translateY(-5px);
     }
     100% {
       transform: translateY(0px);
@@ -362,20 +362,20 @@
   .animation-delay-500 {
     animation-delay: 0.5s;
   }
-  
+
   /* Blur utilities */
   .blur-xs {
     backdrop-filter: blur(2px);
   }
-  
+
   .blur-sm {
     backdrop-filter: blur(4px);
   }
-  
+
   .blur-md {
     backdrop-filter: blur(8px);
   }
-  
+
   .blur-lg {
     backdrop-filter: blur(12px);
   }

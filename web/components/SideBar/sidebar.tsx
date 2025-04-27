@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FaGithub, FaTwitter, FaBars, FaTimes } from 'react-icons/fa';
+import { FaGithub, FaTwitter, FaBars, FaTimes, FaHardHat } from 'react-icons/fa';
 import { HiOutlineCash, HiOutlineShoppingCart, HiOutlineCollection, HiOutlineCube, HiOutlineChip } from 'react-icons/hi';
 import Image from 'next/image';
 
@@ -63,7 +63,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div 
+      <div
         className={`fixed lap:relative w-[300px] h-full card py-10 flex flex-col justify-between z-20 backdrop-blur-md bg-[var(--card-bg)]/90 border-r border-[var(--border-color)] transition-all duration-300 ${
           isMobile ? (isSidebarOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'
         } sm:w-full sm:max-w-[300px]`}
@@ -71,14 +71,14 @@ const Sidebar = () => {
         <div>
           <div className="flex justify-center items-center mb-10 fade-in">
             <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--accent-primary)]/20 to-[var(--accent-secondary)]/20 pulse" style={{ transform: 'scale(1.2)' }} />
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--accent-primary)]/10 to-[var(--accent-secondary)]/10 pulse" style={{ animationDelay: '0.5s', transform: 'scale(1.4)' }} />
+              {/* <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--accent-primary)]/20 to-[var(--accent-secondary)]/20 pulse" style={{ transform: 'scale(1.2)' }} /> */}
+              {/* <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--accent-primary)]/10 to-[var(--accent-secondary)]/10 pulse" style={{ animationDelay: '0.5s', transform: 'scale(1.4)' }} /> */}
               <Image
                 src={'/Blink.gif'}
                 width={160}
                 height={160}
                 alt="Logo"
-                className="rounded-full shadow-lg border-2 border-[var(--accent-primary)] floating"
+                className="rounded-full shadow-lg border-[var(--accent-primary)] floating"
               />
             </div>
           </div>
@@ -144,6 +144,15 @@ const Sidebar = () => {
         <div className="px-5 space-y-3 fade-in animation-delay-500">
           <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--border-color)] to-transparent my-4"></div>
           <a
+            href='https://github.com/Getblink-fun/Getblink.fun'
+            target='_blank'
+            className="flex items-center gap-3 p-3.5 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift"
+          >
+            <FaGithub className="text-[var(--text-color)]" />
+            <span className="font-medium">Blink-Generator</span>
+          </a>
+
+          <a
             href='https://x.com/getblinkdotfun'
             target='_blank'
             className="flex items-center gap-3 p-3.5 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift"
@@ -153,12 +162,12 @@ const Sidebar = () => {
           </a>
 
           <a
-            href='https://github.com/Getblink-fun/Getblink.fun'
+            href='https://x.com/LookWhatIbuild'
             target='_blank'
             className="flex items-center gap-3 p-3.5 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift"
           >
-            <FaGithub className="text-[var(--text-color)]" />
-            <span className="font-medium">Blink-Generator</span>
+            <FaHardHat className="text-[var(--text-color)]" />
+            <span className="font-medium">@LookWhatIBuild</span>
           </a>
         </div>
       </div>
