@@ -168,7 +168,6 @@ export default function Page() {
       }
 
       const data = await response.json();
-      setShowPreview(false);
       setIcon(data.icon);
       setTitle(data.title);
       setLoading(false);
@@ -399,7 +398,7 @@ export default function Page() {
           )}
         </div>
 
-        {!showPreview && (
+        {showPreview && (
           <div className="w-full md:w-auto flex justify-center">
             <TokenPreview
               icon={icon || 'https://raw.githubusercontent.com/shubhiscoding/Blink-Generator/main/web/public/solana.jpg'}
