@@ -6,7 +6,6 @@ import { Footer } from "@/components/footer";
 
 export default function Index() {
   const [icon, setIcon] = useState<string>('');
-  const [label, setLabel] = useState<string>('Send SOL');
   const [description, setDescription] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [showForm, setShowForm] = useState(true);
@@ -17,8 +16,6 @@ export default function Index() {
         <Form
           icon={icon}
           setIcon={setIcon}
-          label={label}
-          setLabel={setLabel}
           description={description}
           setDescription={setDescription}
           title={title}
@@ -29,7 +26,6 @@ export default function Index() {
         {showForm &&
         <Preview
           icon={icon || 'https://raw.githubusercontent.com/shubhiscoding/Blink-Generator/main/web/public/solana.jpg'}
-          label={label || 'Your Label'}
           description={description || 'Your Description shows up here, Keep it short and simple'}
           title={title || "Your Title"}
         />}

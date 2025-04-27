@@ -6,12 +6,11 @@ import { Input } from '@/components/ui/input';
 
 interface FormProps {
     icon: string;
-    label: string;
     description: string;
     title: string;
 }
 
-const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
+const Preview: React.FC<FormProps> = ({ icon, description, title }) => {
     const [isDarkMode, setIsDarkMode] = useState(true);
 
     useEffect(() => {

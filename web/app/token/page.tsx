@@ -22,7 +22,6 @@ type CommissionType = "yes" | "no";
 export default function Page() {
   const { publicKey, connected, sendTransaction } = useWallet();
   const [icon, setIcon] = useState<string>('');
-  const [label, setLabel] = useState<string>('Buy Token');
   const [percentage, setPercentage] = useState<number>(0);
   const [takeCommission, setTakeCommission] = useState<CommissionType>("no");
   const [description, setDescription] = useState<string>('');
@@ -75,7 +74,7 @@ export default function Page() {
       }
 
       // Validate form fields (label, description, mint)
-      if (!label || !description || !mint) {
+      if (!description || !mint) {
         console.error('Please fill all fields');
         window.alert('Please fill all fields');
         return;
@@ -116,7 +115,7 @@ export default function Page() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            label,
+            label: 'Buy Token',
             description,
             wallet: publicKey.toString(),
             mint,
@@ -155,7 +154,7 @@ export default function Page() {
         return;
       }
 
-      if (!label || !description || !mint) {
+      if (!description || !mint) {
         console.error('Please fill all fields');
         window.alert('Please fill all fields');
         return;
@@ -220,18 +219,6 @@ export default function Page() {
                     maxLength={45}
                   />
                 </div>
-
-                {/* <div>
-                  <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Label</label>
-                  <input
-                    type="text"
-                    value={label}
-                    onChange={(e) => setLabel(e.target.value)}
-                    className="input-field"
-                    placeholder="Enter a label"
-                    maxLength={30}
-                  />
-                </div> */}
 
                 <div>
                   <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Description</label>
@@ -369,7 +356,6 @@ export default function Page() {
           <div className="w-full md:w-auto flex justify-center">
             <TokenPreview
               icon={icon || 'https://raw.githubusercontent.com/shubhiscoding/Blink-Generator/main/web/public/solana.jpg'}
-              label={label || 'Your Label'}
               description={description || 'Your Description shows up here, Keep it short and simple'}
               title={title || "Your Title"}
             />

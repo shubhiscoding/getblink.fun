@@ -6,12 +6,11 @@ import { Input } from '@/components/ui/input';
 
 interface TokenPreviewProps {
     icon: string;
-    label: string;
     description: string;
     title: string;
 }
 
-const TokenPreview: React.FC<TokenPreviewProps> = ({ icon, label, description, title }) => {
+const TokenPreview: React.FC<TokenPreviewProps> = ({ icon, description, title }) => {
     const [isDarkMode, setIsDarkMode] = useState(true);
 
     useEffect(() => {

@@ -17,8 +17,6 @@ import { HiOutlineClipboardCopy, HiOutlineShare } from 'react-icons/hi';
 interface FormProps {
   icon: string;
   setIcon: (value: string) => void;
-  label: string;
-  setLabel: (value: string) => void;
   description: string;
   setDescription: (value: string) => void;
   title: string;
@@ -30,8 +28,6 @@ interface FormProps {
 const Form: React.FC<FormProps> = ({
   icon,
   setIcon,
-  label,
-  setLabel,
   description,
   setDescription,
   title,
@@ -44,7 +40,6 @@ const Form: React.FC<FormProps> = ({
   const [copied, setCopied] = useState(false);
   const form = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState(false);
-  setLabel('donate Sol');
 
   const handlePreview = async () => {
     if (!connected || !publicKey) {
@@ -100,7 +95,7 @@ const Form: React.FC<FormProps> = ({
         },
         body: JSON.stringify({
           icon,
-          label,
+          label: 'donate Sol',
           description,
           title,
           wallet: walletAddress,
@@ -160,18 +155,6 @@ const Form: React.FC<FormProps> = ({
                 maxLength={50}
               />
             </div>
-
-            {/* <div>
-              <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Label</label>
-              <input
-                type="text"
-                value={label}
-                onChange={(e) => setLabel(e.target.value)}
-                className="input-field"
-                placeholder="Enter a label"
-                maxLength={50}
-              />
-            </div> */}
 
             <div>
               <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Image URL</label>
