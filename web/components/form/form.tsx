@@ -23,6 +23,8 @@ interface FormProps {
   setDescription: (value: string) => void;
   title: string;
   setTitle: (value: string) => void;
+  showForm: boolean;
+  setShowForm: (value: boolean) => void;
 }
 
 const Form: React.FC<FormProps> = ({
@@ -34,13 +36,15 @@ const Form: React.FC<FormProps> = ({
   setDescription,
   title,
   setTitle,
+  showForm,
+  setShowForm
 }) => {
   const { publicKey, connected, sendTransaction } = useWallet();
-  const [showForm, setShowForm] = useState(true);
   const [blinkLink, setBlinkLink] = useState('');
   const [copied, setCopied] = useState(false);
   const form = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState(false);
+  setLabel('donate Sol');
 
   const handlePreview = async () => {
     if (!connected || !publicKey) {
@@ -48,7 +52,7 @@ const Form: React.FC<FormProps> = ({
       return;
     }
 
-    if (!icon || !label || !description || !title) {
+    if (!icon || !description || !title) {
       console.error('Please fill all fields');
       window.alert('Please fill all fields');
       return;
@@ -136,12 +140,12 @@ const Form: React.FC<FormProps> = ({
   };
 
   return (
-    <div className="w-full max-w-2xl">
+    <div className="w-full max-w-2xl h-full">
       {loading && <LoadingScreen subtext="Waiting For Transaction Confirmation!!" />}
-      <div className="card p-6 md:p-8" ref={form}>
+      <div className="card md:p-10 h-full" ref={form}>
         {showForm && (
-          <div className="space-y-5">
-            <h1 className="text-2xl md:text-3xl font-bold mb-6 text-[var(--accent-primary)]">
+          <div className="space-y-6 h-full">
+            <h1 className="text-2xl md:text-3xl font-bold mb-6 gradient-text">
               Customize Your Blink
             </h1>
 
@@ -157,7 +161,7 @@ const Form: React.FC<FormProps> = ({
               />
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Label</label>
               <input
                 type="text"
@@ -167,7 +171,7 @@ const Form: React.FC<FormProps> = ({
                 placeholder="Enter a label"
                 maxLength={50}
               />
-            </div>
+            </div> */}
 
             <div>
               <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Image URL</label>
@@ -197,14 +201,14 @@ const Form: React.FC<FormProps> = ({
 
             {publicKey ? (
               <button
-                className="button-primary w-full mt-6 flex items-center justify-center gap-2 py-3"
+                className="button-primary w-full mt-4"
                 onClick={handlePreview}
                 disabled={!connected}
               >
                 Generate Blink
               </button>
             ) : (
-              <div className="mt-6 text-center">
+              <div className="mt-4 text-center">
                 <p className="text-[var(--text-secondary)] mb-3">Connect your wallet to generate a Blink</p>
                 <WalletButton />
               </div>
@@ -213,20 +217,20 @@ const Form: React.FC<FormProps> = ({
         )}
 
         {!showForm && (
-          <div className="space-y-5">
-            <h1 className="text-2xl md:text-3xl font-bold mb-6 text-[var(--accent-primary)]">
+          <div className="space-y-6">
+            <h1 className="text-2xl md:text-3xl font-bold mb-6 gradient-text">
               Your Blink is Ready!
             </h1>
 
-            <div className="p-4 rounded-md bg-[var(--bg-color)] border border-[var(--border-color)]">
-              <p className="text-sm font-medium mb-2 text-[var(--text-secondary)]">Blink Link:</p>
+            <div className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--border-color)]">
+              <p className="text-sm text-[var(--text-secondary)] mb-2">Blink Link:</p>
               <div className="flex items-center gap-2">
-                <div className="flex-1 p-3 bg-[var(--card-bg)] rounded-md text-sm overflow-hidden overflow-ellipsis whitespace-nowrap border border-[var(--border-color)]">
+                <div className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
                   https://dial.to/?action=solana-action:{blinkLink}
                 </div>
                 <button
                   onClick={handleCopy}
-                  className="p-3 rounded-md bg-[var(--border-color)] hover:bg-[var(--accent-primary)] hover:text-white transition-colors duration-300"
+                  className="p-3 rounded-lg bg-[var(--border-color)] hover:bg-[var(--accent-primary)] transition-colors duration-300"
                   title="Copy to clipboard"
                 >
                   {copied ? 'Copied!' : <HiOutlineClipboardCopy size={20} />}
@@ -236,15 +240,15 @@ const Form: React.FC<FormProps> = ({
 
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
               <button
-                className="button-primary flex-1 flex items-center justify-center gap-2 py-3"
+                className="button-primary flex-1"
                 onClick={handleTweet}
               >
-                <HiOutlineShare size={18} />
+                <HiOutlineShare size={18} className="mr-2" />
                 Share on X
               </button>
 
               <button
-                className="button-secondary flex-1 py-3"
+                className="button-secondary flex-1"
                 onClick={handleNew}
               >
                 Create New Blink

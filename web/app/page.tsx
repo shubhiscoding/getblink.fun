@@ -6,9 +6,10 @@ import { Footer } from "@/components/footer";
 
 export default function Index() {
   const [icon, setIcon] = useState<string>('');
-  const [label, setLabel] = useState<string>('');
+  const [label, setLabel] = useState<string>('Send SOL');
   const [description, setDescription] = useState<string>('');
   const [title, setTitle] = useState<string>('');
+  const [showForm, setShowForm] = useState(true);
 
   return (
     <div className="flex flex-col md:min-h-screen">
@@ -22,13 +23,16 @@ export default function Index() {
           setDescription={setDescription}
           title={title}
           setTitle={setTitle}
+          showForm={showForm}
+          setShowForm={setShowForm}
         />
+        {showForm &&
         <Preview
           icon={icon || 'https://raw.githubusercontent.com/shubhiscoding/Blink-Generator/main/web/public/solana.jpg'}
           label={label || 'Your Label'}
           description={description || 'Your Description shows up here, Keep it short and simple'}
           title={title || "Your Title"}
-        />
+        />}
       </div>
       <Footer />
     </div>

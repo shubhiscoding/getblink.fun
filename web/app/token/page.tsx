@@ -22,13 +22,13 @@ type CommissionType = "yes" | "no";
 export default function Page() {
   const { publicKey, connected, sendTransaction } = useWallet();
   const [icon, setIcon] = useState<string>('');
-  const [label, setLabel] = useState<string>('');
+  const [label, setLabel] = useState<string>('Buy Token');
   const [percentage, setPercentage] = useState<number>(0);
   const [takeCommission, setTakeCommission] = useState<CommissionType>("no");
   const [description, setDescription] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [mint, setMint] = useState<string>('');
-  const [showPreview, setShowPreview] = useState(true);
+  const [showPreview, setShowPreview] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState('Please Wait!!');
   const [showForm, setShowForm] = useState(true);
@@ -53,7 +53,7 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    setShowPreview(true);
+    setShowPreview(false);
   }, [mint]);
 
   useEffect(() => {
@@ -168,7 +168,7 @@ export default function Page() {
       }
 
       const data = await response.json();
-      setShowPreview(false);
+      setShowPreview(true);
       setIcon(data.icon);
       setTitle(data.title);
       setLoading(false);
@@ -221,7 +221,7 @@ export default function Page() {
                   />
                 </div>
 
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Label</label>
                   <input
                     type="text"
@@ -231,7 +231,7 @@ export default function Page() {
                     placeholder="Enter a label"
                     maxLength={30}
                   />
-                </div>
+                </div> */}
 
                 <div>
                   <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Description</label>
@@ -299,7 +299,6 @@ export default function Page() {
                         max={1}
                         min={0}
                         step={0.01}
-                        disabled={takeCommission === "no"}
                       />
                     </div>
                   )}
@@ -308,10 +307,10 @@ export default function Page() {
                 {publicKey ? (
                   <button
                     className="button-primary w-full mt-4 flex items-center justify-center gap-2"
-                    onClick={showPreview ? handlePreview : handleSubmit}
+                    onClick={!showPreview ? handlePreview : handleSubmit}
                     disabled={!connected}
                   >
-                    {showPreview ? 'Preview Blink' : 'Generate Blink'}
+                    {!showPreview ? 'Preview Blink' : 'Generate Blink'}
                   </button>
                 ) : (
                   <div className="mt-4 text-center">
@@ -364,42 +363,9 @@ export default function Page() {
               </div>
             )}
           </div>
-
-          {blinkLink && showForm && (
-            <div className="glass-card p-6 mt-6">
-              <h2 className="text-xl font-semibold mb-4 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
-                Your Previous Blink
-              </h2>
-
-              <div className="p-3 bg-[var(--card-bg)] rounded-lg mb-4 border border-[var(--border-color)]">
-                <a
-                  href={`https://dial.to/?action=solana-action:${blinkLink}`}
-                  target="_blank"
-                  className="text-[var(--text-color)] hover:text-[var(--accent-primary)] transition-colors break-all"
-                >
-                  https://dial.to/?action=solana-action:{blinkLink}
-                </a>
-              </div>
-
-              <div className="flex gap-3">
-                <button
-                  className="button-secondary flex items-center gap-2 py-2 px-4"
-                  onClick={handleCopy}
-                >
-                  {copied ? 'Copied!' : <><HiOutlineClipboardCopy size={18} /> Copy</>}
-                </button>
-                <button
-                  className="button-primary flex items-center gap-2 py-2 px-4"
-                  onClick={handleTweet}
-                >
-                  <HiOutlineShare size={18} /> Tweet
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
-        {!showPreview && (
+        {showForm && (
           <div className="w-full md:w-auto flex justify-center">
             <TokenPreview
               icon={icon || 'https://raw.githubusercontent.com/shubhiscoding/Blink-Generator/main/web/public/solana.jpg'}

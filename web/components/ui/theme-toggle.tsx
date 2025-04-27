@@ -40,9 +40,14 @@ export const ThemeToggle = () => {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-[var(--text-secondary)]">
-        {isDarkMode ? <FaMoon size={16} /> : <FaSun size={16} />}
+    <div 
+      className="flex items-center gap-3 hover:scale-105 active:scale-95 transition-transform duration-200"
+    >
+      <span 
+        className={`text-xl ${isDarkMode ? 'text-[#a78bfa]' : 'text-[#fbbf24]'} transition-all duration-500`}
+        style={{ transform: isDarkMode ? 'rotate(-30deg)' : 'rotate(0deg)' }}
+      >
+        {isDarkMode ? <FaMoon className="floating" /> : <FaSun className="floating" />}
       </span>
       <label className="theme-toggle">
         <input 
@@ -51,7 +56,14 @@ export const ThemeToggle = () => {
           checked={isDarkMode}
           onChange={toggleTheme}
         />
-        <span className="theme-toggle-slider"></span>
+        <span className="theme-toggle-slider glow">
+          <span className="absolute inset-0 flex items-center justify-center text-xs fade-in">
+            {isDarkMode ? 
+              <span className="absolute right-1.5 text-white">🌙</span> : 
+              <span className="absolute left-1.5 text-white">☀️</span>
+            }
+          </span>
+        </span>
       </label>
     </div>
   );
