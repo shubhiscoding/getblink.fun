@@ -1,13 +1,14 @@
 import * as React from "react"
 import {
   Toast,
+  ToastActionElement,
   ToastClose,
   ToastDescription,
   ToastProvider,
   ToastTitle,
   ToastViewport,
 } from "@/components/ui/toast"
-import { useToast, type ToastActionElement } from "@/components/ui/use-toast"
+import { useToast } from "../ui/use-toast"
 
 export function Toaster() {
   const { toasts } = useToast()
