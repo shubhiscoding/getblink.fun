@@ -9,7 +9,8 @@ import {
   SystemProgram,
   LAMPORTS_PER_SOL,
   Connection,
-  clusterApiUrl
+  clusterApiUrl,
+  TransactionInstruction
 } from '@solana/web3.js';
 import { FaInfoCircle } from 'react-icons/fa';
 import { HiOutlineClipboardCopy, HiOutlineShare, HiOutlinePlus } from 'react-icons/hi';
@@ -80,35 +81,7 @@ export default function Page() {
         return;
       }
 
-      // Define recipient public key and transaction amount (0.01 SOL)
-      const recipientPubKey = new PublicKey("8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
-      const amount = 0.01 * LAMPORTS_PER_SOL;
-
-      // Create a new Solana transaction
-      const transaction = new Transaction().add(
-        SystemProgram.transfer({
-          fromPubkey: publicKey,
-          toPubkey: recipientPubKey,
-          lamports: amount,
-        })
-      );
-
-      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
-      transaction.recentBlockhash = blockhash;
-      transaction.feePayer = publicKey;
-
       try {
-        const signature = await sendTransaction(transaction, connection);
-        console.log('Transaction sent:', signature);
-
-        const confirmation = await connection.confirmTransaction({
-          signature,
-          blockhash,
-          lastValidBlockHeight
-        });
-
-        console.log('Transaction confirmed:', confirmation);
-
         const response = await fetch('/api/actions/generate-blink/token', {
           method: 'POST',
           headers: {
@@ -129,7 +102,63 @@ export default function Page() {
         }
 
         const data = await response.json();
-        setBlinkLink(data.blinkLink);
+
+
+        const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC|| clusterApiUrl("mainnet-beta"));
+        const recipientPubKey = new PublicKey(process.env.NEXT_PUBLIC_WALLET || "8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
+        const MEMO_PROGRAM_ID = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
+        const messageString = `${publicKey.toString() + data.id.toString()}`;
+        const amount = 0.01 * LAMPORTS_PER_SOL;
+
+        // Create a new Solana transaction
+
+        const transaction = new Transaction().add(
+          new TransactionInstruction({
+            programId: MEMO_PROGRAM_ID,
+            keys: [],
+            data: Buffer.from(messageString, "utf8"),
+          })
+        );
+        transaction.add(
+          SystemProgram.transfer({
+            fromPubkey: publicKey,
+            toPubkey: recipientPubKey,
+            lamports: amount,
+          })
+        );
+
+        const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+        transaction.recentBlockhash = blockhash;
+        transaction.feePayer = publicKey;
+
+        const signature = await sendTransaction(transaction, connection);
+        console.log('Transaction sent:', signature);
+
+        const confirmation = await connection.confirmTransaction({
+          signature,
+          blockhash,
+          lastValidBlockHeight
+        }, 'finalized');
+
+        console.log('Transaction confirmed:', confirmation);
+
+        const res = await fetch('/api/actions/order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            signature,
+            orderId: data.id.toString(),
+          }),
+        });
+
+        const link = await res.json();
+        if (!link.blinkLink) {
+          throw new Error('Failed to generate blink');
+        }
+
+        setBlinkLink(link.blinkLink);
         setShowForm(false);
         setLoading(false);
       } catch (error) {
