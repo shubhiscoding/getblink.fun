@@ -46,8 +46,6 @@ export async function POST(req: Request) {
     if (!inx.programId.equals(MEMO_PROGRAM_ID)) {
       throw new Error('Transaction not using memo program');
     }
-    console.log("--------------------------------memo instruction found---------------------------------------");
-    console.log(inx);
 
     const client = await clientPromise;
     const db = client.db("Cluster0");
@@ -58,12 +56,10 @@ export async function POST(req: Request) {
     }
 
     const nonce = order.wallet + order._id.toString();
-    console.log(nonce);
     if (inx.data.toString() !== nonce) {
       console.log('Transaction memo data does not match expected nonce', inx.data.toString(), nonce);
       return NextResponse.json({ error: 'Transaction memo data does not match expected nonce' }, { status: 400 });
     }
-    console.log("--------------------------------msg matched---------------------------------------");
     const SYSTEM_PROGRAM_ID = new PublicKey('11111111111111111111111111111111');
     const TREASURY_WALLET = new PublicKey(process.env.WALLET || '8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3');
     const EXPECTED_AMOUNT = order.mint ? 0.01 * LAMPORTS_PER_SOL : 0.001 * LAMPORTS_PER_SOL;
@@ -77,9 +73,6 @@ export async function POST(req: Request) {
       throw new Error('No treasury payment instruction found');
     }
 
-    console.log("----------------------------Found Transfer Ix-------------------------");
-    console.log(transferInx);
-
     const amount = transferInx.data.slice(4).readBigUInt64LE(0);
     const filterKeys = transferInx.keys.filter((key) => key.pubkey.equals(TREASURY_WALLET))[0];
     if(!filterKeys) {
@@ -88,17 +81,13 @@ export async function POST(req: Request) {
     if(filterKeys.isSigner) {
       throw new Error('Treasury wallet is not signer in transfer instruction');
     }
-    console.log(amount);
+
     if(amount !== BigInt(EXPECTED_AMOUNT)) {
       console.log('Payment amount does not match expected amount', amount.toString(), EXPECTED_AMOUNT.toString());
       return NextResponse.json({ error: 'Payment amount does not match expected amount' }, { status: 400 });
     }
 
-    console.log("---------------------verified amount-------------------------");
-
     const result = await db.collection("blinks").updateOne({ _id: new ObjectId(orderId) }, { $set: { isPaid: true } });
-    console.log("---------------------updated order-------------------------");
-    console.log(result);
 
     const blinkLink = `https://www.getblink.fun/api/actions/donate/${orderId}`;
     return NextResponse.json({ blinkLink });
