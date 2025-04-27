@@ -13,24 +13,24 @@ interface FormProps {
 
 const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
     const [isDarkMode, setIsDarkMode] = useState(true);
-    
+
     useEffect(() => {
         // Check if dark mode is active
         const checkTheme = () => {
             const isDark = document.body.classList.contains('dark-mode');
             setIsDarkMode(isDark);
         };
-        
+
         // Initial check
         checkTheme();
-        
+
         // Set up an observer to watch for class changes on the body
         const observer = new MutationObserver(checkTheme);
-        observer.observe(document.body, { 
-            attributes: true, 
-            attributeFilter: ['class'] 
+        observer.observe(document.body, {
+            attributes: true,
+            attributeFilter: ['class']
         });
-        
+
         return () => observer.disconnect();
     }, []);
 
@@ -41,8 +41,8 @@ const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
     return (
         <div className="w-full max-w-md">
             <Card className={`overflow-hidden rounded-xl border-none shadow-xl ${
-                isDarkMode 
-                ? "bg-[#0f0a19] text-white" 
+                isDarkMode
+                ? "bg-[#0f0a19] text-white"
                 : "bg-white text-[#1a1225] border border-gray-200"
             }`}>
                 {/* Image Area */}
@@ -74,35 +74,35 @@ const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
                     <p className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
                         {description || "Your Description shows up here. Keep it short and simple"}
                     </p>
-                    {label && (
+                    {/* {label && (
                         <p className={`font-medium ${isDarkMode ? "text-purple-400" : "text-purple-600"}`}>
                             {label || "Your Label"}
                         </p>
-                    )}
+                    )} */}
 
                     {/* SOL Buttons */}
                     <div className="grid grid-cols-3 gap-2 mt-4">
-                        <Button 
-                            className={isDarkMode 
-                                ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none" 
+                        <Button
+                            className={isDarkMode
+                                ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none"
                                 : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none"
                             }
                             onClick={handleClick}
                         >
                             0.05 SOL
                         </Button>
-                        <Button 
-                            className={isDarkMode 
-                                ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none" 
+                        <Button
+                            className={isDarkMode
+                                ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none"
                                 : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none"
                             }
                             onClick={handleClick}
                         >
                             1.00 SOL
                         </Button>
-                        <Button 
-                            className={isDarkMode 
-                                ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none" 
+                        <Button
+                            className={isDarkMode
+                                ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none"
                                 : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none"
                             }
                             onClick={handleClick}
@@ -121,7 +121,7 @@ const Preview: React.FC<FormProps> = ({ icon, label, description, title }) => {
                             }
                             placeholder="Enter amount of SOL to send"
                         />
-                        <Button 
+                        <Button
                             className={isDarkMode
                                 ? "bg-purple-500 hover:bg-purple-600 text-white"
                                 : "bg-purple-600 hover:bg-purple-700 text-white"
