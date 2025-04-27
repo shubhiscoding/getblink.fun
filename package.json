@@ -24,6 +24,7 @@
     "bs58": "5.0.0",
     "buffer": "6.0.3",
     "encoding": "0.1.13",
+    "framer-motion": "^12.9.2",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.441.0",
     "mongodb": "^6.10.0",
