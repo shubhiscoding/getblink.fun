@@ -162,11 +162,12 @@ export async function POST(req: Request) {
       commission,
       percentage,
       decimals,
-      createdAt: new Date()
+      createdAt: new Date(),
+      isPaid: false
     });
     console.log(result.insertedId);
     const blinkLink = `https://www.getblink.fun/api/actions/tokens/${result.insertedId}`;
-    return NextResponse.json({ blinkLink });
+    return NextResponse.json({ blinkLink, id: result.insertedId.toString() });
   } catch (error) {
     console.log('Error generating blink:', error);
     return NextResponse.json({ error: 'Failed to generate blink' }, { status: 500 });

@@ -10,7 +10,8 @@ import {
   SystemProgram,
   LAMPORTS_PER_SOL,
   Connection,
-  clusterApiUrl
+  clusterApiUrl,
+  TransactionInstruction
 } from '@solana/web3.js';
 import { HiOutlineClipboardCopy, HiOutlineShare } from 'react-icons/hi';
 
@@ -52,40 +53,8 @@ const Form: React.FC<FormProps> = ({
       window.alert('Please fill all fields');
       return;
     }
-    setLoading(true);
-    const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC|| clusterApiUrl("mainnet-beta"));
-    const recipientPubKey = new PublicKey("8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
-    const amount = 0.001 * LAMPORTS_PER_SOL;
 
-    const transaction = new Transaction().add(
-      SystemProgram.transfer({
-        fromPubkey: publicKey,
-        toPubkey: recipientPubKey,
-        lamports: amount,
-      })
-    );
-
-    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
-    transaction.recentBlockhash = blockhash;
-    transaction.feePayer = publicKey;
-
-    try {
-      const signature = await sendTransaction(transaction, connection);
-      console.log('Transaction sent:', signature);
-
-      const confirmation = await connection.confirmTransaction({
-        signature,
-        blockhash,
-        lastValidBlockHeight
-      });
-      console.log('Transaction confirmed:', confirmation);
-    } catch (error) {
-      setLoading(false);
-      console.error('Failed to send transaction', error);
-      window.alert('Failed to send transaction');
-      return;
-    }
-
+    let BlinkData;
     try {
       const walletAddress = publicKey.toString();
       const response = await fetch('/api/actions/generate-blink', {
@@ -106,14 +75,73 @@ const Form: React.FC<FormProps> = ({
         throw new Error('Failed to generate blink');
       }
 
-      const data = await response.json();
-      setBlinkLink(data.blinkLink);
-      setShowForm(false);
-      setLoading(false);
+      BlinkData = await response.json();
     } catch (error) {
       setLoading(false);
       console.error('Failed to generate blink', error);
       window.alert('Failed to generate blink');
+      return;
+    }
+
+    setLoading(true);
+    const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC|| clusterApiUrl("mainnet-beta"));
+    const recipientPubKey = new PublicKey(process.env.NEXT_PUBLIC_WALLET || "8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
+    const MEMO_PROGRAM_ID = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
+    const messageString = `${publicKey.toString() + BlinkData.id.toString()}`;
+    const amount = 0.001 * LAMPORTS_PER_SOL;
+
+    const transaction = new Transaction().add(
+      new TransactionInstruction({
+        programId: MEMO_PROGRAM_ID,
+        keys: [],
+        data: Buffer.from(messageString, "utf8"),
+      })
+    );
+    transaction.add(
+      SystemProgram.transfer({
+        fromPubkey: publicKey,
+        toPubkey: recipientPubKey,
+        lamports: amount,
+      })
+    );
+
+    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+    transaction.recentBlockhash = blockhash;
+    transaction.feePayer = publicKey;
+
+    try {
+      const signature = await sendTransaction(transaction, connection);
+      console.log('Transaction sent:', signature);
+
+      const confirmation = await connection.confirmTransaction({
+        signature,
+        blockhash,
+        lastValidBlockHeight
+      }, 'finalized');
+      console.log('Transaction confirmed:', confirmation);
+      const res = await fetch('/api/actions/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          signature,
+          orderId: BlinkData.id.toString(),
+        }),
+      });
+
+      const link = await res.json();
+      if (!link.blinkLink) {
+        throw new Error('Failed to generate blink');
+      }
+
+      setBlinkLink(link.blinkLink);
+      setShowForm(false);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error('Failed to send transaction', error);
+      window.alert('Failed to send transaction');
       return;
     }
   };
