@@ -149,7 +149,7 @@ const Sidebar = () => {
             className="flex items-center gap-3 p-3.5 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift"
           >
             <FaGithub className="text-[var(--text-color)]" />
-            <span className="font-medium">Blink-Generator</span>
+            <span className="font-medium">Source Code</span>
           </a>
 
           <a
