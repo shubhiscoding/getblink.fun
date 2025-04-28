@@ -3,8 +3,7 @@ import clientPromise from '@/lib/mongodb';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { programs } from '@metaplex/js';
 import { TokenListProvider, TokenInfo } from '@solana/spl-token-registry';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { getMint } from '../../../../../../node_modules/@solana/spl-token';
+import { getMint } from '../../../../../node_modules/@solana/spl-token';
 
 const { metadata: { Metadata } } = programs;
 
