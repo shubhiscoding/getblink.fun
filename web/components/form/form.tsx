@@ -43,6 +43,7 @@ const Form: React.FC<FormProps> = ({
   const [loading, setLoading] = useState(false);
 
   const handlePreview = async () => {
+    setLoading(true);
     if (!connected || !publicKey) {
       console.error('Wallet not connected');
       return;
@@ -83,7 +84,6 @@ const Form: React.FC<FormProps> = ({
       return;
     }
 
-    setLoading(true);
     const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC|| clusterApiUrl("mainnet-beta"));
     const recipientPubKey = new PublicKey(process.env.NEXT_PUBLIC_WALLET || "8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
     const MEMO_PROGRAM_ID = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
