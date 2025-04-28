@@ -1,8 +1,8 @@
 "use client";
 import { useState, useRef, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletButton } from '@/components/solana/solana-provider';
 import TokenPreview from "@/components/preview/token-preview";
+import TokenForm from '@/components/form/tokenForm';
 import {
   PublicKey,
   Transaction,
@@ -12,7 +12,6 @@ import {
   clusterApiUrl,
   TransactionInstruction
 } from '@solana/web3.js';
-import { FaInfoCircle } from 'react-icons/fa';
 import { HiOutlineClipboardCopy, HiOutlineShare, HiOutlinePlus } from 'react-icons/hi';
 import { Footer } from '@/components/footer';
 import LoadingScreen from '@/components/Loading/loading';
@@ -35,22 +34,6 @@ export default function Page() {
   const [blinkLink, setBlinkLink] = useState('');
   const [copied, setCopied] = useState(false);
   const form = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const handleInfoClick = (e: MouseEvent) => {
-      window.alert("If you opt to take a commission, the specified percentage of the total transaction amount will be credited to your wallet. Please note that the maximum commission percentage allowed is 1%.");
-    };
-
-    document.querySelectorAll('.info-icon').forEach(icon => {
-      icon.addEventListener('click', handleInfoClick as EventListener);
-    });
-
-    return () => {
-      document.querySelectorAll('.info-icon').forEach(icon => {
-        icon.removeEventListener('click', handleInfoClick as EventListener);
-      });
-    };
-  }, []);
 
   useEffect(() => {
     setShowPreview(false);
@@ -232,109 +215,21 @@ export default function Page() {
         <div className="w-full max-w-2xl">
           <div className="card md:p-10" ref={form}>
             {showForm && (
-              <div className="space-y-6">
-                <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gradient bg-gradient-to-r from-[var(--gradient-start)] to-[var(--gradient-end)] bg-clip-text text-transparent">
-                  Sell/Resell Token
-                </h1>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Mint Address</label>
-                  <input
-                    type="text"
-                    value={mint}
-                    onChange={(e) => setMint(e.target.value)}
-                    className="input-field"
-                    placeholder="Enter token mint address"
-                    maxLength={45}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Description</label>
-                  <textarea
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="textarea-field"
-                    rows={3}
-                    placeholder="Enter a description"
-                    maxLength={143}
-                  />
-                  <p className="text-xs text-[var(--text-secondary)] mt-1">
-                    {description.length}/143 characters
-                  </p>
-                </div>
-
-                <div className="bg-[var(--card-bg)] rounded-xl p-4 border border-[var(--border-color)]">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="flex items-center gap-2">
-                      <label className="text-sm font-medium text-[var(--text-color)]">
-                        Take commission
-                      </label>
-                      <FaInfoCircle className="text-[var(--text-secondary)] cursor-pointer info-icon" />
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          value="yes"
-                          checked={takeCommission === "yes"}
-                          onChange={(e) => setTakeCommission(e.target.value as CommissionType)}
-                          className="accent-[var(--accent-primary)]"
-                        />
-                        <span className="text-[var(--text-color)]">Yes</span>
-                      </label>
-
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          value="no"
-                          checked={takeCommission === "no"}
-                          onChange={(e) => setTakeCommission(e.target.value as CommissionType)}
-                          className="accent-[var(--accent-primary)]"
-                        />
-                        <span className="text-[var(--text-color)]">No</span>
-                      </label>
-                    </div>
-                  </div>
-
-                  {takeCommission === "yes" && (
-                    <div className="mt-4">
-                      <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">
-                        Commission Percentage (max 1%)
-                      </label>
-                      <input
-                        type="number"
-                        value={percentage}
-                        onChange={(e) => {
-                          const value = Math.min(1, parseFloat(e.target.value) || 0);
-                          setPercentage(value);
-                        }}
-                        className="input-field"
-                        placeholder="Enter commission percentage"
-                        max={1}
-                        min={0}
-                        step={0.01}
-                      />
-                    </div>
-                  )}
-                </div>
-
-                {publicKey ? (
-                  <button
-                    className="button-primary w-full mt-4 flex items-center justify-center gap-2"
-                    onClick={!showPreview ? handlePreview : handleSubmit}
-                    disabled={!connected}
-                  >
-                    {!showPreview ? 'Preview Blink' : 'Generate Blink'}
-                  </button>
-                ) : (
-                  <div className="mt-4 text-center">
-                    <p className="text-[var(--text-secondary)] mb-3">Connect your wallet to generate a Blink</p>
-                    <WalletButton />
-                  </div>
-                )}
-              </div>
+              <TokenForm
+                mint={mint}
+                description={description}
+                percentage={percentage}
+                takeCommission={takeCommission}
+                showPreview={showPreview}
+                setMint={setMint}
+                setDescription={setDescription}
+                setPercentage={setPercentage}
+                setTakeCommission={setTakeCommission}
+                handlePreview={handlePreview}
+                handleSubmit={handleSubmit}
+                connected={connected}
+                publicKey={publicKey}
+              />
             )}
 
             {!showForm && (

@@ -80,7 +80,7 @@ const TokenPreview: React.FC<TokenPreviewProps> = ({ icon, description, title })
                     )} */}
 
                     {/* SOL Buttons */}
-                    <div className="grid grid-cols-3 gap-2 mt-4">
+                    <div className="grid grid-cols-2 gap-2 mt-4">
                         <Button
                             className={isDarkMode
                                 ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none"
@@ -88,7 +88,7 @@ const TokenPreview: React.FC<TokenPreviewProps> = ({ icon, description, title })
                             }
                             onClick={handleClick}
                         >
-                            0.05 SOL
+                            {title === "Your Title" ? "Buy 100k $Token" : `Buy 100k $${title.slice(4)}`}
                         </Button>
                         <Button
                             className={isDarkMode
@@ -97,18 +97,19 @@ const TokenPreview: React.FC<TokenPreviewProps> = ({ icon, description, title })
                             }
                             onClick={handleClick}
                         >
-                            1.00 SOL
-                        </Button>
-                        <Button
-                            className={isDarkMode
-                                ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none"
-                                : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none"
-                            }
-                            onClick={handleClick}
-                        >
-                            5.00 SOL
+                            {title === "Your Title" ? "Buy 500k $Token" : `Buy 500k $${title.slice(4)}`}
                         </Button>
                     </div>
+
+                    <Button
+                        className={isDarkMode
+                            ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none w-full"
+                            : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none w-full"
+                        }
+                        onClick={handleClick}
+                    >
+                        {title === "Your Title" ? "Buy 1M $Token" : `Buy 1M $${title.slice(4)}`}
+                    </Button>
 
                     {/* Buy Token Input */}
                     <div className="flex gap-2 mt-3">
@@ -118,7 +119,7 @@ const TokenPreview: React.FC<TokenPreviewProps> = ({ icon, description, title })
                                 ? "bg-[#1a1225] border-[#3a2b4d] text-gray-300 placeholder-gray-500"
                                 : "bg-gray-50 border-gray-200 text-gray-700 placeholder-gray-400"
                             }
-                            placeholder="Amount of SOL to buy token"
+                            placeholder="Enter amount"
                         />
                         <Button
                             className={isDarkMode

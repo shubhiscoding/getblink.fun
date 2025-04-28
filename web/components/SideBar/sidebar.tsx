@@ -144,7 +144,7 @@ const Sidebar = () => {
         <div className="px-5 space-y-3 fade-in animation-delay-500">
           <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--border-color)] to-transparent my-4"></div>
           <a
-            href='https://github.com/Getblink-fun/Getblink.fun'
+            href='https://github.com/shubhiscoding/getblink.fun'
             target='_blank'
             className="flex items-center gap-3 p-3.5 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift"
           >
