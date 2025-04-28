@@ -279,7 +279,7 @@ export default function Page() {
         {showForm && (
           <div className="w-full md:w-auto flex justify-center">
             <TokenPreview
-              icon={icon || 'https://raw.githubusercontent.com/shubhiscoding/Blink-Generator/main/web/public/solana.jpg'}
+              icon={icon || 'solana.jpg'}
               description={description || 'Your Description shows up here, Keep it short and simple'}
               title={title || "Your Title"}
             />

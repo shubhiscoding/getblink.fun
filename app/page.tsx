@@ -25,7 +25,7 @@ export default function Index() {
         />
         {showForm &&
         <Preview
-          icon={icon || 'https://raw.githubusercontent.com/shubhiscoding/Blink-Generator/main/web/public/solana.jpg'}
+          icon={icon || 'solana.jpg'}
           description={description || 'Your Description shows up here, Keep it short and simple'}
           title={title || "Your Title"}
         />}
