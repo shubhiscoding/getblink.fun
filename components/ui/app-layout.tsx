@@ -12,7 +12,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <div
         className="flex-1 flex flex-col m-4 md:m-6 card overflow-hidden shadow-lg fade-in bg-opacity-90 backdrop-blur-md"
       >
-        <div className="flex flex-col md:flex-row items-center justify-between p-5 md:p-7 border-b border-[var(--border-color)] bg-[var(--card-bg)] backdrop-blur-sm">
+        <div className="flex flex-col md:flex-row items-center justify-between p-5 md:p-7 border-b border-[var(--border-color)] bg-[var(--card-bg)] backdrop-blur-sm z-40">
           <h1
             className="Title bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-transparent bg-clip-text animation-delay-200 fade-in"
           >
