@@ -31,6 +31,18 @@ export const GET = async (req: NextRequest, { params }: { params: { uniqueid: st
       blinkData = await db.collection("blinks").findOne({ _id: new ObjectId(uniqueid) });
     }
 
+    if(blinkData && blinkData.isPaid === false){
+      return NextResponse.json(
+        {
+          message: "This blink is not paid for yet. Please pay to use it.",
+        },
+        {
+          status: 403,
+          headers: ACTIONS_CORS_HEADERS,
+        },
+      );
+    }
+
     if (!blinkData) {
       blinkData = {
         icon: "https://www.vegrecipesofindia.com/wp-content/uploads/2018/02/cafe-style-hot-coffee-recipe-1.jpg",
@@ -99,6 +111,19 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
     if (ObjectId.isValid(uniqueid)) {
       blinkData = await db.collection("blinks").findOne({ _id: new ObjectId(uniqueid) });
     }
+
+    if(blinkData && blinkData.isPaid === false){
+      return NextResponse.json(
+        {
+          message: "This blink is not paid for yet. Please pay to use it.",
+        },
+        {
+          status: 403,
+          headers: ACTIONS_CORS_HEADERS,
+        },
+      );
+    }
+
     const { searchParams } = new URL(req.url);
     const body: ActionPostRequest = await req.json();
 

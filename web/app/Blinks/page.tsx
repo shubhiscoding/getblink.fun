@@ -1,54 +1,89 @@
 "use client";
-import { useState, useEffect, Suspense } from 'react';
-import './page.css';
+import { useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import DataCard from '../../components/DataCard/dataCard';
 import { WalletButton } from '@/components/solana/solana-provider';
 import { Footer } from '@/components/footer';
 
 export default function Page() {
-  const { publicKey, connected } = useWallet();
-  const [data, setData] = useState<any[]>([]);
+  const { publicKey } = useWallet();
+  const [data, setData] = useState<Array<Record<string, any>>>([]);
   const [loading, setLoading] = useState(true);
 
-  const getBlinks = async () => {
-    try {
-      const response = await fetch('/api/actions/getBlinks?wallet=' + (publicKey ? publicKey.toString() : ''));
-      const { blinks } = await response.json();
-      setData(blinks);
-      console.log('Blinks:', blinks);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.error('Error fetching blinks:', error);
-    }
-  };
-
   useEffect(() => {
+    const getBlinks = async () => {
+      if (!publicKey) return;
+
+      try {
+        const response = await fetch('/api/actions/getBlinks?wallet=' + publicKey.toString());
+        const { blinks } = await response.json();
+        setData(blinks);
+        console.log('Blinks:', blinks);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error('Error fetching blinks:', error);
+      }
+    };
+
     if (publicKey) {
       getBlinks();
+    } else {
+      setLoading(false);
     }
   }, [publicKey]);
 
   return (
-    <>
-    <div className='parnt-container'>
-      <div className='Container'>
-        <h1 className='gradient-text txt'>Your Blinks</h1>
-        {publicKey && loading && <p>Loading...</p>}
-        {publicKey?(<div className='Blinks'>
-          {data && data.length>0? data.slice().reverse().map((blink) => (
-            <DataCard
-             key={blink['_id']}
-             code={blink['_id']}
-             base={blink.privateKey?"https://dial.to/devnet?action=solana-action:":"https://dial.to/?action=solana-action:"}
-             title={blink.title}
-             endpoint={blink.mint? "tokens":(blink.privateKey?"gamble" : "donate")} />
-          )): <p>No Blinks found</p>}
-        </div>): <WalletButton />}
-      </div>
+    <div className="flex flex-col min-h-screen">
+      <main className="flex-grow px-4 sm:px-6 md:px-8 py-8 max-w-7xl mx-auto w-full">
+        <div className="glass-card w-full max-w-4xl mx-auto overflow-hidden fade-in">
+          <div className="p-4 sm:p-6 md:p-8">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center gradient-text">
+              Your Blinks
+            </h1>
+            
+            {!publicKey ? (
+              <div className="flex flex-col items-center justify-center py-10 space-y-4 fade-in">
+                <p className="text-[var(--text-secondary)] text-center mb-4">
+                  Connect your wallet to view your Blinks
+                </p>
+                <div className="pulse-subtle">
+                  <WalletButton />
+                </div>
+              </div>
+            ) : loading ? (
+              <div className="flex justify-center items-center py-10">
+                <div className="shimmer w-full max-w-md h-40 rounded-xl"></div>
+              </div>
+            ) : (
+              <div className="space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar pr-1">
+                {data && data.length > 0 ? (
+                  data.slice().reverse().map((blink, index) => (
+                    <div 
+                      key={blink['_id']} 
+                      className="hover-lift fade-in" 
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <DataCard
+                        code={blink['_id']}
+                        base={blink.privateKey ? "https://dial.to/devnet?action=solana-action:" : "https://dial.to/?action=solana-action:"}
+                        title={blink.title}
+                        endpoint={blink.mint ? "tokens" : (blink.privateKey ? "gamble" : "donate")} 
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 fade-in">
+                    <p className="text-[var(--text-secondary)]">No Blinks found</p>
+                    <p className="text-sm mt-2 text-[var(--text-secondary)]">Create your first Blink to get started</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
+      <Footer />
     </div>
-    <Footer />
-    </>
   );
 }

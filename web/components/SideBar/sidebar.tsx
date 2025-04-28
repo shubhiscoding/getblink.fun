@@ -1,88 +1,54 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import "./sidebar.css";
-import { FaGithub, FaHardHat, FaBars } from 'react-icons/fa';
+import { FaGithub, FaTwitter, FaBars, FaTimes, FaHardHat } from 'react-icons/fa';
+import { HiOutlineCash, HiOutlineShoppingCart, HiOutlineCollection, HiOutlineCube, HiOutlineChip } from 'react-icons/hi';
+import Image from 'next/image';
 
 interface SideButtonProps {
   href: string;
   children: React.ReactNode;
+  icon: React.ReactNode;
   isActive: boolean;
   onClick: () => void;
 }
 
-const SideBarButtons: React.FC<SideButtonProps> = ({ href, children, isActive, onClick }) => (
-  <Link href={href} style={{ textDecoration: 'none' }}>
-    <p
-      className={`navButton ${isActive ? 'active' : ''}`}
+const SideBarButton: React.FC<SideButtonProps> = ({ href, children, icon, isActive, onClick }) => (
+  <Link href={href} className="no-underline w-full">
+    <div
+      className={`flex items-center gap-3 py-3.5 px-5 my-2 rounded-xl transition-all duration-300 hover-lift ${
+        isActive
+          ? 'bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-white font-medium shadow-md glow'
+          : 'text-[var(--text-secondary)] hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)]'
+      }`}
       onClick={onClick}
     >
-      {children}
-    </p>
+      <span className="text-xl">{icon}</span>
+      <span className="font-medium">{children}</span>
+    </div>
   </Link>
 );
 
 const Sidebar = () => {
   const [activeButton, setActiveButton] = useState('');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar is open by default on larger screens
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
-
-  // useEffect(() => {
-  //   // Check if the screen is mobile-sized
-  //   const handleResize = () => setIsMobile(window.innerWidth < 768);
-
-  //   // Set initial state and add resize listener
-  //   handleResize();
-  //   window.addEventListener('resize', handleResize);
-
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, []);
 
   useEffect(() => {
     const path = window.location.pathname;
     const segments = path.split('/');
     const endpoint = segments[segments.length - 1] || '';
     setActiveButton('/' + endpoint);
-    const logoElement = document.querySelector('.logo-Blink');
-    if (logoElement) {
-      setInterval(() => {
-        const IMG = logoElement.querySelector('img');
-        if (!IMG) { return; }
-        IMG.setAttribute('src', 'Blink.gif');
-        setTimeout(() => {
-          IMG.setAttribute('src', 'Blink.png');
-        }, 1000);
-      }, 10000);
-    }
+
+    // Check if mobile
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 1270);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  useEffect(() => {
-    if(isSidebarOpen){
-      const toggleBtn = document.querySelector('.sidebar-toggle');
-      if(toggleBtn){
-        toggleBtn.innerHTML = '<strong>x</strong>';
-        toggleBtn.classList.add('open');
-      }
-
-      const logoElement = document.querySelector('.logo-Blink');
-      if (logoElement) {
-        const IMG = logoElement.querySelector('img');
-        if (!IMG) { return; }
-        IMG.setAttribute('src', 'Blink.gif');
-        setTimeout(() => {
-          IMG.setAttribute('src', 'Blink.png');
-        }, 1000);
-      }
-    }else{
-      const toggleBtn = document.querySelector('.sidebar-toggle');
-      if(toggleBtn){
-        toggleBtn.innerHTML = '<strong>☰</strong>';
-        toggleBtn.classList.remove('open');
-      }
-    }
-  }, [isSidebarOpen]);
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -91,64 +57,137 @@ const Sidebar = () => {
   const handleButtonClick = (href: string) => {
     setActiveButton(href);
     if (isMobile) {
-      setIsSidebarOpen(false); // Close sidebar on mobile after option click
+      setIsSidebarOpen(false);
     }
   };
 
   return (
     <>
-      <div className={`sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
-        <nav className="sidebar-nav">
-          <div className="logo-Blink" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <img src='Blink.png' width={'80%'} alt="Logo" />
+      <div
+        className={`fixed lap:relative w-[300px] h-full card py-10 flex flex-col justify-between z-20 backdrop-blur-md bg-[var(--card-bg)]/90 border-r border-[var(--border-color)] transition-all duration-300 ${
+          isMobile ? (isSidebarOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'
+        } sm:w-full sm:max-w-[300px]`}
+      >
+        <div>
+          <div className="flex justify-center items-center mb-10 fade-in">
+            <div className="relative">
+              {/* <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--accent-primary)]/20 to-[var(--accent-secondary)]/20 pulse" style={{ transform: 'scale(1.2)' }} /> */}
+              {/* <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--accent-primary)]/10 to-[var(--accent-secondary)]/10 pulse" style={{ animationDelay: '0.5s', transform: 'scale(1.4)' }} /> */}
+              <Image
+                src={'/Blink.gif'}
+                width={160}
+                height={160}
+                alt="Logo"
+                className="rounded-full shadow-lg border-[var(--accent-primary)] floating"
+              />
+            </div>
           </div>
-          <ul>
-            <li>
-              <SideBarButtons href="/" isActive={activeButton === '/'} onClick={() => handleButtonClick('/')}>
+
+          <div className="px-5 space-y-2">
+            <div className="fade-in animation-delay-100">
+              <SideBarButton
+                href="/"
+                icon={<HiOutlineCash />}
+                isActive={activeButton === '/'}
+                onClick={() => handleButtonClick('/')}
+              >
                 Receive Sol
-              </SideBarButtons>
-            </li>
-            <li>
-              <SideBarButtons href="/token" isActive={activeButton === '/token'} onClick={() => handleButtonClick('/token')}>
-                Sell/ReSell tokens
-              </SideBarButtons>
-            </li>
-            <li>
-              <SideBarButtons href="/Blinks" isActive={activeButton === '/Blinks'} onClick={() => handleButtonClick('/Blinks')}>
+              </SideBarButton>
+            </div>
+
+            <div className="fade-in animation-delay-200">
+              <SideBarButton
+                href="/token"
+                icon={<HiOutlineShoppingCart />}
+                isActive={activeButton === '/token'}
+                onClick={() => handleButtonClick('/token')}
+              >
+                Sell/ReSell Tokens
+              </SideBarButton>
+            </div>
+
+            <div className="fade-in animation-delay-300">
+              <SideBarButton
+                href="/Blinks"
+                icon={<HiOutlineCollection />}
+                isActive={activeButton === '/Blinks'}
+                onClick={() => handleButtonClick('/Blinks')}
+              >
                 My Blinks
-              </SideBarButtons>
-            </li>
-            <li>
-              <SideBarButtons href="/ComingSoon" isActive={activeButton === '/gamble'} onClick={() => handleButtonClick('/gamble')}>
+              </SideBarButton>
+            </div>
+
+            <div className="fade-in animation-delay-400">
+              <SideBarButton
+                href="/ComingSoon"
+                icon={<HiOutlineCube />}
+                isActive={activeButton === '/gamble'}
+                onClick={() => handleButtonClick('/gamble')}
+              >
                 Gamble Blinks
-              </SideBarButtons>
-            </li>
-            <li>
-              <SideBarButtons href="/ComingSoon" isActive={activeButton === '/gaming'} onClick={() => handleButtonClick('/gaming')}>
+              </SideBarButton>
+            </div>
+
+            <div className="fade-in animation-delay-500">
+              <SideBarButton
+                href="/ComingSoon"
+                icon={<HiOutlineChip />}
+                isActive={activeButton === '/gaming'}
+                onClick={() => handleButtonClick('/gaming')}
+              >
                 Gaming Blinks
-              </SideBarButtons>
-            </li>
-          </ul>
-        </nav>
-        <div className="sidebar-bottom">
-          <a href='https://x.com/getblinkdotfun' target='_blank' className={activeButton === '/saved' ? 'active' : ''}>
-            <span>X /@getblinkdotfun</span>
+              </SideBarButton>
+            </div>
+          </div>
+        </div>
+
+        <div className="px-5 space-y-3 fade-in animation-delay-500">
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--border-color)] to-transparent my-4"></div>
+          <a
+            href='https://github.com/Getblink-fun/Getblink.fun'
+            target='_blank'
+            className="flex items-center gap-3 p-3.5 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift"
+          >
+            <FaGithub className="text-[var(--text-color)]" />
+            <span className="font-medium">Blink-Generator</span>
           </a>
-          <a href='https://github.com/shubhiscoding/Blink-Generator' target='_blank' className={activeButton === '/draft' ? 'active' : ''}>
-            <span><FaGithub /> /Blink-Generator</span>
+
+          <a
+            href='https://x.com/getblinkdotfun'
+            target='_blank'
+            className="flex items-center gap-3 p-3.5 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift"
+          >
+            <FaTwitter className="text-[#1DA1F2]" />
+            <span className="font-medium">@getblinkdotfun</span>
           </a>
-          <a href='https://x.com/LookWhatIbuild' target='_blank' className={activeButton === '/trash' ? 'active' : ''}>
-            <span><FaHardHat /> /@LookWhatIBuild</span>
+
+          <a
+            href='https://x.com/LookWhatIbuild'
+            target='_blank'
+            className="flex items-center gap-3 p-3.5 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift"
+          >
+            <FaHardHat className="text-[var(--text-color)]" />
+            <span className="font-medium">@LookWhatIBuild</span>
           </a>
         </div>
       </div>
 
       {isMobile && (
         <>
-          <button className="sidebar-toggle" onClick={handleSidebarToggle}>
-            <strong>x</strong>
+          <button
+            className="fixed bottom-6 right-6 z-30 flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-white shadow-lg hover:scale-110 active:scale-90 transition-transform duration-200 glow"
+            onClick={handleSidebarToggle}
+            aria-label="Toggle sidebar"
+          >
+            {isSidebarOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
-          {isSidebarOpen && <div className="backdrop" onClick={handleSidebarToggle}></div>}
+
+          {isSidebarOpen && (
+            <div
+              className="fixed inset-0 bg-black/30 backdrop-blur-sm z-10 fade-in"
+              onClick={handleSidebarToggle}
+            />
+          )}
         </>
       )}
     </>

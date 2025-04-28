@@ -4,13 +4,13 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-interface FormProps {
+interface TokenPreviewProps {
     icon: string;
     description: string;
     title: string;
 }
 
-const Preview: React.FC<FormProps> = ({ icon, description, title }) => {
+const TokenPreview: React.FC<TokenPreviewProps> = ({ icon, description, title }) => {
     const [isDarkMode, setIsDarkMode] = useState(true);
 
     useEffect(() => {
@@ -110,7 +110,7 @@ const Preview: React.FC<FormProps> = ({ icon, description, title }) => {
                         </Button>
                     </div>
 
-                    {/* Send SOL Input */}
+                    {/* Buy Token Input */}
                     <div className="flex gap-2 mt-3">
                         <Input
                             type="text"
@@ -118,7 +118,7 @@ const Preview: React.FC<FormProps> = ({ icon, description, title }) => {
                                 ? "bg-[#1a1225] border-[#3a2b4d] text-gray-300 placeholder-gray-500"
                                 : "bg-gray-50 border-gray-200 text-gray-700 placeholder-gray-400"
                             }
-                            placeholder="Enter amount of SOL to send"
+                            placeholder="Amount of SOL to buy token"
                         />
                         <Button
                             className={isDarkMode
@@ -127,7 +127,7 @@ const Preview: React.FC<FormProps> = ({ icon, description, title }) => {
                             }
                             onClick={handleClick}
                         >
-                            Send SOL
+                            {title == "Your Title"? "Buy Token" : title}
                         </Button>
                     </div>
                 </div>
@@ -136,4 +136,4 @@ const Preview: React.FC<FormProps> = ({ icon, description, title }) => {
     );
 }
 
-export default Preview;
+export default TokenPreview;

@@ -31,11 +31,14 @@ export async function POST(req: Request) {
       description,
       title,
       wallet,
-      createdAt: new Date()
+      createdAt: new Date(),
+      isPaid: false
     });
 
+    console.log(result);
+
     const blinkLink = `https://www.getblink.fun/api/actions/donate/${result.insertedId}`;
-    return NextResponse.json({ blinkLink });
+    return NextResponse.json({ blinkLink, id: result.insertedId.toString() });
   } catch (error) {
     console.error('Error generating blink:', error);
     return NextResponse.json({ error: 'Failed to generate blink' }, { status: 500 });
