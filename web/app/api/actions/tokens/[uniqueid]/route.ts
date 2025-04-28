@@ -38,6 +38,19 @@ export const GET = async (req: NextRequest, { params }: { params: { uniqueid: st
       blinkData = await db.collection("blinks").findOne({ _id: new ObjectId(uniqueid) });
     }
 
+
+    if(blinkData && blinkData.isPaid === false){
+      return NextResponse.json(
+        {
+          message: "This blink is not paid for yet. Please pay to use it.",
+        },
+        {
+          status: 403,
+          headers: ACTIONS_CORS_HEADERS,
+        },
+      );
+    }
+
     if (!blinkData) {
       blinkData = {
         icon: "https://example.com/pump-token-icon.png",
@@ -108,6 +121,18 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
     }
     if(!blinkData){
       throw "Invalid BLINK!!";
+    }
+
+    if(blinkData && blinkData.isPaid === false){
+      return NextResponse.json(
+        {
+          message: "This blink is not paid for yet. Please pay to use it.",
+        },
+        {
+          status: 403,
+          headers: ACTIONS_CORS_HEADERS,
+        },
+      );
     }
 
     const { searchParams } = new URL(req.url);
