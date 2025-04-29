@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaGithub, FaTwitter, FaBars, FaTimes, FaHardHat } from 'react-icons/fa';
+import { IoWater } from "react-icons/io5";
 import { HiOutlineCash, HiOutlineShoppingCart, HiOutlineCollection, HiOutlineCube, HiOutlineChip } from 'react-icons/hi';
 import Image from 'next/image';
 
@@ -103,6 +104,17 @@ const Sidebar = () => {
                 onClick={() => handleButtonClick('/token')}
               >
                 Sell/ReSell Tokens
+              </SideBarButton>
+            </div>
+
+            <div className="fade-in animation-delay-500">
+              <SideBarButton
+                href="/lp"
+                icon={<IoWater />}
+                isActive={activeButton === '/lp'}
+                onClick={() => handleButtonClick('/lp')}
+              >
+                LP Blinks
               </SideBarButton>
             </div>
 
