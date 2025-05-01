@@ -66,9 +66,9 @@ export default function Page() {
                     >
                       <DataCard
                         code={blink['_id']}
-                        base={blink.privateKey ? "https://dial.to/devnet?action=solana-action:" : "https://dial.to/?action=solana-action:"}
+                        base={"https://dial.to/?action=solana-action:"}
                         title={blink.title}
-                        endpoint={blink.mint ? "tokens" : (blink.privateKey ? "gamble" : "donate")}
+                        endpoint={blink.endpoint}
                       />
                     </div>
                   ))
