@@ -162,6 +162,7 @@ export async function POST(req: Request) {
       percentage,
       decimals,
       createdAt: new Date(),
+      endpoint: "tokens",
       isPaid: false
     });
     console.log(result.insertedId);

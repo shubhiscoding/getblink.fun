@@ -31,6 +31,7 @@ export async function POST(req: Request) {
       description,
       title,
       wallet,
+      endpoint: "donate",
       createdAt: new Date(),
       isPaid: false
     });
