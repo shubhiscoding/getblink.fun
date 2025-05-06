@@ -234,17 +234,6 @@ const LpForm: React.FC<FormProps> = ({
               />
             </div>}
 
-            {/* <div>
-              <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">Image URL</label>
-              <input
-                type="text"
-                value={icon}
-                onChange={(e) => setIcon(e.target.value)}
-                className="input-field"
-                placeholder="Enter image URL"
-              />
-            </div> */}
-
             {!selectedGroup &&
             <div className='card max-h-96 overflow-y-auto minimal-scrollbar pr-1'>
               <CardHeader>
