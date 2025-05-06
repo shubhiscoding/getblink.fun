@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Footer } from "@/components/footer";
 
 export default function Index() {
-  const [icon, setIcon] = useState<string>('');
+  const [icon, setIcon] = useState<string>('meteora.jpg');
   const [description, setDescription] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [mintAddress, setMintAddress] = useState<string>('');
@@ -15,10 +15,6 @@ export default function Index() {
     <div className="flex flex-col md:min-h-screen">
       <div className="flex-1 flex flex-col md:flex-row items-center md:items-start md:justify-center gap-8 md:p-8">
         <LpForm
-          icon={icon}
-          setIcon={setIcon}
-          description={description}
-          setDescription={setDescription}
           mintAddress={mintAddress}
           setMintAddress={setMintAddress}
           showForm={showForm}

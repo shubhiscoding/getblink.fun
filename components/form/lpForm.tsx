@@ -23,10 +23,6 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 
 interface FormProps {
-  icon: string;
-  setIcon: (value: string) => void;
-  description: string;
-  setDescription: (value: string) => void;
   mintAddress: string;
   setMintAddress: (value: string) => void;
   showForm: boolean;
@@ -34,10 +30,6 @@ interface FormProps {
 }
 
 const LpForm: React.FC<FormProps> = ({
-  icon,
-  setIcon,
-  description,
-  setDescription,
   mintAddress,
   setMintAddress,
   showForm,
@@ -99,27 +91,35 @@ const LpForm: React.FC<FormProps> = ({
       return;
     }
 
-    if (!icon || !description || !mintAddress) {
+    if (!selectedPair) {
       console.error('Please fill all fields');
       window.alert('Please fill all fields');
       return;
     }
 
     let BlinkData;
+    const walletAddress = publicKey.toString();
     try {
-      const walletAddress = publicKey.toString();
-      const response = await fetch('/api/actions/generate-blink', {
+      const LpBlinkData = {
+        poolName: selectedPair?.name,
+        Liquidity: selectedPair?.liquidity,
+        Volume: selectedPair?.trade_volume_24h,
+        APR: selectedPair?.apr,
+        Fee: selectedPair?.base_fee_percentage,
+        DailyFee: selectedPair?.fees_24h,
+        BinStep: selectedPair?.bin_step,
+        TokenXName: selectedPair?.name.split('-')[0],
+        TokenYName: selectedPair?.name.split('-')[1],
+        mintX: selectedPair?.mint_x,
+        mintY: selectedPair?.mint_y,
+        wallet: walletAddress,
+      }
+      const response = await fetch('/api/actions/generate-blink/lp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          icon,
-          label: 'donate Sol',
-          description,
-          mintAddress,
-          wallet: walletAddress,
-        }),
+        body: JSON.stringify(LpBlinkData),
       });
 
       if (!response.ok) {
@@ -215,10 +215,10 @@ const LpForm: React.FC<FormProps> = ({
   return (
     <div className="w-full max-w-2xl h-full">
       {loading && <LoadingScreen subtext="Waiting For Transaction Confirmation!!" />}
-      <div className="card md:p-10 h-full" ref={form}>
+      <div className="card md:p-8 h-full" ref={form}>
         {showForm && (
-          <div className="space-y-6 h-full">
-            <h1 className="text-2xl md:text-3xl font-bold mb-6 gradient-text">
+          <div className="space-y-4 h-full">
+            <h1 className="text-2xl md:text-3xl font-bold mb-4 gradient-text">
               Liquidity Position Blink
             </h1>
 
@@ -317,7 +317,7 @@ const LpForm: React.FC<FormProps> = ({
             )}
 
             {selectedGroup && selectedPair && (
-              <div className="space-y-6">
+              <div className="space-y-2">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -329,12 +329,12 @@ const LpForm: React.FC<FormProps> = ({
                 </Button>
 
                 <Card>
-                  <CardHeader>
+                  <CardHeader className='p-5'>
                     <CardTitle>{selectedPair.name}</CardTitle>
                     <CardDescription>Pool Information</CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
+                  <CardContent className="space-y-2">
+                    <div className="grid grid-cols-2 gap-1">
                       <div className="space-y-1">
                         <Label className="text-muted-foreground">Liquidity</Label>
                         <div className="font-medium">
@@ -379,18 +379,14 @@ const LpForm: React.FC<FormProps> = ({
 
                     {/* <Separator /> */}
 
-                    <div className="space-y-1.5">
+                    <div className="space-y-1">
                       <Label className="text-muted-foreground">Token Pair</Label>
-                      <div className="grid gap-1.5 text-sm">
+                      <div className="grid gap-3.5 text-sm">
                         <div className="font-medium">
-                          Token X: {selectedPair.mint_x.slice(0, 8)}...
-                          {selectedPair.mint_x.slice(-8)} •{' '}
-                          {selectedPair.name.split('-')[0]}
+                          {selectedPair.name.split('-')[0]} : {selectedPair.mint_x}
                         </div>
                         <div className="font-medium">
-                          Token Y: {selectedPair.mint_y.slice(0, 8)}...
-                          {selectedPair.mint_y.slice(-8)} •{' '}
-                          {selectedPair.name.split('-')[1]}
+                          {selectedPair.name.split('-')[1]} : {selectedPair.mint_y}
                         </div>
                         {/* <div className="font-medium">
                           Swap ratio: 1 {selectedPair.tokenXName?.symbol} ={' '}
