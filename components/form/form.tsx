@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { WalletButton } from '../solana/solana-provider';
 import LoadingScreen from '../Loading/loading';
 import {
@@ -14,6 +14,7 @@ import {
   TransactionInstruction
 } from '@solana/web3.js';
 import { HiOutlineClipboardCopy, HiOutlineShare } from 'react-icons/hi';
+import { createTransaction } from '@/server/transaction';
 
 interface FormProps {
   icon: string;
@@ -41,6 +42,7 @@ const Form: React.FC<FormProps> = ({
   const [copied, setCopied] = useState(false);
   const form = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState(false);
+  const { connection } = useConnection();
 
   const handlePreview = async () => {
     setLoading(true);
@@ -83,31 +85,11 @@ const Form: React.FC<FormProps> = ({
       window.alert('Failed to generate blink');
       return;
     }
-
-    const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC|| clusterApiUrl("mainnet-beta"));
-    const recipientPubKey = new PublicKey(process.env.NEXT_PUBLIC_WALLET || "8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
-    const MEMO_PROGRAM_ID = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
     const messageString = `${publicKey.toString() + BlinkData.id.toString()}`;
-    const amount = 0.001 * LAMPORTS_PER_SOL;
+    const getTransaction = await createTransaction(messageString, 0.001, publicKey.toString());
 
-    const transaction = new Transaction().add(
-      new TransactionInstruction({
-        programId: MEMO_PROGRAM_ID,
-        keys: [],
-        data: Buffer.from(messageString, "utf8"),
-      })
-    );
-    transaction.add(
-      SystemProgram.transfer({
-        fromPubkey: publicKey,
-        toPubkey: recipientPubKey,
-        lamports: amount,
-      })
-    );
-
-    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
-    transaction.recentBlockhash = blockhash;
-    transaction.feePayer = publicKey;
+    const { serializedTransaction, blockhash, lastValidBlockHeight } = getTransaction;
+    const transaction = Transaction.from(Buffer.from(serializedTransaction, 'base64'));
 
     try {
       const signature = await sendTransaction(transaction, connection);

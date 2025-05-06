@@ -8,8 +8,9 @@ import {
   WalletProvider,
 } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { ReactNode, useCallback, useMemo } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useCluster } from '../cluster/cluster-data-access';
+import { LedgerWalletAdapter, PhantomWalletAdapter, SolflareWalletAdapter } from "@solana/wallet-adapter-wallets";
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 
@@ -21,14 +22,27 @@ export const WalletButton = dynamic(
 
 export function SolanaProvider({ children }: { children: ReactNode }) {
   const { cluster } = useCluster();
-  const endpoint = useMemo(() => cluster.endpoint, [cluster]);
-  const onError = useCallback((error: WalletError) => {
-    console.error(error);
+  const [endpointUrl, setEndpointUrl] = useState<string>("");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const origin = window.location.origin;
+      setEndpointUrl(`${origin}/api/rpc`);
+    }
   }, []);
 
+  const wallets = useMemo(() => [
+    new PhantomWalletAdapter,
+    new SolflareWalletAdapter,
+    new LedgerWalletAdapter
+  ], []);
+
+  if (!endpointUrl) {
+    return null;
+  }
+
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={[]} onError={onError} autoConnect={true}>
+    <ConnectionProvider endpoint={endpointUrl}>
+      <WalletProvider wallets={wallets} autoConnect={true}>
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>

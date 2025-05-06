@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import TokenPreview from "@/components/preview/token-preview";
 import TokenForm from '@/components/form/tokenForm';
 import {
@@ -15,6 +15,7 @@ import {
 import { HiOutlineClipboardCopy, HiOutlineShare, HiOutlinePlus } from 'react-icons/hi';
 import { Footer } from '@/components/footer';
 import LoadingScreen from '@/components/Loading/loading';
+import { createTransaction } from '@/server/transaction';
 
 // Define commission types for type safety
 type CommissionType = "yes" | "no";
@@ -34,6 +35,7 @@ export default function Page() {
   const [blinkLink, setBlinkLink] = useState('');
   const [copied, setCopied] = useState(false);
   const form = useRef<HTMLDivElement | null>(null);
+  const { connection } = useConnection();
 
   useEffect(() => {
     setShowPreview(false);
@@ -49,8 +51,6 @@ export default function Page() {
     setLoading(true);
     setLoadingText('Waiting for Transaction confirmation!!');
     try {
-      const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC|| clusterApiUrl("mainnet-beta"));
-
       if (!connected || !publicKey) {
         console.error('Wallet not connected or not available');
         window.alert('Please connect your wallet first');
@@ -87,33 +87,10 @@ export default function Page() {
         const data = await response.json();
 
 
-        const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC|| clusterApiUrl("mainnet-beta"));
-        const recipientPubKey = new PublicKey(process.env.NEXT_PUBLIC_WALLET || "8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
-        const MEMO_PROGRAM_ID = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
         const messageString = `${publicKey.toString() + data.id.toString()}`;
-        const amount = 0.01 * LAMPORTS_PER_SOL;
-
-        // Create a new Solana transaction
-
-        const transaction = new Transaction().add(
-          new TransactionInstruction({
-            programId: MEMO_PROGRAM_ID,
-            keys: [],
-            data: Buffer.from(messageString, "utf8"),
-          })
-        );
-        transaction.add(
-          SystemProgram.transfer({
-            fromPubkey: publicKey,
-            toPubkey: recipientPubKey,
-            lamports: amount,
-          })
-        );
-
-        const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
-        transaction.recentBlockhash = blockhash;
-        transaction.feePayer = publicKey;
-
+        const getTransaction = await createTransaction(messageString, 0.01, publicKey.toString());
+        const  {serializedTransaction, blockhash, lastValidBlockHeight} = getTransaction;
+        const transaction = Transaction.from(Buffer.from(serializedTransaction, 'base64'));
         const signature = await sendTransaction(transaction, connection);
         console.log('Transaction sent:', signature);
 
