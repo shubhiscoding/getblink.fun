@@ -14,7 +14,7 @@ import {
   TransactionInstruction
 } from '@solana/web3.js';
 import { HiOutlineClipboardCopy, HiOutlineShare } from 'react-icons/hi';
-import { createTransaction } from '@/server/transaction';
+import { confirmTransaction, createTransaction } from '@/server/transaction';
 
 interface FormProps {
   icon: string;
@@ -57,7 +57,7 @@ const Form: React.FC<FormProps> = ({
       return;
     }
 
-    let BlinkData;
+  let BlinkData;
     try {
       const walletAddress = publicKey.toString();
       const response = await fetch('/api/actions/generate-blink', {
@@ -95,11 +95,11 @@ const Form: React.FC<FormProps> = ({
       const signature = await sendTransaction(transaction, connection);
       console.log('Transaction sent:', signature);
 
-      const confirmation = await connection.confirmTransaction({
+      const confirmation = await confirmTransaction(
         signature,
         blockhash,
         lastValidBlockHeight
-      }, 'finalized');
+      );
       console.log('Transaction confirmed:', confirmation);
       const res = await fetch('/api/actions/order', {
         method: 'POST',
@@ -218,9 +218,11 @@ const Form: React.FC<FormProps> = ({
             <div className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--border-color)]">
               <p className="text-sm text-[var(--text-secondary)] mb-2">Blink Link:</p>
               <div className="flex items-center gap-2">
-                <div className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
-                  https://dial.to/?action=solana-action:{blinkLink}
-                </div>
+                <a href={`https://dial.to/?action=solana-action:${blinkLink}`}>
+                  <div className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
+                    https://dial.to/?action=solana-action:{blinkLink}
+                  </div>
+                </a>
                 <button
                   onClick={handleCopy}
                   className="p-3 rounded-lg bg-[var(--border-color)] hover:bg-[var(--accent-primary)] transition-colors duration-300"

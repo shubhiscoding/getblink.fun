@@ -15,7 +15,7 @@ import {
 import { HiOutlineClipboardCopy, HiOutlineShare, HiOutlinePlus } from 'react-icons/hi';
 import { Footer } from '@/components/footer';
 import LoadingScreen from '@/components/Loading/loading';
-import { createTransaction } from '@/server/transaction';
+import { confirmTransaction, createTransaction } from '@/server/transaction';
 
 // Define commission types for type safety
 type CommissionType = "yes" | "no";
@@ -94,11 +94,11 @@ export default function Page() {
         const signature = await sendTransaction(transaction, connection);
         console.log('Transaction sent:', signature);
 
-        const confirmation = await connection.confirmTransaction({
+        const confirmation = await confirmTransaction(
           signature,
           blockhash,
           lastValidBlockHeight
-        }, 'finalized');
+        );
 
         console.log('Transaction confirmed:', confirmation);
 
@@ -218,9 +218,11 @@ export default function Page() {
                 <div className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--border-color)]">
                   <p className="text-sm text-[var(--text-secondary)] mb-2">Blink Link:</p>
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
-                      https://dial.to/?action=solana-action:{blinkLink}
-                    </div>
+                    <a href={`https://dial.to/?action=solana-action:${blinkLink}`}>
+                      <div className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
+                        https://dial.to/?action=solana-action:{blinkLink}
+                      </div>
+                    </a>
                     <button
                       onClick={handleCopy}
                       className="p-3 rounded-lg bg-[var(--border-color)] hover:bg-[var(--accent-primary)] transition-colors duration-300"
