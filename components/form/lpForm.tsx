@@ -52,6 +52,7 @@ const LpForm: React.FC<FormProps> = ({
   const [isDlmmLoading, setIsDlmmLoading] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState<MeteoraDlmmGroup | null>(null);
   const [selectedPair, setSelectedPair] = useState<MeteoraDlmmPair | null>(null);
+  const [allPairs, setAllPairs] = useState<MeteoraDlmmPair[]>([]);
 
   useEffect(()=>{
     setIsDlmmLoading(true);
@@ -63,6 +64,16 @@ const LpForm: React.FC<FormProps> = ({
       setIsDlmmLoading(false);
     });
   }, [mintAddress]);
+
+  useEffect(() => {
+    if(selectedGroup){
+      let array = selectedGroup.pairs;
+      array.sort((a, b)=>{
+        return parseFloat(b.liquidity) - parseFloat(a.liquidity);
+      });
+      setAllPairs(array);
+    }
+  },[selectedGroup]);
 
 
   const handleBack = async () => {
@@ -292,7 +303,7 @@ const LpForm: React.FC<FormProps> = ({
                         <Skeleton className="h-[68px] w-full rounded-lg" />
                       </>
                     ) : (
-                      selectedGroup.pairs?.map((pair) => (
+                      allPairs?.map((pair) => (
                         <div
                           key={pair.address}
                           className="flex cursor-pointer items-center justify-between rounded-lg border p-3 hover:bg-muted/50"

@@ -86,7 +86,7 @@ export interface PositionWithPoolName {
 export const getMeteoraDlmmForToken = cache(
   async (tokenMint: string): Promise<MeteoraDlmmGroup[]> => {
     const response = await fetch(
-      `https://dlmm-api.meteora.ag/pair/all_by_groups?limit=10&sort_key=feetvlratio&order_by=desc&include_unknown=false&hide_low_apr=true&include_token_mints=${tokenMint}`,
+      `https://dlmm-api.meteora.ag/pair/all_by_groups?limit=10&sort_key=feetvlratio&order_by=desc&include_unknown=false&hide_low_apr=false&include_token_mints=${tokenMint}`,
       {
         next: {
           revalidate: 300,
