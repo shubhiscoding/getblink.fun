@@ -12,11 +12,15 @@ import {
 import {
   clusterApiUrl,
   Connection,
+  Keypair,
   LAMPORTS_PER_SOL,
   PublicKey,
   SystemProgram,
   Transaction,
 } from "@solana/web3.js";
+import DLMM, { LbPosition, StrategyType } from '@meteora-ag/dlmm';
+import { BN } from '@coral-xyz/anchor';
+import { getMint } from '../../../../../node_modules/@solana/spl-token';
 
 export const GET = async (req: NextRequest, { params }: { params: { uniqueid: string } }) => {
   try {
@@ -25,94 +29,114 @@ export const GET = async (req: NextRequest, { params }: { params: { uniqueid: st
 
     const client = await clientPromise;
     const db = client.db("Cluster0");
-    // console.log(req.url.split('api/')[0]);
+
     let blinkData;
     if (ObjectId.isValid(uniqueid)) {
       blinkData = await db.collection("blinks").findOne({ _id: new ObjectId(uniqueid) });
     }
 
-    // if(blinkData && blinkData.isPaid === false){
-    //   return NextResponse.json(
-    //     {
-    //       message: "This blink is not paid for yet. Please pay to use it.",
-    //     },
-    //     {
-    //       status: 403,
-    //       headers: ACTIONS_CORS_HEADERS,
-    //     },
-    //   );
-    // }
+    if(!blinkData) {
+      return NextResponse.json(
+        {
+          message: "This blink does not exist.",
+        },
+        {
+          status: 404,
+          headers: ACTIONS_CORS_HEADERS,
+        },
+      );
+    }
 
-//     if (!blinkData) {
-//       blinkData = {
-//         icon: "http://localhost:3000/meteora.jpg",
-//         label: "Open a JUP-USDC Position",
-//         description: `**JUP-USDC Pool Information**
+    const blink_Description = `****
 
-// - **Liquidity:** $16,6600000.048
-// - **24h Volume:** $1,186.746
-// - **APR:** 0.17%            **Bin Step:** 80
-// - **Fee %:** 0.25%        **24h Fees:** $2.884
+**Liq:** $${parseFloat(blinkData.Liquidity).toFixed(3)}        **24h Vol:** $${parseFloat(blinkData.Volume).toFixed(3)}
 
-// **Token Pair**
-// - **JUP:** JUPyiwrY...dZNsDvCN
-// - **USDC:** EPjFWdd5...ZwyTDT1v
-// `,
-//         title: "Open a Position in JUP-USDC",
-//       };
-//     }
-  if(!blinkData) {
-    return NextResponse.json(
-      {
-        message: "This blink does not exist.",
-      },
-      {
-        status: 404,
-        headers: ACTIONS_CORS_HEADERS,
-      },
-    );
-  }
+**APR:** ${parseFloat(blinkData.APR).toFixed(3)}%          **Bin Step:** ${blinkData.BinStep}
 
-    const blink_Description = `**${blinkData.poolName} Pool Information**
-    - **Liquidity:** ${blinkData.Liquidity}
-    - **24h Volume:** ${blinkData.Volume}
-    - **APR:** ${blinkData.APR}            **Bin Step:** ${blinkData.BinStep}
-    - **Fee %:** ${blinkData.Fee}        **24h Fees:** ${blinkData.DailyFee}
-    **Token Pair**
-    - **${blinkData.TokenXName}:** ${blinkData.mintX}
-    - **${blinkData.TokenYName}:** ${blinkData.mintY}
-    `;
+**Fee:** ${parseFloat(blinkData.Fee).toFixed(3)}%           **24h Fees:** $${parseFloat(blinkData.DailyFee).toFixed(3)}
+
+**Pool Id:** ${blinkData.poolId}
+
+****
+
+**Token Pair**
+
+**${blinkData.TokenXName}:** ${blinkData.mintX}
+
+**${blinkData.TokenYName}:** ${blinkData.mintY}
+
+****
+
+NOTE: 0.0566 SOL needed to create a position (refundable on closing the position)`;
+
+  const connection = new Connection(process.env.SOLANA_RPC || clusterApiUrl("mainnet-beta"));
+  const dlmmPool = await DLMM.create(connection, new PublicKey(blinkData.poolId));
+  const bins = await dlmmPool.getBinsAroundActiveBin(20, 20);
+  const minBindId = bins.activeBin - 20;
+  const maxBindId = bins.activeBin + 20;
+
+  const maxBinPrice = dlmmPool.fromPricePerLamport(
+    parseFloat(bins.bins.filter((bin) => bin.binId === maxBindId)[0].price)
+  );
+  const minBinPrice = dlmmPool.fromPricePerLamport(
+    parseFloat(bins.bins.filter((bin) => bin.binId === minBindId)[0].price)
+  );
+
+  console.log("--------------------------------------------------------------");
+  console.log("minBinPrice", minBinPrice);
+  console.log("maxBinPrice", maxBinPrice);
+  console.log("--------------------------------------------------------------");
+
 
     const payload: ActionGetResponse = {
-      icon: blinkData.icon,
+      icon: process.env.METEORA_IMAGE || blinkData.icon,
       label: `Open a ${blinkData.poolName} Position`,
       description: blink_Description,
-      title: blinkData.title,
+      title: `Open a ${blinkData.poolName} Position`,
       links: {
         actions: [
           {
-            href: `/api/actions/donate/${uniqueid}?amount=0.1`,
-            label: "0.1 SOL",
-            type: "post",
-          },
-          {
-            href: `/api/actions/donate/${uniqueid}?amount=0.5`,
-            label: "0.5 SOL",
-            type: "post",
-          },
-          {
-            href: `/api/actions/donate/${uniqueid}?amount=1.0`,
-            label: "1.0 SOL",
-            type: "post",
-          },
-          {
-            href: `/api/actions/donate/${uniqueid}?amount={amount}`,
-            label: "Send SOL",
+            href: `/api/actions/lp/${uniqueid}?amountX={TokenXamount}&amountY={TokenYamount}&starategy={starategy}&MinPrice={MinPrice}&MaxPrice={MaxPrice}`,
+            label: `Open a ${blinkData.poolName} Position`,
             type: "post",
             parameters: [
               {
-                name: "amount",
-                label: "Enter a SOL amount",
+                type: "radio",
+                name: "starategy",
+                label: "Select a strategy",
+                options: [
+                  {
+                    label: "Spot",
+                    value: "Spot",
+                    selected: true,
+                  },
+                  {
+                    label: "Curve",
+                    value: "Curve",
+                  },
+                ],
+              },
+              {
+                name: "TokenXamount",
+                label: `Enter amount of ${blinkData.TokenXName}`,
+                type: "number",
+                required: true,
+              },
+              {
+                name: "TokenYamount",
+                label: `Enter amount of ${blinkData.TokenYName}`,
+                type: "number",
+                required: true,
+              },
+              {
+                name: "MinPrice",
+                label: `Min price for ${blinkData.TokenXName} (default: ${parseFloat(minBinPrice).toFixed(5)} ${blinkData.TokenYName})`,
+                type: "number",
+              },
+              {
+                name: "MaxPrice",
+                label: `Max price for ${blinkData.TokenXName} (default: ${parseFloat(maxBinPrice).toFixed(5)} ${blinkData.TokenYName})`,
+                type: "number",
               },
             ],
           },
@@ -154,7 +178,16 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
         },
       );
     }
-
+    const connection = new Connection(process.env.SOLANA_RPC || clusterApiUrl("mainnet-beta"));
+    const poolId = blinkData?.poolId
+    if(!poolId) {
+      return NextResponse.json({
+        message: "This blink does not exist.",
+      }, {
+        status: 404,
+        headers: ACTIONS_CORS_HEADERS,
+      })
+    }
     const { searchParams } = new URL(req.url);
     const body: ActionPostRequest = await req.json();
 
@@ -165,36 +198,118 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
       throw "Invalid 'account' provided. It's not a real pubkey";
     }
 
-    let amount: number = 0.1;
-    const amountParam = searchParams.get("amount");
-    if (amountParam) {
-      try {
-        amount = parseFloat(amountParam) || amount;
-      } catch (err) {
+    const amountXParam = searchParams.get("amountX");
+    const amountYParam = searchParams.get("amountY");
+    console.log("--------------------------------------------------------------");
+    console.log("amountX", amountXParam);
+    console.log("amountY", amountYParam);
+    console.log("--------------------------------------------------------------");
+    if (!amountXParam || !amountYParam) {
         throw "Invalid 'amount' input";
-      }
+    }
+    const amountX = parseFloat(amountXParam);
+    const amountY = parseFloat(amountYParam);
+    console.log("--------------------------------------------------------------");
+    console.log("amountX", amountX);
+    console.log("amountY", amountY);
+    console.log("--------------------------------------------------------------");
+    if (isNaN(amountX) || isNaN(amountY) || amountX <= 0 || amountY <= 0) {
+      throw "Invalid 'amount' input";
     }
 
-    const SOLANA_RPC_URL = clusterApiUrl("mainnet-beta", false);
-    if (!SOLANA_RPC_URL) throw "Unable to find RPC url...awkward...";
-    const connection = new Connection(SOLANA_RPC_URL);
+    const strategy = searchParams.get("starategy");
+    if (!strategy) {
+      throw "Invalid 'strategy' input";
+    }
 
-    const transaction = new Transaction().add(
-      SystemProgram.transfer({
-        fromPubkey: account,
-        lamports: amount * LAMPORTS_PER_SOL,
-        toPubkey: blinkData? (blinkData.wallet || TREASURY_PUBKEY): TREASURY_PUBKEY,
-      }),
+    const MaxPriceParam = searchParams.get("MaxPrice");
+    const MinPriceParam = searchParams.get("MinPrice");
+    let minBinId:number;
+    let maxBinId:number;
+
+    const dlmmPool = await DLMM.create(connection, new PublicKey(poolId));
+
+    if(!MaxPriceParam || !MinPriceParam) {
+      const bins = await dlmmPool.getBinsAroundActiveBin(20, 20);
+      minBinId = bins.activeBin - 20;
+      maxBinId = bins.activeBin + 20;
+    }else{
+      const maxBinPrice = dlmmPool.toPricePerLamport(parseFloat(MaxPriceParam));
+      const minBinPrice = dlmmPool.toPricePerLamport(parseFloat(MinPriceParam));
+
+      if (isNaN(parseFloat(maxBinPrice)) || isNaN(parseFloat(minBinPrice))) {
+        throw "Invalid 'price' input";
+      }
+
+      if (parseFloat(maxBinPrice) <= 0 || parseFloat(minBinPrice) <= 0) {
+        throw "Invalid 'price' input";
+      }
+
+      maxBinId = dlmmPool.getBinIdFromPrice(parseFloat(maxBinPrice), false);
+      minBinId = dlmmPool.getBinIdFromPrice(parseFloat(minBinPrice), true);
+    }
+
+
+    if (!dlmmPool) {
+      throw "Unable to find pool";
+    }
+
+    const activeBin = await dlmmPool.getActiveBin();
+    console.log("--------------------------------------------------------------");
+    console.log("activeBin", activeBin);
+    console.log("activeBin.binId", activeBin.binId);
+    console.log("---------------------------------------------------------------");
+
+    console.log("--------------------------------------------------------------");
+    console.log("minBinId", minBinId);
+    console.log("maxBinId", maxBinId);
+    console.log("--------------------------------------------------------------");
+
+
+    // Calculate amounts based on current price
+    const activeBinPricePerToken = dlmmPool.fromPricePerLamport(
+      Number(activeBin.price),
     );
-    transaction.feePayer = account;
-    transaction.recentBlockhash = (
-      await connection.getLatestBlockhash()
-    ).blockhash;
+
+    const tokenXDecimal = (await getMint(connection, new PublicKey(dlmmPool.tokenX.publicKey))).decimals;
+    const tokenYDecimal = (await getMint(connection, new PublicKey(dlmmPool.tokenY.publicKey))).decimals;
+
+    console.log("--------------------------------------------------------------");
+    console.log("tokenXDecimal", tokenXDecimal);
+    console.log("tokenYDecimal", tokenYDecimal);
+    console.log("--------------------------------------------------------------");
+
+    const tokenXAmountBN = new BN(
+      amountX * Math.pow(10, tokenXDecimal),
+      );
+    const tokenYAmountBN = new BN(
+      amountY *
+          Math.pow(10, tokenYDecimal),
+      );
+
+
+    const positionKeypair = new Keypair();
+    const createPositionTx =
+      await dlmmPool.initializePositionAndAddLiquidityByStrategy({
+        positionPubKey: positionKeypair.publicKey,
+        user: account,
+        totalXAmount: tokenXAmountBN,
+        totalYAmount: tokenYAmountBN,
+        strategy: {
+          maxBinId,
+          minBinId,
+          strategyType: StrategyType[strategy as keyof typeof StrategyType],
+        },
+      });
+
+    createPositionTx.feePayer = account;
+
+
 
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
         type: "transaction",
-        transaction,
+        transaction: createPositionTx,
         message: "Thanks for the coffee fren :)",
       },
     });

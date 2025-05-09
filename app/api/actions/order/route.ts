@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { Connection, PublicKey, TransactionMessage, clusterApiUrl, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { ObjectId } from 'mongodb';
+import { BlinkType } from '@/lib/constant';
 
 export async function POST(req: Request) {
   try {
@@ -62,7 +63,12 @@ export async function POST(req: Request) {
     }
     const SYSTEM_PROGRAM_ID = new PublicKey('11111111111111111111111111111111');
     const TREASURY_WALLET = new PublicKey(process.env.WALLET || '8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3');
-    const EXPECTED_AMOUNT = order.mint ? 0.01 * LAMPORTS_PER_SOL : 0.001 * LAMPORTS_PER_SOL;
+    const amounts = {
+      "lp": 0.0001,
+      "tokens": 0.01,
+      "donate": 0.001
+    }
+    const EXPECTED_AMOUNT = amounts[order.endpoint as BlinkType] * LAMPORTS_PER_SOL;
 
     const transferInx = msg.instructions.find(
       (ix) =>

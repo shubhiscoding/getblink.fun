@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { WalletButton } from '../solana/solana-provider';
 import LoadingScreen from '../Loading/loading';
 import {
@@ -21,6 +21,7 @@ import { Button } from '../ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
+import { confirmTransaction, createTransaction } from '@/server/transaction';
 
 interface FormProps {
   mintAddress: string;
@@ -45,6 +46,7 @@ const LpForm: React.FC<FormProps> = ({
   const [selectedGroup, setSelectedGroup] = useState<MeteoraDlmmGroup | null>(null);
   const [selectedPair, setSelectedPair] = useState<MeteoraDlmmPair | null>(null);
   const [allPairs, setAllPairs] = useState<MeteoraDlmmPair[]>([]);
+  const { connection } = useConnection();
 
   useEffect(()=>{
     setIsDlmmLoading(true);
@@ -113,6 +115,7 @@ const LpForm: React.FC<FormProps> = ({
         mintX: selectedPair?.mint_x,
         mintY: selectedPair?.mint_y,
         wallet: walletAddress,
+        poolId: selectedPair.address,
       }
       const response = await fetch('/api/actions/generate-blink/lp', {
         method: 'POST',
@@ -127,48 +130,23 @@ const LpForm: React.FC<FormProps> = ({
       }
 
       BlinkData = await response.json();
-    } catch (error) {
-      setLoading(false);
-      console.error('Failed to generate blink', error);
-      window.alert('Failed to generate blink');
-      return;
-    }
 
-    const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC|| clusterApiUrl("mainnet-beta"));
-    const recipientPubKey = new PublicKey(process.env.NEXT_PUBLIC_WALLET || "8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3");
-    const MEMO_PROGRAM_ID = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
-    const messageString = `${publicKey.toString() + BlinkData.id.toString()}`;
-    const amount = 0.001 * LAMPORTS_PER_SOL;
+      const messageString = `${publicKey.toString() + BlinkData.id.toString()}`;
+      const getTransaction = await createTransaction(messageString, 0.0001, publicKey.toString());
+      const  {serializedTransaction, blockhash, lastValidBlockHeight} = getTransaction;
 
-    const transaction = new Transaction().add(
-      new TransactionInstruction({
-        programId: MEMO_PROGRAM_ID,
-        keys: [],
-        data: Buffer.from(messageString, "utf8"),
-      })
-    );
-    transaction.add(
-      SystemProgram.transfer({
-        fromPubkey: publicKey,
-        toPubkey: recipientPubKey,
-        lamports: amount,
-      })
-    );
-
-    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
-    transaction.recentBlockhash = blockhash;
-    transaction.feePayer = publicKey;
-
-    try {
+      const transaction = Transaction.from(Buffer.from(serializedTransaction, 'base64'));
       const signature = await sendTransaction(transaction, connection);
       console.log('Transaction sent:', signature);
 
-      const confirmation = await connection.confirmTransaction({
+      const confirmation = await confirmTransaction(
         signature,
         blockhash,
         lastValidBlockHeight
-      }, 'finalized');
+      );
+
       console.log('Transaction confirmed:', confirmation);
+
       const res = await fetch('/api/actions/order', {
         method: 'POST',
         headers: {
@@ -190,8 +168,8 @@ const LpForm: React.FC<FormProps> = ({
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.error('Failed to send transaction', error);
-      window.alert('Failed to send transaction');
+      console.error('Failed to generate blink', error);
+      window.alert('Failed to generate blink');
       return;
     }
   };
@@ -373,6 +351,12 @@ const LpForm: React.FC<FormProps> = ({
                         <Label className="text-muted-foreground">24h Fees</Label>
                         <div className="font-medium">
                           ${selectedPair.fees_24h.toLocaleString()}
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-muted-foreground">Pool Id</Label>
+                        <div className="font-medium">
+                          {selectedPair.address.toString()}
                         </div>
                       </div>
                     </div>

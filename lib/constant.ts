@@ -39,3 +39,10 @@ export function createAssociatedTokenAccountInstruction(
     data: Buffer.alloc(0),  // The instruction data (empty in this case)
   });
 }
+
+export enum BlinkType {
+  lp = "lp",
+  tokens = "tokens",
+  donate = "donate"
+}
+
