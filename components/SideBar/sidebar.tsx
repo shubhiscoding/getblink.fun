@@ -18,7 +18,7 @@ interface SideButtonProps {
 const SideBarButton: React.FC<SideButtonProps> = ({ href, children, icon, isActive, onClick }) => (
   <Link href={href} className="no-underline w-full">
     <div
-      className={`flex items-center gap-3 py-3.5 px-5 my-2 rounded-xl transition-all duration-300 hover-lift ${
+      className={`flex items-center gap-3 py-[min(3.5%,25px)] px-[min(5%,20px)] my-2 rounded-xl transition-all duration-300 hover-lift whitespace-nowrap text-ellipsis overflow-hidden ${
         isActive
           ? 'bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-white font-medium shadow-md glow'
           : 'text-[var(--text-secondary)] hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)]'
@@ -51,7 +51,7 @@ const Sidebar = () => {
       setInfo("Create a Blink to sell or resell any SPL token. Share it with others so they can easily buy the token.")
     }else if(endpoint === 'lp'){
       setValue('LP Blink');
-      setInfo("Create a Blink for any Meteora DLMM pool. When shared, this Blink allows others to view and interact with the pool’s spot, curve, or bid-ask positions")
+      setInfo("Create a Blink for any Meteora DLMM pool. When shared, this Blink allows others to view and interact with the pool's spot, curve, or bid-ask positions")
     }else if(endpoint === 'Blinks'){
       setValue('My Blinks');
       setInfo('The list of Blinks created by this wallet, using GetBlink.fun')
@@ -63,12 +63,16 @@ const Sidebar = () => {
     // Check if mobile
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 1270);
+      // Force sidebar to close on very small screens
+      if (window.innerWidth <= 768 && isSidebarOpen) {
+        setIsSidebarOpen(false);
+      }
     };
 
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [setValue, setInfo, isSidebarOpen]);
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -102,9 +106,9 @@ const Sidebar = () => {
   return (
     <>
       <div
-        className={`fixed lap:relative w-[300px] h-full card py-10 flex flex-col justify-between z-20 backdrop-blur-md bg-[var(--card-bg)]/90 border-r border-[var(--border-color)] transition-all duration-300 ${
+        className={`fixed lap:relative w-[min(300px,30vw)] h-full card py-10 flex flex-col justify-between z-20 backdrop-blur-md bg-[var(--card-bg)]/90 border-r border-[var(--border-color)] transition-all duration-300 overflow-hidden ${
           isMobile ? (isSidebarOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'
-        } sm:w-full sm:max-w-[300px]`}
+        } sm:w-full sm:max-w-[min(300px,90vw)]`}
       >
         <div>
 
@@ -117,14 +121,14 @@ const Sidebar = () => {
         >
           <div className="backdrop-blur-sm z-40">
             <h1
-              className="text-[1.5rem] font-bold m-0 bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-transparent bg-clip-text animation-delay-200 fade-in"
+              className="text-[min(1.5rem,5vw)] font-bold m-0 bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-transparent bg-clip-text animation-delay-200 fade-in"
             >
               GetBlink.fun
             </h1>
           </div>
         </div>
 
-          <div className="px-5 space-y-2">
+          <div className="px-[min(5%,20px)] space-y-4 overflow-hidden">
           <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--border-color)] to-transparent my-4"></div>
             <div className="fade-in animation-delay-100">
               <SideBarButton
@@ -183,12 +187,12 @@ const Sidebar = () => {
           </div>
         </div>
 
-        <div className="px-5 space-y-3 fade-in animation-delay-500">
+        <div className="px-[min(5%,20px)] space-y-3 fade-in animation-delay-500 overflow-hidden">
           <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--border-color)] to-transparent my-4"></div>
           <a
             href='https://github.com/shubhiscoding/getblink.fun'
             target='_blank'
-            className="flex items-center gap-3 p-3.5 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift"
+            className="flex items-center gap-[min(3%,12px)] p-[min(3.5%,14px)] text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift whitespace-nowrap text-ellipsis overflow-hidden"
           >
             <FaGithub className="text-[var(--text-color)]" />
             <span className="font-medium">Source Code</span>
@@ -197,7 +201,7 @@ const Sidebar = () => {
           <a
             href='https://x.com/getblinkdotfun'
             target='_blank'
-            className="flex items-center gap-3 p-3.5 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift"
+            className="flex items-center gap-[min(3%,12px)] p-[min(3.5%,14px)] text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift whitespace-nowrap text-ellipsis overflow-hidden"
           >
             <FaTwitter className="text-[#1DA1F2]" />
             <span className="font-medium">@getblinkdotfun</span>
@@ -206,7 +210,7 @@ const Sidebar = () => {
           <a
             href='https://x.com/LookWhatIbuild'
             target='_blank'
-            className="flex items-center gap-3 p-3.5 text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift"
+            className="flex items-center gap-[min(3%,12px)] p-[min(3.5%,14px)] text-[var(--text-secondary)] rounded-xl transition-all duration-300 hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)] hover-lift whitespace-nowrap text-ellipsis overflow-hidden"
           >
             <FaHardHat className="text-[var(--text-color)]" />
             <span className="font-medium">@LookWhatIBuild</span>
