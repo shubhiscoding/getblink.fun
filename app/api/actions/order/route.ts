@@ -64,7 +64,7 @@ export async function POST(req: Request) {
     const SYSTEM_PROGRAM_ID = new PublicKey('11111111111111111111111111111111');
     const TREASURY_WALLET = new PublicKey(process.env.WALLET || '8twrkXxvDzuUezvbkgg3LxpTEZ59KiFx2VxPFDkucLk3');
     const amounts = {
-      "lp": 0.0001,
+      "lp": 0.01,
       "tokens": 0.01,
       "donate": 0.001
     }
