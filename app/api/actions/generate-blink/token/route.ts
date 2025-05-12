@@ -7,7 +7,7 @@ import { getMint } from '../../../../../node_modules/@solana/spl-token';
 
 const { metadata: { Metadata } } = programs;
 
-const connection = new Connection('https://api.mainnet-beta.solana.com');
+const connection = new Connection(process.env.SOLANA_RPC || 'https://api.mainnet-beta.solana.com');
 
 export async function GET(req: Request) {
   try {
@@ -162,6 +162,7 @@ export async function POST(req: Request) {
       percentage,
       decimals,
       createdAt: new Date(),
+      endpoint: "tokens",
       isPaid: false
     });
     console.log(result.insertedId);

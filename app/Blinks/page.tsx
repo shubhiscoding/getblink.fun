@@ -41,7 +41,7 @@ export default function Page() {
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center gradient-text">
               Your Blinks
             </h1>
-            
+
             {!publicKey ? (
               <div className="flex flex-col items-center justify-center py-10 space-y-4 fade-in">
                 <p className="text-[var(--text-secondary)] text-center mb-4">
@@ -56,19 +56,19 @@ export default function Page() {
                 <div className="shimmer w-full max-w-md h-40 rounded-xl"></div>
               </div>
             ) : (
-              <div className="space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar pr-1">
+              <div className="space-y-4 max-h-[70vh] overflow-y-auto minimal-scrollbar pr-1">
                 {data && data.length > 0 ? (
                   data.slice().reverse().map((blink, index) => (
-                    <div 
-                      key={blink['_id']} 
-                      className="hover-lift fade-in" 
+                    <div
+                      key={blink['_id']}
+                      className="hover-lift fade-in"
                       style={{ animationDelay: `${index * 0.1}s` }}
                     >
                       <DataCard
                         code={blink['_id']}
-                        base={blink.privateKey ? "https://dial.to/devnet?action=solana-action:" : "https://dial.to/?action=solana-action:"}
+                        base={"https://dial.to/?action=solana-action:"}
                         title={blink.title}
-                        endpoint={blink.mint ? "tokens" : (blink.privateKey ? "gamble" : "donate")} 
+                        endpoint={blink.endpoint}
                       />
                     </div>
                   ))
