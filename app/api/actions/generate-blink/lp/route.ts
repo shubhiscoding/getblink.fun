@@ -17,8 +17,14 @@ export async function POST(req: Request) {
     }
 
     // Destructure and validate the parsed data
-    const { poolName, Liquidity, Volume, APR, Fee, DailyFee, BinStep, TokenXName, TokenYName, mintX, mintY, wallet, poolId } = data;
-    if (!poolName || !Liquidity || Volume==null || APR==null || !Fee || DailyFee==null || BinStep==null || !TokenXName || !TokenYName || !mintX || !mintY || !wallet || !poolId) {
+    const { poolName, Liquidity, Volume, APR, Fee,
+            DailyFee, BinStep, TokenXName, TokenYName,
+            mintX, mintY, wallet, poolId, percentage } = data;
+
+    if (!poolName || !Liquidity || Volume==null || APR==null || !Fee
+        || DailyFee==null || BinStep==null || !TokenXName || !TokenYName
+        || !mintX || !mintY || !wallet || !poolId
+        || !percentage) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -43,6 +49,7 @@ export async function POST(req: Request) {
       wallet,
       endpoint: "lp",
       poolId,
+      percentage,
     });
 
     console.log(result);

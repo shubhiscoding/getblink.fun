@@ -13,7 +13,7 @@ import {
   clusterApiUrl,
   TransactionInstruction
 } from '@solana/web3.js';
-import { HiOutlineClipboardCopy, HiOutlineShare } from 'react-icons/hi';
+import { HiInformationCircle, HiOutlineClipboardCopy, HiOutlineShare } from 'react-icons/hi';
 import { MeteoraDlmmGroup, MeteoraDlmmPair, PositionWithPoolName, getMeteoraDlmmForToken } from '@/server/meteora';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Skeleton } from '../ui/skeleton';
@@ -22,6 +22,8 @@ import { ArrowLeft } from 'lucide-react';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { confirmTransaction, createTransaction } from '@/server/transaction';
+import { FaInfoCircle } from 'react-icons/fa';
+import * as Tooltip from '@radix-ui/react-tooltip';
 
 interface FormProps {
   mintAddress: string;
@@ -29,6 +31,8 @@ interface FormProps {
   showForm: boolean;
   setShowForm: (value: boolean) => void;
 }
+
+type CommissionType = 'yes' | 'no';
 
 const LpForm: React.FC<FormProps> = ({
   mintAddress,
@@ -47,6 +51,9 @@ const LpForm: React.FC<FormProps> = ({
   const [selectedPair, setSelectedPair] = useState<MeteoraDlmmPair | null>(null);
   const [allPairs, setAllPairs] = useState<MeteoraDlmmPair[]>([]);
   const { connection } = useConnection();
+  const [takeCommission, setTakeCommission] = useState<CommissionType>('no');
+  const [percentage, setPercentage] = useState<number>(0);
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
   useEffect(()=>{
     setIsDlmmLoading(true);
@@ -116,6 +123,7 @@ const LpForm: React.FC<FormProps> = ({
         mintY: selectedPair?.mint_y,
         wallet: walletAddress,
         poolId: selectedPair.address,
+        percentage: percentage,
       }
       const response = await fetch('/api/actions/generate-blink/lp', {
         method: 'POST',
@@ -207,7 +215,7 @@ const LpForm: React.FC<FormProps> = ({
                 value={mintAddress}
                 onChange={(e) => setMintAddress(e.target.value)}
                 className="input-field"
-                placeholder="Search by mint address"
+                placeholder="Search by mint address, pool name, pool id or token name"
                 maxLength={50}
               />
             </div>}
@@ -380,6 +388,86 @@ const LpForm: React.FC<FormProps> = ({
                     </div>
                   </CardContent>
                 </Card>
+                <div className="bg-[var(--card-bg)] rounded-xl p-4 border border-[var(--border-color)]">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex items-center gap-2">
+                      <label className="text-sm font-medium text-[var(--text-color)]">
+                        Take commission
+                      </label>
+                      <Tooltip.Provider delayDuration={0}>
+                        <Tooltip.Root open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
+                          <Tooltip.Trigger asChild>
+                            <span
+                              className="inline-block ml-1"
+                              onClick={() => setIsTooltipOpen(!isTooltipOpen)}
+                            >
+                              <HiInformationCircle color='#A48BFA' cursor='pointer' size={25} />
+                            </span>
+                          </Tooltip.Trigger>
+                          <Tooltip.Portal>
+                            <Tooltip.Content
+                              className="bg-[var(--card-bg)] text-[var(--text-color)] px-3 py-1.5 rounded-md text-sm shadow-md max-w-[20rem]"
+                              sideOffset={1}
+                            >
+                              You will recieve a commission on every opened position from this blink on the total amount of {selectedPair.name.split('-')[0]} in sol. The maximum commission is 1%.
+                              <Tooltip.Arrow className="fill-[var(--card-bg)]" />
+                            </Tooltip.Content>
+                          </Tooltip.Portal>
+                        </Tooltip.Root>
+                      </Tooltip.Provider>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          value="yes"
+                          checked={takeCommission === "yes"}
+                          onChange={(e) => setTakeCommission(e.target.value as CommissionType)}
+                          className="accent-[var(--accent-primary)] cursor-pointer"
+                        />
+                        <span className="text-[var(--text-color)]">Yes</span>
+                      </label>
+
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          value="no"
+                          checked={takeCommission === "no"}
+                          onChange={(e) => setTakeCommission(e.target.value as CommissionType)}
+                          className="accent-[var(--accent-primary)] cursor-pointer"
+                        />
+                        <span className="text-[var(--text-color)]">No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  {takeCommission === "yes" && (
+                    <div className="mt-4">
+                      <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">
+                        Commission Percentage (max 1%)
+                      </label>
+                      <input
+                        type="number"
+                        value={percentage}
+                        onChange={(e) => {
+                          const value = Math.min(1, parseFloat(e.target.value) || 0);
+                          const stringValue = value.toString();
+                          if (stringValue.length > 4) {
+                            setPercentage(parseFloat(stringValue.slice(0, 4)));
+                          } else {
+                            setPercentage(value);
+                          }
+                        }}
+                        className="input-field"
+                        placeholder="Enter commission percentage"
+                        max={1}
+                        min={0}
+                        step={0.01}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
@@ -408,18 +496,20 @@ const LpForm: React.FC<FormProps> = ({
 
             <div className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--border-color)]">
               <p className="text-sm text-[var(--text-secondary)] mb-2">Blink Link:</p>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
-                  https://dial.to/?action=solana-action:{blinkLink}
+              <a href={`https://dial.to/?action=solana-action:${blinkLink}`} target="_blank">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
+                    https://dial.to/?action=solana-action:{blinkLink}
+                  </div>
+                  <button
+                    onClick={handleCopy}
+                    className="p-3 rounded-lg bg-[var(--border-color)] hover:bg-[var(--accent-primary)] transition-colors duration-300"
+                    title="Copy to clipboard"
+                  >
+                    {copied ? 'Copied!' : <HiOutlineClipboardCopy size={20} />}
+                  </button>
                 </div>
-                <button
-                  onClick={handleCopy}
-                  className="p-3 rounded-lg bg-[var(--border-color)] hover:bg-[var(--accent-primary)] transition-colors duration-300"
-                  title="Copy to clipboard"
-                >
-                  {copied ? 'Copied!' : <HiOutlineClipboardCopy size={20} />}
-                </button>
-              </div>
+              </a>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-6">

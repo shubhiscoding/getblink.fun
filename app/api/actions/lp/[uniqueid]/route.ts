@@ -82,11 +82,6 @@ NOTE: 0.0566 SOL needed to create a position (refundable on closing the position
     parseFloat(bins.bins.filter((bin) => bin.binId === minBindId)[0].price)
   );
 
-  console.log("--------------------------------------------------------------");
-  console.log("minBinPrice", minBinPrice);
-  console.log("maxBinPrice", maxBinPrice);
-  console.log("--------------------------------------------------------------");
-
 
     const payload: ActionGetResponse = {
       icon: process.env.METEORA_IMAGE || blinkData.icon,
@@ -279,6 +274,16 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
     console.log("tokenYDecimal", tokenYDecimal);
     console.log("--------------------------------------------------------------");
 
+
+    const quoteResponse = await (
+      await fetch(`https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${dlmmPool.tokenX.mint.address.toString()}&amount=${amountX * (10**tokenXDecimal)}&slippageBps=300&swapMode=ExactOut`
+      )
+    ).json();
+    console.log(quoteResponse);
+
+    const TotalXTradeValue = quoteResponse.inAmount / Math.pow(10, 9);
+    const percentage = blinkData?.percentage || 0;
+
     const tokenXAmountBN = new BN(
       amountX * Math.pow(10, tokenXDecimal),
       );
@@ -301,6 +306,17 @@ export const POST = async (req: NextRequest, { params }: { params: { uniqueid: s
           strategyType: StrategyType[strategy as keyof typeof StrategyType],
         },
       });
+
+    if(percentage > 0) {
+      const fee = (TotalXTradeValue * percentage) / 100;
+      createPositionTx.add(
+        SystemProgram.transfer({
+          fromPubkey: account,
+          toPubkey: new PublicKey(TREASURY_PUBKEY),
+          lamports: Math.floor(fee * LAMPORTS_PER_SOL),
+        })
+      )
+    }
 
     createPositionTx.feePayer = account;
 
