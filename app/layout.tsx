@@ -2,6 +2,7 @@ import './global.css';
 import { AppLayout } from '@/components/ui/app-layout';
 import { ClusterProvider } from '@/components/cluster/cluster-data-access';
 import { SolanaProvider } from '@/components/solana/solana-provider';
+import { GlobalTitleProvider } from './GlobalStateContext';
 
 export const metadata = {
   title: 'app',
@@ -16,11 +17,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ClusterProvider>
-          <SolanaProvider>
-            <AppLayout>{children}</AppLayout>
-          </SolanaProvider>
-        </ClusterProvider>
+        <GlobalTitleProvider>
+          <ClusterProvider>
+            <SolanaProvider>
+              <AppLayout>
+                {children}
+              </AppLayout>
+            </SolanaProvider>
+          </ClusterProvider>
+        </GlobalTitleProvider>
       </body>
     </html>
   );

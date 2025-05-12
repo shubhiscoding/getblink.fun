@@ -5,6 +5,7 @@ import { FaGithub, FaTwitter, FaBars, FaTimes, FaHardHat } from 'react-icons/fa'
 import { IoWater } from "react-icons/io5";
 import { HiOutlineCash, HiOutlineShoppingCart, HiOutlineCollection, HiOutlineCube, HiOutlineChip } from 'react-icons/hi';
 import Image from 'next/image';
+import { useGlobalTitleState } from '@/app/GlobalStateContext';
 
 interface SideButtonProps {
   href: string;
@@ -34,12 +35,27 @@ const Sidebar = () => {
   const [activeButton, setActiveButton] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
+  const { setValue, value, setInfo } = useGlobalTitleState();
 
   useEffect(() => {
     const path = window.location.pathname;
     const segments = path.split('/');
     const endpoint = segments[segments.length - 1] || '';
     setActiveButton('/' + endpoint);
+
+    if(endpoint === ''){
+      setValue('Recieve SOL');
+      setInfo("Easily generate a shareable Blink to receive SOL from anyone.");
+    }else if(endpoint === 'token'){
+      setValue('Sell/ReSell Tokens');
+      setInfo("Create a Blink to sell or resell any SPL token. Share it with others so they can easily buy the token.")
+    }else if(endpoint === 'lp'){
+      setValue('LP Blink');
+      setInfo("Create a Blink for any Meteora DLMM pool. When shared, this Blink allows others to view and interact with the pool’s spot, curve, or bid-ask positions")
+    }else if(endpoint === 'Blinks'){
+      setValue('My Blinks');
+      setInfo('The list of Blinks created by this wallet, using GetBlink.fun')
+    }
 
     // Check if mobile
     const handleResize = () => {
@@ -57,6 +73,21 @@ const Sidebar = () => {
 
   const handleButtonClick = (href: string) => {
     setActiveButton(href);
+    if(href === '/'){
+      setValue('Recieve SOL');
+      setInfo("Easily generate a shareable Blink to receive SOL from anyone.");
+    }else if(href === '/token'){
+      setValue('Sell/ReSell Tokens');
+      setInfo("Create a Blink to sell or resell any SPL token. Share it with others so they can easily buy the token.")
+    }else if(href === '/lp'){
+      setValue('LP Blink');
+      setInfo("Create a Blink for any Meteora DLMM pool. When shared, this Blink allows others to view and interact with the pool’s spot, curve, or bid-ask positions")
+    }else if(href === '/Blinks'){
+      setValue('My Blinks');
+      setInfo('The list of Blinks created by this wallet, using GetBlink.fun')
+    }
+    console.log('Active Button:', href);
+    console.log('value:', value);
     if (isMobile) {
       setIsSidebarOpen(false);
     }
@@ -70,21 +101,25 @@ const Sidebar = () => {
         } sm:w-full sm:max-w-[300px]`}
       >
         <div>
-          <div className="flex justify-center items-center mb-10 fade-in">
-            <div className="relative">
-              {/* <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--accent-primary)]/20 to-[var(--accent-secondary)]/20 pulse" style={{ transform: 'scale(1.2)' }} /> */}
-              {/* <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--accent-primary)]/10 to-[var(--accent-secondary)]/10 pulse" style={{ animationDelay: '0.5s', transform: 'scale(1.4)' }} /> */}
-              <Image
-                src={'/Blink.gif'}
-                width={160}
-                height={160}
-                alt="Logo"
-                className="rounded-full shadow-lg border-[var(--accent-primary)] floating"
-              />
-            </div>
+
+
+        <div
+          className="flex-1 flex flex-col m-4 md:m-6 card
+                     shadow-lg fade-in bg-opacity-90 backdrop-blur-md
+                     cursor-pointer hover:scale-110 ease-in-out duration-500"
+          onClick={()=> window.location.href = '/'}
+        >
+          <div className="backdrop-blur-sm z-40">
+            <h1
+              className="text-[1.5rem] font-bold m-0 bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-transparent bg-clip-text animation-delay-200 fade-in"
+            >
+              GetBlink.fun
+            </h1>
           </div>
+        </div>
 
           <div className="px-5 space-y-2">
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--border-color)] to-transparent my-4"></div>
             <div className="fade-in animation-delay-100">
               <SideBarButton
                 href="/"
@@ -92,7 +127,7 @@ const Sidebar = () => {
                 isActive={activeButton === '/'}
                 onClick={() => handleButtonClick('/')}
               >
-                Receive Sol
+                Request SOL
               </SideBarButton>
             </div>
 
@@ -114,7 +149,7 @@ const Sidebar = () => {
                 isActive={activeButton === '/lp'}
                 onClick={() => handleButtonClick('/lp')}
               >
-                LP Blinks
+                LP Blink
               </SideBarButton>
             </div>
 
