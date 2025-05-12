@@ -18,7 +18,7 @@ interface SideButtonProps {
 const SideBarButton: React.FC<SideButtonProps> = ({ href, children, icon, isActive, onClick }) => (
   <Link href={href} className="no-underline w-full">
     <div
-      className={`flex items-center gap-3 py-[min(3.5%,25px)] px-[min(5%,20px)] my-2 rounded-xl transition-all duration-300 hover-lift whitespace-nowrap text-ellipsis overflow-hidden ${
+      className={`flex items-center gap-3 py-[min(3.5%,25px)] px-[min(5%,20px)] my-2 rounded-xl transition-all duration-300 hover-lift whitespace-normal break-words overflow-hidden ${
         isActive
           ? 'bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-white font-medium shadow-md glow'
           : 'text-[var(--text-secondary)] hover:bg-[var(--hover-bg)] hover:text-[var(--text-color)]'
