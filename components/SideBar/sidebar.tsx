@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaGithub, FaTwitter, FaBars, FaTimes, FaHardHat } from 'react-icons/fa';
 import { IoWater } from "react-icons/io5";
-import { HiOutlineCash, HiOutlineShoppingCart, HiOutlineCollection, HiOutlineCube, HiOutlineChip } from 'react-icons/hi';
+import { HiOutlineCash, HiOutlineShoppingCart, HiOutlineCollection, HiPresentationChartLine } from 'react-icons/hi';
 import Image from 'next/image';
 import { useGlobalTitleState } from '@/app/GlobalStateContext';
 
@@ -55,6 +55,9 @@ const Sidebar = () => {
     }else if(endpoint === 'Blinks'){
       setValue('My Blinks');
       setInfo('The list of Blinks created by this wallet, using GetBlink.fun')
+    }else if(endpoint === 'prep-trade'){
+      setValue('PREP-Trade Blinks');
+      setInfo('Create a sharebale Blink that allows others to place PREP trade orders on drift')
     }
 
     // Check if mobile
@@ -85,6 +88,9 @@ const Sidebar = () => {
     }else if(href === '/Blinks'){
       setValue('My Blinks');
       setInfo('The list of Blinks created by this wallet, using GetBlink.fun')
+    }else if(href === '/prep-trade'){
+      setValue('PREP-Trade Blinks');
+      setInfo('Create a sharebale Blink that allows others to place PREP trade orders on drift')
     }
     console.log('Active Button:', href);
     console.log('value:', value);
@@ -167,22 +173,11 @@ const Sidebar = () => {
             <div className="fade-in animation-delay-400">
               <SideBarButton
                 href="/ComingSoon"
-                icon={<HiOutlineCube />}
-                isActive={activeButton === '/gamble'}
-                onClick={() => handleButtonClick('/gamble')}
+                icon={<HiPresentationChartLine />}
+                isActive={activeButton === '/prep-trade'}
+                onClick={() => handleButtonClick('/prep-trade')}
               >
-                Gamble Blinks
-              </SideBarButton>
-            </div>
-
-            <div className="fade-in animation-delay-500">
-              <SideBarButton
-                href="/ComingSoon"
-                icon={<HiOutlineChip />}
-                isActive={activeButton === '/gaming'}
-                onClick={() => handleButtonClick('/gaming')}
-              >
-                Gaming Blinks
+                PREP-Trade Blinks
               </SideBarButton>
             </div>
           </div>
