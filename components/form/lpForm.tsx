@@ -496,9 +496,10 @@ const LpForm: React.FC<FormProps> = ({
 
             <div className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--border-color)]">
               <p className="text-sm text-[var(--text-secondary)] mb-2">Blink Link:</p>
-              <a href={`https://dial.to/?action=solana-action:${blinkLink}`} target="_blank">
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
+                  <div
+                    className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap cursor-pointer"
+                    onClick={()=>{window.open(`https://dial.to/?action=solana-action:${blinkLink}`, '_blank', 'noopener');}}>
                     https://dial.to/?action=solana-action:{blinkLink}
                   </div>
                   <button
@@ -509,7 +510,6 @@ const LpForm: React.FC<FormProps> = ({
                     {copied ? 'Copied!' : <HiOutlineClipboardCopy size={20} />}
                   </button>
                 </div>
-              </a>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-6">

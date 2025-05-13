@@ -218,11 +218,11 @@ const Form: React.FC<FormProps> = ({
             <div className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--border-color)]">
               <p className="text-sm text-[var(--text-secondary)] mb-2">Blink Link:</p>
               <div className="flex items-center gap-2">
-                <a href={`https://dial.to/?action=solana-action:${blinkLink}`}>
-                  <div className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap">
-                    https://dial.to/?action=solana-action:{blinkLink}
-                  </div>
-                </a>
+                <div
+                  className="flex-1 p-3 bg-[rgba(0,0,0,0.2)] rounded-lg text-sm overflow-hidden overflow-ellipsis whitespace-nowrap cursor-pointer"
+                  onClick={()=>{window.open(`https://dial.to/?action=solana-action:${blinkLink}`, '_blank', 'noopener');}}>
+                  https://dial.to/?action=solana-action:{blinkLink}
+                </div>
                 <button
                   onClick={handleCopy}
                   className="p-3 rounded-lg bg-[var(--border-color)] hover:bg-[var(--accent-primary)] transition-colors duration-300"
