@@ -201,7 +201,7 @@ const LpForm: React.FC<FormProps> = ({
   return (
     <div className="w-full max-w-2xl h-full">
       {loading && <LoadingScreen subtext="Waiting For Transaction Confirmation!!" />}
-      <div className="card md:p-8 h-full" ref={form}>
+      <div className="md:card md:p-8 h-full" ref={form}>
         {showForm && (
           <div className="space-y-4 h-full">
             <h1 className="text-2xl md:text-3xl font-bold mb-4 gradient-text">
@@ -221,12 +221,12 @@ const LpForm: React.FC<FormProps> = ({
             </div>}
 
             {!selectedGroup &&
-            <div className='card max-h-96 overflow-y-auto minimal-scrollbar pr-1'>
-              <CardHeader>
-                <CardTitle>Select DLMM Group</CardTitle>
-                <CardDescription>Choose a liquidity group</CardDescription>
+            <div className='card max-h-96 overflow-y-auto minimal-scrollbar pr1'>
+              <CardHeader className='max-sm:px-0'>
+                <CardTitle className='max-sm:text-sm max-sm:p-0'>Select DLMM Group</CardTitle>
+                <CardDescription className='max-sm:text-xs max-sm:p-0'>Choose a liquidity group</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 max-sm:p-0">
                 {isDlmmLoading ? (
                   <>
                     <Skeleton className="h-[68px] w-full rounded-lg" />
@@ -241,7 +241,7 @@ const LpForm: React.FC<FormProps> = ({
                       onClick={() => setSelectedGroup(group)}
                     >
                       <div>
-                        <div className="font-medium">{group.name}</div>
+                        <div className="text-sm md:font-medium">{group.name}</div>
                         <div className="text-sm text-muted-foreground">
                           TVL: ${group.totalTvl.toFixed(0).toLocaleString()} •
                           APR: {group.maxApr.toFixed(2)}%
@@ -259,18 +259,18 @@ const LpForm: React.FC<FormProps> = ({
                   variant="ghost"
                   size="sm"
                   onClick={() => {console.log("back"); handleBack();}}
-                  className="mt-2 ml-2 h-8 px-2 shadow-sm border-[1px] border-[var(--border-color)]"
+                  className="mt-2 md:ml-2 h-8 px-2 shadow-sm border-[1px] border-[var(--border-color)]"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Back
                 </Button>
 
                 <>
-                  <CardHeader>
-                    <CardTitle>Select Pool</CardTitle>
-                    <CardDescription>Choose a liquidity pool</CardDescription>
+                  <CardHeader className='max-sm:px-0'>
+                    <CardTitle className='max-sm:text-sm max-sm:p-0'>Select Pool</CardTitle>
+                    <CardDescription className='max-sm:text-xs max-sm:p-0'>Choose a liquidity pool</CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-3 max-sm:p-0">
                     {loading ? (
                       <>
                         <Skeleton className="h-[68px] w-full rounded-lg" />
@@ -361,23 +361,23 @@ const LpForm: React.FC<FormProps> = ({
                           ${selectedPair.fees_24h.toLocaleString()}
                         </div>
                       </div>
-                      <div className="space-y-1">
-                        <Label className="text-muted-foreground">Pool Id</Label>
-                        <div className="font-medium">
-                          {selectedPair.address.toString()}
-                        </div>
-                      </div>
                     </div>
 
                     {/* <Separator /> */}
 
                     <div className="space-y-1">
+                      <div className="space-y-1">
+                        <Label className="text-muted-foreground">Pool Id</Label>
+                        <div className="font-medium text-ellipsis overflow-hidden">
+                          {selectedPair.address.toString()}
+                        </div>
+                      </div>
                       <Label className="text-muted-foreground">Token Pair</Label>
                       <div className="grid gap-3.5 text-sm">
-                        <div className="font-medium">
+                        <div className="font-medium text-ellipsis overflow-hidden">
                           {selectedPair.name.split('-')[0]} : {selectedPair.mint_x}
                         </div>
-                        <div className="font-medium">
+                        <div className="font-medium text-ellipsis overflow-hidden">
                           {selectedPair.name.split('-')[1]} : {selectedPair.mint_y}
                         </div>
                         {/* <div className="font-medium">

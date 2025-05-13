@@ -190,7 +190,7 @@ export default function Page() {
 
       <div className="flex-1 flex flex-col md:flex-row items-center md:items-start md:justify-center gap-8 md:p-8">
         <div className="w-full max-w-2xl">
-          <div className="card md:p-10" ref={form}>
+          <div className="md:card md:p-10" ref={form}>
             {showForm && (
               <TokenForm
                 mint={mint}

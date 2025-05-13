@@ -45,7 +45,7 @@ const Preview: React.FC<FormProps> = ({ icon, description, title }) => {
                 : "bg-white text-[#1a1225] border border-gray-200"
             }`}>
                 {/* Image Area */}
-                <div className={`relative h-96 w-full flex items-center justify-center ${
+                <div className={`relative h-96 max-sm:h-80 w-full flex items-center justify-center ${
                     isDarkMode ? "bg-[#1a1225]" : "bg-gray-100"
                 }`}>
                     {icon ? (
