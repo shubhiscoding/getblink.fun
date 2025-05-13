@@ -68,7 +68,7 @@ const Sidebar = () => {
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [setValue, setInfo, isSidebarOpen]);
+  }, []);
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -102,7 +102,7 @@ const Sidebar = () => {
   return (
     <>
       <div
-        className={`fixed lap:relative w-[300px] md:w-[min(300px,30vw)] h-full card py-10 flex flex-col justify-between z-20 backdrop-blur-md bg-[var(--card-bg)]/90 border-r border-[var(--border-color)] transition-all duration-300 overflow-hidden ${
+        className={`fixed lap:relative w-[300px] md:w-[min(300px,30vw)] h-full max-h-screen card py-10 flex flex-col justify-between z-20 backdrop-blur-md bg-[var(--card-bg)]/90 border-r border-[var(--border-color)] transition-all duration-300 overflow-hidden ${
           isMobile ? (isSidebarOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'
         } sm:w-full sm:max-w-[min(300px,90vw)]`}
       >
