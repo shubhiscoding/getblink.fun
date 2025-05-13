@@ -43,14 +43,16 @@ const DataCard: React.FC<DataProps> = ({ base, code, title, endpoint }) => {
         </CardHeader>
 
         <CardContent className="space-y-4">
-          <div className="p-3 bg-[var(--bg-color)] rounded-lg border border-[var(--border-color)] transition-all duration-300 hover:border-[var(--accent-primary)] group">
+          <div className="p-3 bg-[var(--bg-color)] max-sm:h-12 rounded-lg border border-[var(--border-color)] transition-all duration-300 hover:border-[var(--accent-primary)] group">
             <a
               href={`${base}${blinkLink}`}
               target="_blank"
-              className="text-[var(--text-color)] group-hover:text-[var(--accent-primary)] transition-all duration-300 break-all text-sm sm:text-base"
+              className="text-[var(--text-color)] group-hover:text-[var(--accent-primary)] transition-all duration-300 text-sm sm:text-base"
               rel="noopener noreferrer"
             >
-              {base}{base.includes("devnet") ? blinkLink.slice(0, -9)+"..." : blinkLink}
+              <p className="w-full h-full overflow-hidden whitespace-normal text-ellipsis">
+                {base + base.includes("devnet") ? blinkLink.slice(0, -9)+"..." : blinkLink}
+              </p>
             </a>
           </div>
 

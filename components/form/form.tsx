@@ -147,7 +147,7 @@ const Form: React.FC<FormProps> = ({
   return (
     <div className="w-full max-w-2xl h-full">
       {loading && <LoadingScreen subtext="Waiting For Transaction Confirmation!!" />}
-      <div className="card md:p-10 h-full" ref={form}>
+      <div className="md:card md:p-10 h-full" ref={form}>
         {showForm && (
           <div className="space-y-6 h-full">
             <h1 className="text-2xl md:text-3xl font-bold mb-6 gradient-text">

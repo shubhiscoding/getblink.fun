@@ -63,16 +63,12 @@ const Sidebar = () => {
     // Check if mobile
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 1270);
-      // Force sidebar to close on very small screens
-      if (window.innerWidth <= 768 && isSidebarOpen) {
-        setIsSidebarOpen(false);
-      }
     };
 
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [setValue, setInfo, isSidebarOpen]);
+  }, []);
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -106,15 +102,13 @@ const Sidebar = () => {
   return (
     <>
       <div
-        className={`fixed lap:relative w-[min(300px,30vw)] h-full card py-10 flex flex-col justify-between z-20 backdrop-blur-md bg-[var(--card-bg)]/90 border-r border-[var(--border-color)] transition-all duration-300 overflow-hidden ${
+        className={`fixed lap:relative w-[300px] md:w-[min(300px,30vw)] h-full max-h-screen card py-10 flex flex-col justify-between z-20 backdrop-blur-md bg-[var(--card-bg)]/90 border-r border-[var(--border-color)] transition-all duration-300 overflow-hidden ${
           isMobile ? (isSidebarOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'
         } sm:w-full sm:max-w-[min(300px,90vw)]`}
       >
         <div>
-
-
         <div
-          className="flex-1 flex flex-col m-4 md:m-6 card
+          className="flex-1 flex flex-col m-4 card
                      shadow-lg fade-in bg-opacity-90 backdrop-blur-md
                      cursor-pointer hover:scale-110 ease-in-out duration-500"
           onClick={()=> window.location.href = '/'}
@@ -128,8 +122,8 @@ const Sidebar = () => {
           </div>
         </div>
 
-          <div className="px-[min(5%,20px)] space-y-4 overflow-hidden">
-          <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--border-color)] to-transparent my-4"></div>
+          <div className="px-[min(5%,20px)] overflow-hidden">
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--border-color)] to-transparent"></div>
             <div className="fade-in animation-delay-100">
               <SideBarButton
                 href="/"
@@ -187,8 +181,8 @@ const Sidebar = () => {
           </div>
         </div>
 
-        <div className="px-[min(5%,20px)] space-y-3 fade-in animation-delay-500 overflow-hidden">
-          <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--border-color)] to-transparent my-4"></div>
+        <div className="px-[min(5%,20px)] space-y-3 fade-in animation-delay-500 overflow-y-scroll custom-scrollbar">
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--border-color)] to-transparent mb-4"></div>
           <a
             href='https://github.com/shubhiscoding/getblink.fun'
             target='_blank'

@@ -18,9 +18,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <Sidebar />
       </div>
       <div
-        className="flex-1 flex flex-col m-4 md:m-6 card overflow-hidden shadow-lg fade-in bg-opacity-90 backdrop-blur-md"
+        className="flex-1 flex flex-col m-2 md:m-6 card overflow-hidden shadow-lg fade-in bg-opacity-90 backdrop-blur-md"
       >
-        <div className="flex flex-col md:flex-row items-center justify-between p-5 md:p-7 border-b border-[var(--border-color)] bg-[var(--card-bg)] backdrop-blur-sm z-40">
+        <div className="flex flex-col md:flex-row items-center justify-between p-2 md:p-7 border-b border-[var(--border-color)] bg-[var(--card-bg)] backdrop-blur-sm z-40">
           <span className='flex items-start justify-center'>
             <h1
               className="Title bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-transparent bg-clip-text animation-delay-200 fade-in"
@@ -39,7 +39,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                 </Tooltip.Trigger>
                 <Tooltip.Portal>
                   <Tooltip.Content
-                    className="bg-[var(--card-bg)] text-[var(--text-color)] px-3 py-1.5 rounded-md text-sm shadow-md max-w-[31rem]"
+                    className="bg-[var(--card-bg)] text-[var(--text-color)] px-3 py-1.5 rounded-md text-sm shadow-md max-w-[31rem] max-sm:max-w-[20rem]"
                     sideOffset={1}
                   >
                     {info}

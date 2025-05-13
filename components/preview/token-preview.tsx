@@ -45,7 +45,7 @@ const TokenPreview: React.FC<TokenPreviewProps> = ({ icon, description, title })
                 : "bg-white text-[#1a1225] border border-gray-200"
             }`}>
                 {/* Image Area */}
-                <div className={`relative h-96 w-full flex items-center justify-center ${
+                <div className={`relative h-96 max-sm:h-80 w-full flex items-center justify-center ${
                     isDarkMode ? "bg-[#1a1225]" : "bg-gray-100"
                 }`}>
                     {icon ? (
@@ -83,8 +83,8 @@ const TokenPreview: React.FC<TokenPreviewProps> = ({ icon, description, title })
                     <div className="grid grid-cols-2 gap-2 mt-4">
                         <Button
                             className={isDarkMode
-                                ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none"
-                                : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none"
+                                ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none whitespace-normal"
+                                : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none whitespace-normal"
                             }
                             onClick={handleClick}
                         >
@@ -92,8 +92,8 @@ const TokenPreview: React.FC<TokenPreviewProps> = ({ icon, description, title })
                         </Button>
                         <Button
                             className={isDarkMode
-                                ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none"
-                                : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none"
+                                ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none whitespace-normal"
+                                : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none whitespace-normal"
                             }
                             onClick={handleClick}
                         >
@@ -103,8 +103,8 @@ const TokenPreview: React.FC<TokenPreviewProps> = ({ icon, description, title })
 
                     <Button
                         className={isDarkMode
-                            ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none w-full"
-                            : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none w-full"
+                            ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none w-full whitespace-normal"
+                            : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none w-full whitespace-normal"
                         }
                         onClick={handleClick}
                     >
