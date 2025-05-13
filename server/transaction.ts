@@ -35,17 +35,22 @@ export const createTransaction = async (messageString: string, rawAmount: number
 }
 
 export const confirmTransaction = async (signature: string, blockhash: string, lastValidBlockHeight: number) => {
-  const connection = new Connection(process.env.SOLANA_RPC || clusterApiUrl("mainnet-beta"));
-  const confirmation = await connection.confirmTransaction({
-    blockhash,
-    lastValidBlockHeight,
-    signature,
-  }, 'finalized');
+  try{
+    const connection = new Connection(process.env.SOLANA_RPC || clusterApiUrl("mainnet-beta"));
+    const confirmation = await connection.confirmTransaction({
+      blockhash,
+      lastValidBlockHeight,
+      signature,
+    }, 'finalized');
 
-  if (confirmation.value.err) {
-    throw new Error('Transaction confirmation failed');
+    if (confirmation.value.err) {
+      throw new Error('Transaction confirmation failed');
+    }
+
+    return true;
+  }catch(e){
+    console.error("Error confirming transaction:", e);
+    return false;
   }
-
-  return confirmation;
 }
 
