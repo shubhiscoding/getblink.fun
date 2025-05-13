@@ -35,10 +35,10 @@ export default function Page() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <main className="flex-grow px-4 sm:px-6 md:px-8 py-8 max-w-7xl mx-auto w-full">
+      <main className="flex-grow sm:px-6 md:px-8 md:py-8 py-2 max-w-7xl mx-auto w-full">
         <div className="glass-card w-full max-w-4xl mx-auto overflow-hidden fade-in">
-          <div className="p-4 sm:p-6 md:p-8">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-center gradient-text">
+          <div className="sm:p-6 md:p-8">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 md:mb-6 text-center gradient-text">
               Your Blinks
             </h1>
 
@@ -61,7 +61,7 @@ export default function Page() {
                   data.slice().reverse().map((blink, index) => (
                     <div
                       key={blink['_id']}
-                      className="hover-lift fade-in"
+                      className="hover-lift fade-in mt-1"
                       style={{ animationDelay: `${index * 0.1}s` }}
                     >
                       <DataCard
