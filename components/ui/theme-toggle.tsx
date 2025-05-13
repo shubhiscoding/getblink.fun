@@ -10,7 +10,7 @@ export const ThemeToggle = () => {
   useEffect(() => {
     // Check if user has a saved preference
     const savedTheme = localStorage.getItem('theme');
-    
+
     if (savedTheme === 'dark') {
       setIsDarkMode(true);
       document.body.classList.add('dark-mode');
@@ -29,7 +29,7 @@ export const ThemeToggle = () => {
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
-    
+
     if (!isDarkMode) {
       document.body.classList.add('dark-mode');
       localStorage.setItem('theme', 'dark');
@@ -40,27 +40,27 @@ export const ThemeToggle = () => {
   };
 
   return (
-    <div 
-      className="flex items-center gap-3 hover:scale-105 active:scale-95 transition-transform duration-200"
+    <div
+      className="flex items-center gap-1 hover:scale-105 active:scale-95 transition-transform duration-200"
     >
-      <span 
+      <span
         className={`text-xl ${isDarkMode ? 'text-[#a78bfa]' : 'text-[#fbbf24]'} transition-all duration-500`}
         style={{ transform: isDarkMode ? 'rotate(-30deg)' : 'rotate(0deg)' }}
       >
         {isDarkMode ? <FaMoon className="floating" /> : <FaSun className="floating" />}
       </span>
       <label className="theme-toggle">
-        <input 
-          type="checkbox" 
+        <input
+          type="checkbox"
           className="theme-toggle-checkbox"
           checked={isDarkMode}
           onChange={toggleTheme}
         />
         <span className="theme-toggle-slider glow">
           <span className="absolute inset-0 flex items-center justify-center text-xs fade-in">
-            {isDarkMode ? 
-              <span className="absolute right-1.5 text-white">🌙</span> : 
-              <span className="absolute left-1.5 text-white">☀️</span>
+            {isDarkMode ?
+              <span className="absolute right-1 text-white">🌙</span> :
+              <span className="absolute left-1 text-white">☀️</span>
             }
           </span>
         </span>
