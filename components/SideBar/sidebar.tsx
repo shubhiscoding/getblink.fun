@@ -44,7 +44,7 @@ const Sidebar = () => {
     setActiveButton('/' + endpoint);
 
     if(endpoint === ''){
-      setValue('Recieve SOL');
+      setValue('Request SOL');
       setInfo("Easily generate a shareable Blink to receive SOL from anyone.");
     }else if(endpoint === 'token'){
       setValue('Sell/ReSell Tokens');
@@ -77,7 +77,7 @@ const Sidebar = () => {
   const handleButtonClick = (href: string) => {
     setActiveButton(href);
     if(href === '/'){
-      setValue('Recieve SOL');
+      setValue('Request SOL');
       setInfo("Easily generate a shareable Blink to receive SOL from anyone.");
     }else if(href === '/token'){
       setValue('Sell/ReSell Tokens');
