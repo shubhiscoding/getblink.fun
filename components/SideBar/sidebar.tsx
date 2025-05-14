@@ -51,7 +51,7 @@ const Sidebar = () => {
       setInfo("Create a Blink to sell or resell any SPL token. Share it with others so they can easily buy the token.")
     }else if(endpoint === 'lp'){
       setValue('LP Blink');
-      setInfo("Create a Blink for any Meteora DLMM pool. When shared, this Blink allows others to view and interact with the pool's spot, curve, or bid-ask positions")
+      setInfo("Create a Blink for any Meteora DLMM pool. When shared, this Blink allows others to open spot, curve, or bid-ask positions in the pool")
     }else if(endpoint === 'Blinks'){
       setValue('My Blinks');
       setInfo('The list of Blinks created by this wallet, using GetBlink.fun')
@@ -84,7 +84,7 @@ const Sidebar = () => {
       setInfo("Create a Blink to sell or resell any SPL token. Share it with others so they can easily buy the token.")
     }else if(href === '/lp'){
       setValue('LP Blink');
-      setInfo("Create a Blink for any Meteora DLMM pool. When shared, this Blink allows others to view and interact with the pool’s spot, curve, or bid-ask positions")
+      setInfo("Create a Blink for any Meteora DLMM pool. When shared, this Blink allows others to open spot, curve, or bid-ask positions in the pool")
     }else if(href === '/Blinks'){
       setValue('My Blinks');
       setInfo('The list of Blinks created by this wallet, using GetBlink.fun')
