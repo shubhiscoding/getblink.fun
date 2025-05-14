@@ -1,6 +1,6 @@
 "use client";
 import LpForm from "@/components/form/lpForm";
-import Preview from "@/components/preview/preview";
+import Preview from "@/components/preview/lpPreview";
 import { useState } from "react";
 import { Footer } from "@/components/footer";
 import { MeteoraDlmmPair } from "@/server/meteora";
