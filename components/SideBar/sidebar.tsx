@@ -119,7 +119,7 @@ const Sidebar = () => {
                 width={160}
                 height={160}
                 alt="Logo"
-                className="shadow-lg border-[var(--accent-primary)]"
+                className=" bg-transparent"
               />
           </div>
         </div>
