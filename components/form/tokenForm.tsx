@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { WalletButton } from '@/components/solana/solana-provider';
 import { FaInfoCircle } from 'react-icons/fa';
 import { PublicKey } from '@solana/web3.js';
+import { Button } from '../ui/button';
 
 // Define commission types for type safety
 type CommissionType = "yes" | "no";
@@ -145,13 +146,13 @@ export default function TokenForm({
       </div>
 
       {publicKey ? (
-        <button
-          className="button-primary w-full mt-4 flex items-center justify-center gap-2"
+        <Button
+          className="py-3 px-6 rounded-xl font-medium cursor-pointer transition-all duration-300 bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-white hover:opacity-90 active:scale-95 flex items-center justify-center gap-2 shadow-md w-full mt-4 text-lg"
           onClick={!showPreview ? handlePreview : handleSubmit}
-          disabled={!connected}
+          disabled={!connected || !mint || !description || mint.length <= 0 || description.length <= 0}
         >
           {!showPreview ? 'Preview Blink' : 'Generate Blink'}
-        </button>
+        </Button>
       ) : (
         <div className="mt-4 text-center">
           <p className="text-[var(--text-secondary)] mb-3">Connect your wallet to generate a Blink</p>

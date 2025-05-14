@@ -15,6 +15,7 @@ import {
 } from '@solana/web3.js';
 import { HiOutlineClipboardCopy, HiOutlineShare } from 'react-icons/hi';
 import { confirmTransaction, createTransaction } from '@/server/transaction';
+import { Button } from '../ui/button';
 
 interface FormProps {
   icon: string;
@@ -193,13 +194,13 @@ const Form: React.FC<FormProps> = ({
             </div>
 
             {publicKey ? (
-              <button
-                className="button-primary w-full mt-4"
+              <Button
+                className="py-3 px-6 rounded-xl font-medium cursor-pointer transition-all duration-300 bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-white hover:opacity-90 active:scale-95 flex items-center justify-center gap-2 shadow-md w-full mt-4 text-lg"
                 onClick={handlePreview}
-                disabled={!connected}
+                disabled={!connected || !title || !icon || !description || title.length <=0 || icon.length <=0}
               >
                 Generate Blink
-              </button>
+              </Button>
             ) : (
               <div className="mt-4 text-center">
                 <p className="text-[var(--text-secondary)] mb-3">Connect your wallet to generate a Blink</p>
