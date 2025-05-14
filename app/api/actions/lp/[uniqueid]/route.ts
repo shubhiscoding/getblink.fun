@@ -109,6 +109,10 @@ NOTE: 0.0566 SOL needed to create a position (refundable on closing the position
                     label: "Curve",
                     value: "Curve",
                   },
+                  {
+                    label: "Bid Ask",
+                    value: "BidAsk",
+                  }
                 ],
               },
               {

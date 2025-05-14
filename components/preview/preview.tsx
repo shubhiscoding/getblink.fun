@@ -3,14 +3,18 @@ import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { MeteoraDlmmPair } from '@/server/meteora';
+import { Label } from '../ui/label';
+import { RadioGroup } from '@radix-ui/react-dropdown-menu';
 
 interface FormProps {
     icon: string;
     description: string;
     title: string;
+    selectedPair: MeteoraDlmmPair | null;
 }
 
-const Preview: React.FC<FormProps> = ({ icon, description, title }) => {
+const Preview: React.FC<FormProps> = ({ icon, description, title, selectedPair }) => {
     const [isDarkMode, setIsDarkMode] = useState(true);
 
     useEffect(() => {
@@ -45,7 +49,7 @@ const Preview: React.FC<FormProps> = ({ icon, description, title }) => {
                 : "bg-white text-[#1a1225] border border-gray-200"
             }`}>
                 {/* Image Area */}
-                <div className={`relative h-96 max-sm:h-80 w-full flex items-center justify-center ${
+                <div className={`relative h-80 max-sm:h-80 w-full flex items-center justify-center ${
                     isDarkMode ? "bg-[#1a1225]" : "bg-gray-100"
                 }`}>
                     {icon ? (
@@ -70,64 +74,89 @@ const Preview: React.FC<FormProps> = ({ icon, description, title }) => {
                     <h3 className={`text-lg font-semibold ${isDarkMode ? "text-white" : "text-gray-800"}`}>
                         {title || "Your Title"}
                     </h3>
-                    <p className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
-                        {description || "Your Description shows up here. Keep it short and simple"}
-                    </p>
-                    {/* {label && (
-                        <p className={`font-medium ${isDarkMode ? "text-purple-400" : "text-purple-600"}`}>
-                            {label || "Your Label"}
-                        </p>
-                    )} */}
+                    {!selectedPair ? (
+                      <p className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+                          {description || "Your Description shows up here. Keep it short and simple"}
+                      </p>
+                    ):(
+                      <div className='flex flex-col gap-2'>
+                        <Label className="text-sm text-gray-500">Pool Information</Label>
+                        <div className='grid grid-cols-2 gap-2'>
+                          <p>Liq: ${parseFloat(selectedPair?.liquidity || '0').toFixed(3)}</p>
+                          <p>APR: {selectedPair.apr.toFixed(3)}%</p>
+                          <p>Bin Step: {selectedPair.bin_step}</p>
+
+                          <p>24h Vol: ${selectedPair.trade_volume_24h.toFixed(3)}</p>
+                          <p>fee: {parseFloat(selectedPair.base_fee_percentage).toFixed(3)}</p>
+                          <p>24h fees: {selectedPair.fees_24h.toFixed(3)}%</p>
+                        </div>
+                        <Label className="text-sm text-gray-500">Select a strategy</Label>
+                        <div className='grid grid-cols-3 gap-2' onClick={handleClick}>
+                          <div className='flex items-center gap-2'>
+                            <input type="radio" id="spot" name="spot" value="spot" disabled/>
+                            <label htmlFor="spot">Spot</label>
+                          </div>
+                          <div className='flex items-center gap-2'>
+                            <input type="radio" id="Curve" name="Curve" value="Curve" disabled/>
+                            <label htmlFor="Curve">Curve</label>
+                          </div>
+                          <div className='flex items-center gap-2'>
+                            <input type="radio" id="BidAsk" name="BidAsk" value="BidAsk" disabled/>
+                            <label htmlFor="BidAsk">Bid Ask</label>
+                          </div>
+                        </div>
+                      </div>
+                    )}
 
                     {/* SOL Buttons */}
-                    <div className="grid grid-cols-3 gap-2 mt-4">
-                        <Button
+                    <div className="grid grid-cols-2 gap-2 mt-4" onClick={handleClick}>
+                        <Input
                             className={isDarkMode
                                 ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none"
                                 : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none"
                             }
-                            onClick={handleClick}
-                        >
-                            0.05 SOL
-                        </Button>
-                        <Button
+                            placeholder={`Enter ${selectedPair?.name.split('-')[0]} amount`}
+                            disabled
+                        />
+                        <Input
                             className={isDarkMode
                                 ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none"
                                 : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none"
                             }
-                            onClick={handleClick}
-                        >
-                            1.00 SOL
-                        </Button>
-                        <Button
+                            placeholder={`Enter ${selectedPair?.name.split('-')[1]} amount`}
+                            disabled
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 mt-4" onClick={handleClick}>
+                        <Input
                             className={isDarkMode
                                 ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none"
                                 : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none"
                             }
-                            onClick={handleClick}
-                        >
-                            5.00 SOL
-                        </Button>
+                            placeholder={`Min Price for ` + selectedPair?.name.split('-')[0]}
+                            disabled
+                        />
+                        <Input
+                            className={isDarkMode
+                                ? "bg-[#2a1b3d] hover:bg-[#3a2b4d] text-white border-none"
+                                : "bg-purple-100 hover:bg-purple-200 text-purple-800 border-none"
+                            }
+                            placeholder={`Max Price for ` + selectedPair?.name.split('-')[0]}
+                            disabled
+                        />
                     </div>
 
                     {/* Send SOL Input */}
                     <div className="flex gap-2 mt-3">
-                        <Input
-                            type="text"
-                            className={isDarkMode
-                                ? "bg-[#1a1225] border-[#3a2b4d] text-gray-300 placeholder-gray-500"
-                                : "bg-gray-50 border-gray-200 text-gray-700 placeholder-gray-400"
-                            }
-                            placeholder="Enter amount of SOL to send"
-                        />
                         <Button
                             className={isDarkMode
-                                ? "bg-purple-500 hover:bg-purple-600 text-white"
-                                : "bg-purple-600 hover:bg-purple-700 text-white"
+                                ? "bg-purple-500 hover:bg-purple-600 text-white w-full"
+                                : "bg-purple-600 hover:bg-purple-700 text-white w-full"
                             }
                             onClick={handleClick}
                         >
-                            Send SOL
+                            Open a {selectedPair?.name || 'Pool Name'} Position
                         </Button>
                     </div>
                 </div>
