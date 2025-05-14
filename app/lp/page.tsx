@@ -6,9 +6,6 @@ import { Footer } from "@/components/footer";
 import { MeteoraDlmmPair } from "@/server/meteora";
 
 export default function Index() {
-  const [icon, setIcon] = useState<string>('meteora.jpg');
-  const [description, setDescription] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
   const [mintAddress, setMintAddress] = useState<string>('');
   const [showForm, setShowForm] = useState(true);
   const [selectedPair, setSelectedPair] = useState<MeteoraDlmmPair | null>(null);
@@ -26,9 +23,9 @@ export default function Index() {
         />
         {showForm &&
         <Preview
-          icon={icon || 'solana.jpg'}
-          description={description || 'Your Description shows up here, Keep it short and simple'}
-          title={title || selectedPair? `Open a ${selectedPair?.name} Position` :"Your Title"}
+          icon={'meteora.jpg'}
+          description={'Your Description shows up here, Keep it short and simple'}
+          title={selectedPair? `Open a ${selectedPair?.name} Position` :"Your Title"}
           selectedPair={selectedPair}
         />}
       </div>
