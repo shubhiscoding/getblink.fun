@@ -109,6 +109,10 @@ NOTE: 0.0566 SOL needed to create a position (refundable on closing the position
                     label: "Curve",
                     value: "Curve",
                   },
+                  {
+                    label: "Bid Ask",
+                    value: "BidAsk",
+                  }
                 ],
               },
               {
@@ -125,12 +129,12 @@ NOTE: 0.0566 SOL needed to create a position (refundable on closing the position
               },
               {
                 name: "MinPrice",
-                label: `Min price for ${blinkData.TokenXName} (default: ${parseFloat(minBinPrice).toFixed(5)} ${blinkData.TokenYName})`,
+                label: `Min price of ${blinkData.TokenXName} in ${blinkData.TokenYName} (default: ${parseFloat(minBinPrice).toFixed(5)} ${blinkData.TokenYName})`,
                 type: "number",
               },
               {
                 name: "MaxPrice",
-                label: `Max price for ${blinkData.TokenXName} (default: ${parseFloat(maxBinPrice).toFixed(5)} ${blinkData.TokenYName})`,
+                label: `Max price of ${blinkData.TokenXName} in ${blinkData.TokenYName} (default: ${parseFloat(maxBinPrice).toFixed(5)} ${blinkData.TokenYName})`,
                 type: "number",
               },
             ],

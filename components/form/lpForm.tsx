@@ -30,6 +30,8 @@ interface FormProps {
   setMintAddress: (value: string) => void;
   showForm: boolean;
   setShowForm: (value: boolean) => void;
+  selectedPair: MeteoraDlmmPair | null;
+  setSelectedPair: (pair: MeteoraDlmmPair | null) => void;
 }
 
 type CommissionType = 'yes' | 'no';
@@ -38,7 +40,9 @@ const LpForm: React.FC<FormProps> = ({
   mintAddress,
   setMintAddress,
   showForm,
-  setShowForm
+  setShowForm,
+  selectedPair,
+  setSelectedPair,
 }) => {
   const { publicKey, connected, sendTransaction } = useWallet();
   const [blinkLink, setBlinkLink] = useState('');
@@ -48,7 +52,6 @@ const LpForm: React.FC<FormProps> = ({
   const [dlmmGroups, setDlmmGroups] = useState<MeteoraDlmmGroup[]>([]);
   const [isDlmmLoading, setIsDlmmLoading] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState<MeteoraDlmmGroup | null>(null);
-  const [selectedPair, setSelectedPair] = useState<MeteoraDlmmPair | null>(null);
   const [allPairs, setAllPairs] = useState<MeteoraDlmmPair[]>([]);
   const { connection } = useConnection();
   const [takeCommission, setTakeCommission] = useState<CommissionType>('no');
@@ -472,13 +475,13 @@ const LpForm: React.FC<FormProps> = ({
             )}
 
             {publicKey ? (
-              <button
-                className="button-primary w-full mt-4"
+              <Button
+                className="py-3 px-6 rounded-xl font-medium cursor-pointer transition-all duration-300 bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-white hover:opacity-90 active:scale-95 flex items-center justify-center gap-2 shadow-md w-full mt-4 text-lg"
                 onClick={handlePreview}
-                disabled={!connected}
+                disabled={!connected || !selectedGroup || !selectedPair}
               >
                 Generate Blink
-              </button>
+              </Button>
             ) : (
               <div className="mt-4 text-center">
                 <p className="text-[var(--text-secondary)] mb-3">Connect your wallet to generate a Blink</p>
