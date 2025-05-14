@@ -113,12 +113,14 @@ const Sidebar = () => {
                      cursor-pointer hover:scale-110 ease-in-out duration-500"
           onClick={()=> window.location.href = '/'}
         >
-          <div className="backdrop-blur-sm z-40">
-            <h1
-              className="text-[min(1.5rem,5vw)] font-bold m-0 bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] text-transparent bg-clip-text animation-delay-200 fade-in"
-            >
-              GetBlink.fun
-            </h1>
+          <div className="z-40">
+            <Image
+                src={'/getblink_transparent.png'}
+                width={160}
+                height={160}
+                alt="Logo"
+                className="shadow-lg border-[var(--accent-primary)]"
+              />
           </div>
         </div>
 
