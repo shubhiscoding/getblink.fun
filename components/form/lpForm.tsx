@@ -192,7 +192,7 @@ const LpForm: React.FC<FormProps> = ({
   };
 
   const handleTweet = () => {
-    const tweetText = `Check out this Blink I just made @getblinkdotfun: https://dial.to/?action=solana-action:${blinkLink}`;
+    const tweetText = `Check out this Blink I just made using @getblinkdotfun: https://dial.to/?action=solana-action:${blinkLink}`;
     const twitterUrl = `https://X.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
     window.open(twitterUrl, '_blank');
   };
