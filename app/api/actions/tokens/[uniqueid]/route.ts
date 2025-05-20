@@ -315,11 +315,24 @@ const tradeJUP = async(
   decimals: number,
 )  =>{
   console.log("MINT IS :" + blinkData.mint);
-  const quoteResponse = await (
+  let quoteResponse = await (
     await fetch(`https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${blinkData.mint}&amount=${amount * 10**decimals}&slippageBps=300&swapMode=ExactOut`
     )
   ).json();
   console.log(quoteResponse);
+
+  if(quoteResponse.errorCode === "COULD_NOT_FIND_ANY_ROUTE"){
+    quoteResponse = await (
+      await fetch(`https://lite-api.jup.ag/swap/v1/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${blinkData.mint}&amount=${amount}&swapMode=ExactIn`
+      )
+    ).json();
+    const price = quoteResponse.inAmount / quoteResponse.outAmount;
+    const solSpent = price * amount;
+    await (
+      await fetch(`https://lite-api.jup.ag/swap/v1/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${blinkData.mint}&amount=${solSpent * (10 **9)}&swapMode=ExactIn`
+      )
+    ).json();
+  }
 
   const { swapTransaction } = await (
     await fetch('https://quote-api.jup.ag/v6/swap', {
