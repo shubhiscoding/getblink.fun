@@ -327,9 +327,9 @@ const tradeJUP = async(
       )
     ).json();
     const price = quoteResponse.inAmount / quoteResponse.outAmount;
-    const solSpent = price * amount;
-    await (
-      await fetch(`https://lite-api.jup.ag/swap/v1/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${blinkData.mint}&amount=${solSpent * (10 **9)}&swapMode=ExactIn`
+    const solSpent = (parseFloat((price * amount).toFixed(9)) * LAMPORTS_PER_SOL);
+    quoteResponse = await (
+      await fetch(`https://lite-api.jup.ag/swap/v1/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${blinkData.mint}&amount=${solSpent.toString()}&swapMode=ExactIn`
       )
     ).json();
   }
