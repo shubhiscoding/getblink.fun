@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
+import { createTransaction } from '@/server/transaction';
+import { amounts } from '@/lib/constant';
 
 export async function POST(req: Request) {
   try {
@@ -53,9 +55,10 @@ export async function POST(req: Request) {
     });
 
     console.log(result);
+    const messageString = `${wallet + result.insertedId.toString()}`;
+    const transaction = await  createTransaction(messageString, amounts.donate, wallet);
 
-    const blinkLink = `https://www.getblink.fun/api/actions/lp/${result.insertedId}`;
-    return NextResponse.json({ blinkLink, id: result.insertedId.toString() });
+    return NextResponse.json({ transaction, id: result.insertedId.toString() });
   } catch (error) {
     console.error('Error generating blink:', error);
     return NextResponse.json({ error: 'Failed to generate blink' }, { status: 500 });
