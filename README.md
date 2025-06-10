@@ -91,3 +91,6 @@ Feel free to fork the repository and submit pull requests to help improve the pl
 ---
 
 <!-- GitAds-Verify: YCAQEQWID1YFA1XOYQ41YMZRLSRFHMW2 -->
+## GitAds Sponsored
+[![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=shubhiscoding/getblink.fun@github)](https://gitads.dev/v1/ad-track?source=shubhiscoding/getblink.fun@github)
+
