@@ -89,3 +89,5 @@ Follow these steps to set up and run the project on your local machine:
 Feel free to fork the repository and submit pull requests to help improve the platform.
 
 ---
+
+<!-- GitAds-Verify: YCAQEQWID1YFA1XOYQ41YMZRLSRFHMW2 -->
